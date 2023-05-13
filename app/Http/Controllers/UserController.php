@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Http\Request;
 use Alert;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\Facades\DataTables;
+
 class UserController extends Controller
 {
     /**
@@ -19,8 +21,8 @@ class UserController extends Controller
             $query = User::query();
             return Datatables::of($query)
                 ->addColumn('action', function ($item) {
-                    return '<a name="" id="" class="btn btn-warning" href="#" role="button">Edit</a>
-                    <a name="" id="" class="btn btn-danger" href="#" role="button">Hapus</a>';})
+                    return '<a name="" id="" class="btn btn-sm btn-warning" href="#" role="button">Edit</a>
+                    <a name="" id="" class="btn btn-sm btn-danger" href="#" role="button">Hapus</a>';})
                     ->rawColumns(['no_whatsapp','action'])
                     ->make();
             }
@@ -35,7 +37,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -46,7 +47,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $data['password'] = Hash::make('password');
+        User::create($data)->toast()->success('Create data has been success');
+        return redirect()->route('user.index');
     }
 
     /**

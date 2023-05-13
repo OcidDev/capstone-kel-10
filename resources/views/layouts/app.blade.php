@@ -18,7 +18,7 @@
     @include('sweetalert::alert')
     @stack('before-style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-    @stack('before-style')
+    @stack('after-style')
 
 </head>
 
@@ -59,6 +59,10 @@
                         @else
                             <li class="nav-item">
                                 <a class="nav-link active" href="{{ route('home') }}">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ route('user.index') }}">User</a>
                             </li>
 
                             <li class="nav-item">
@@ -111,6 +115,7 @@
     </div>
 
     @stack('before-script')
+    @include('sweetalert::alert')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     @stack('after-script')
 </body>
