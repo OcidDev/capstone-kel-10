@@ -15,7 +15,6 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- style -->
-    @include('sweetalert::alert')
     @stack('before-style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
     @stack('after-style')
@@ -115,8 +114,8 @@
     </div>
 
     @stack('before-script')
-    @include('sweetalert::alert')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    @include('sweetalert::alert')
     @stack('after-script')
 </body>
 

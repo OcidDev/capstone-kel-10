@@ -55,7 +55,8 @@ class UserController extends Controller
         ]);
 
         $data['password'] = Hash::make('password');
-        User::create($data)->toast()->success('Create data has been success');
+        User::create($data);
+        toast()->success('Create data has been success');
         return redirect()->route('user.index');
     }
 
