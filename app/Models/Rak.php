@@ -11,4 +11,8 @@ class Rak extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name','description'];
+
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
 }

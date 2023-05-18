@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreignId('suppliers_id');
             $table->foreign('suppliers_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->foreignId('raks');
-            $table->foreign('raks')->references('id')->on('raks')->onDelete('cascade');
+            $table->foreignId('raks_id');
+            $table->foreign('raks_id')->references('id')->on('raks')->onDelete('cascade');
             $table->string('product_code');
             $table->string('name');
             $table->string('description')->nullable();
