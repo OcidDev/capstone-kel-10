@@ -55,14 +55,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit/{id}', 'edit')->name('supplier.edit');
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
-  
+
 });
-  
-Route::get('login', [AuthController::class, 'index'])->name('login');
-Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::get('register', [AuthController::class, 'register_view'])->name('register');
-Route::post('register', [AuthController::class, 'register'])->name('register');
+Auth::routes();
 
-Route::get('home', [AuthController::class, 'home'])->name('home');
+// Route::get('login', [AuthController::class, 'index'])->name('login');
+// Route::post('login', [AuthController::class, 'login'])->name('login');
+
+// Route::get('register', [AuthController::class, 'register_view'])->name('register');
+// Route::post('register', [AuthController::class, 'register'])->name('register');
+
+// Route::get('home', [AuthController::class, 'home'])->name('home');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
