@@ -8,11 +8,12 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Rak;
 use App\Models\Supplier;
+Use Alert;
 
 class DashboardController extends Controller
 {
 
-    
+
     public function __construct()
     {
     }

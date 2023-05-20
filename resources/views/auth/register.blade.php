@@ -23,36 +23,50 @@
                                         @method('post')
                                         <div class="col-12">
                                             <label for="yourName" class="form-label">Your Name</label>
-                                            <input placeholder="name" type="text" name="name" class="form-control"
-                                                id="yourName">
-                                            @if ($errors->has('name'))
-                                                <p class="text-danger">{{ $errors->first('name') }}</p>
-                                            @endif
+                                            <input placeholder="name" type="text" name="name"
+                                                class="form-control @error('name') is-invalid @enderror" id="yourName">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
 
                                         </div>
 
                                         <div class="col-12">
                                             <label for="yourEmail" class="form-label">Your Email</label>
-                                            <input placeholder="email" type="email" name="email" class="form-control"
-                                                id="yourEmail">
-                                            @if ($errors->has('email'))
-                                                <p class="text-danger">{{ $errors->first('email') }}</p>
-                                            @endif
+                                            <input placeholder="email" type="email" name="email"
+                                                class="form-control @error('email') is-invalid @enderror" id="yourEmail">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
                                             <label for="yourPassword" class="form-label">Password</label>
                                             <input placeholder="password" type="password" name="password"
-                                                class="form-control" id="yourPassword">
-                                            @if ($errors->has('password'))
-                                                <p class="text-danger">{{ $errors->first('password') }}</p>
-                                            @endif
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                id="yourPassword">
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
                                             <label for="yourPassword" class="form-label">Confirm Passowrd</label>
                                             <input placeholder="Password Confirmation" type="password"
-                                                name="password_confirmation" class="form-control" id="yourPassword">
+                                                name="password_confirmation"
+                                                class="form-control @error('password_confirmation') is-invalid @enderror"
+                                                id="yourPassword">
+                                            @error('password_confirmation')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
 
 

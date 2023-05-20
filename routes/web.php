@@ -67,4 +67,4 @@ Auth::routes();
 // Route::post('register', [AuthController::class, 'register'])->name('register');
 
 // Route::get('home', [AuthController::class, 'home'])->name('home');
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+// Route::get('logout', [AuthController::class, 'logout'])->name('logout');

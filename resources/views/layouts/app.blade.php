@@ -30,28 +30,11 @@
   <link href="{{ asset('/template/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
   <link href="{{ asset('/template/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
   <link href="{{ asset('/template/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
- 
+
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('/template/assets/css/style.css') }}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Mar 09 2023 with Bootstrap v5.2.3
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-
- 
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Mar 09 2023 with Bootstrap v5.2.3
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -122,7 +105,7 @@
 
 <script>
 
- 
+
 const swal2 = $('.swal2').data('swal2');
 
  if (swal2) {
@@ -132,9 +115,9 @@ const swal2 = $('.swal2').data('swal2');
       icon: 'success',
       type: "success",
 
-    })  
+    })
   }
-  
+
 </script>
 
 </body>
