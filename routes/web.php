@@ -7,6 +7,7 @@ use App\Http\Controllers\ShelvesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryController;
 
 
 
@@ -55,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit/{id}', 'edit')->name('supplier.edit');
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
-
+  Route::resource('inventory', InventoryController::class);
 });
 
 Auth::routes();
