@@ -10,9 +10,9 @@
       </a>
     </li>
 
-    
 
-    
+
+
 
     <li class="nav-item">
       <a class="nav-link {{ $menu == 'master' ? '' : 'collapsed' }}" data-bs-target="#master-data" data-bs-toggle="collapse" href="#">
@@ -25,7 +25,7 @@
           </a>
         </li>
         <li>
-          <a class="{{ $sub_menu == 'rak' ? 'active' : '' }}" href="{{ route('rak') }}">
+          <a class="{{ $sub_menu == 'shelves' ? 'active' : '' }}" href="{{ route('shelves') }}">
             <i class="bi bi-circle"></i><span>Rak</span>
           </a>
         </li>

@@ -15,17 +15,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categories_id');
-            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('suppliers_id');
-            $table->foreign('suppliers_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->foreignId('raks_id');
-            $table->foreign('raks_id')->references('id')->on('raks')->onDelete('cascade');
+            $table->foreignId('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('shelves_id')->references('id')->on('shelves')->onDelete('cascade');
             $table->string('product_code');
             $table->string('name');
+            $table->string('image');
             $table->string('description')->nullable();
             $table->integer('price')->unsigned();
-            $table->integer('modal')->unsigned();
+            $table->integer('capital_price')->unsigned();
             $table->integer('stock')->unsigned();
             $table->softDeletes();
             $table->timestamps();

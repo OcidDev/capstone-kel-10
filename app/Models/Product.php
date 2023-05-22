@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Shelves;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -11,14 +13,13 @@ class Product extends Model
 
     protected $fillable = [
         'categories_id',
-        'suppliers_id',
-        'products_id',
-        'raks_id',
+        'shelves_id',
         'product_code',
         'name',
+        'image',
         'description',
         'price',
-        'modal',
+        'capital_price',
         'stock'
     ];
 
@@ -27,14 +28,9 @@ class Product extends Model
        return $this->belongsTo(Category::class,'categories_id');
     }
 
-    public function supplier()
+    public function shelves()
     {
-       return $this->belongsTo(Supplier::class,'suppliers_id');
-    }
-
-    public function rak()
-    {
-       return $this->belongsTo(Rak::class,'raks_id');
+       return $this->belongsTo(Shelves::class,'shelves_id');
     }
 
 

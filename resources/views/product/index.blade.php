@@ -36,8 +36,8 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Kategori</th>
-                                <th scope="col">Supplier</th>
                                 <th scope="col">Rak</th>
+                                <th scope="col">Gambar</th>
                                 <th scope="col">Kode Produk</th>
                                 <th scope="col">Nama Produk</th>
                                 <th scope="col">Deskripsi Produk</th>
@@ -55,13 +55,14 @@
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $item->category->name }}</td>
-                                    <td>{{ $item->supplier->name }}</td>
-                                    <td>{{ $item->rak->name }}</td>
+                                    <td>{{ $item->shelves->name }}</td>
+                                    <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
+                                    </td>
                                     <td>{{ $item->product_code }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td>Rp. {{ number_format($item->price, 0) }}</td>
-                                    <td>Rp. {{ number_format($item->modal, 0) }}</td>
+                                    <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
                                     <td>{{ $item->stock }}</td>
                                     <td>
                                         <form method="POST" action="{{ route('product.delete', $item->id) }}">
@@ -98,7 +99,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3" action="{{ route('product.save') }}" method="POST">
+                    <form class="row g-3" action="{{ route('product.save') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="col-12">
                             <label class="form-label">Kategori Produk</label>
@@ -109,18 +111,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12">
-                            <label class="form-label">Supplier Produk</label>
-                            <select class="form-select" name="suppliers_id">
-                                <option disabled value="" selected>Pilih Supllier Produk</option>
-                                @foreach ($data_supplier as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="col-12">
                             <label class="form-label">Rak Produk</label>
-                            <select class="form-select" name="raks_id">
+                            <select class="form-select" name="shelves_id">
                                 <option disabled value="" selected>Pilih Rak Produk</option>
                                 @foreach ($data_rak as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -137,6 +131,13 @@
                             <input type="text" placeholder="Nama Produk" id="name" name="name"
                                 class="form-control">
                         </div>
+
+
+                        <div class="col-12">
+                            <label for="image" class="form-label">Gambar</label>
+                            <input type="file" class="form-control" id="image" name="image">
+                        </div>
+
                         <div class="col-12">
                             <label for="description" class="form-label">Deskripsi Produk</label>
                             <input id="description" placeholder="Deskripsi" name="description" type="text"
@@ -149,14 +150,10 @@
                         </div>
                         <div class="col-12">
                             <label for="modal" class="form-label">Modal Produk</label>
-                            <input type="number" id="modal" placeholder="Modal" name="modal" type="text"
-                                class="form-control">
+                            <input type="number" id="modal" placeholder="Modal" name="capital_price"
+                                type="text" class="form-control">
                         </div>
-                        <div class="col-12">
-                            <label for="stock" class="form-label">Stok Produk</label>
-                            <input type="number" id="stock" placeholder="stock" name="stock" type="text"
-                                class="form-control">
-                        </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -177,7 +174,7 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3" method="POST" action="{{ route('product.edit', $item->id) }}"
-                            method="POST">
+                            enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="col-12">
                                 <label class="form-label">Kategori Produk</label>
@@ -186,16 +183,6 @@
                                         <option
                                             value="{{ $item_c->id }}"{{ $item->categories_id == $item_c->id ? 'Selected' : '' }}>
                                             {{ $item_c->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Supplier Produk</label>
-                                <select class="form-select" name="suppliers_id">
-                                    @foreach ($data_supplier as $item_s)
-                                        <option
-                                            value="{{ $item_s->id }}"{{ $item->suppliers_id == $item_s->id ? 'Selected' : '' }}>
-                                            {{ $item_s->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -220,6 +207,17 @@
                                 <input type="text" value="{{ $item->name }}" placeholder="Nama Produk"
                                     id="name" name="name" class="form-control">
                             </div>
+
+                            <div class="col-12">
+                                <label>Gambar Yang Sudah Ada</label>
+                                <br>
+                                <img src="{{ asset('storage/' . $item->image) }}" style="width:200px" alt="image">
+                            </div>
+                            <div class="col-12">
+                                <label for="image" class="form-label">Gambar</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+
                             <div class="col-12">
                                 <label for="description" class="form-label">Deskripsi Produk</label>
                                 <input id="description" value="{{ $item->description }}" placeholder="Deskripsi"
@@ -228,18 +226,14 @@
                             <div class="col-12">
                                 <label for="price" class="form-label">Harga Produk</label>
                                 <input type="number" value="{{ $item->price }}" id="price"
-                                    placeholder="Harga Produk" name="price" type="text" class="form-control">
+                                    placeholder="Harga Produk" name="price" type="number" class="form-control">
                             </div>
                             <div class="col-12">
                                 <label for="modal" class="form-label">Modal Produk</label>
-                                <input type="number" value="{{ $item->modal }}" id="modal" placeholder="Modal"
-                                    name="modal" type="text" class="form-control">
+                                <input type="number" value="{{ $item->capital_price }}" id="modal"
+                                    placeholder="Modal" name="capital_price" type="number" class="form-control">
                             </div>
-                            <div class="col-12">
-                                <label for="stock" class="form-label">Stok Produk</label>
-                                <input type="number" value="{{ $item->stock }}" id="stock" placeholder="stock"
-                                    name="stock" type="text" class="form-control">
-                            </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

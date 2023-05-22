@@ -4,7 +4,6 @@
 
 @section('contents')
 
-
     <div class="row">
         <div class="col-lg-12">
 
@@ -14,7 +13,7 @@
                     <div class="swal2" data-swal2="{{ Session::get('success') }}">
                     </div>
 
-                    <h5 class="card-title">Data Kategori</h5>
+                    <h5 class="card-title">Data Rak</h5>
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <ul>
@@ -35,9 +34,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">Nama Kategori</th>
-                                <th scope="col">Dekskripsi Kategori</th>
-                                <th scope="col">Gambar Kategori</th>
+                                <th scope="col">Nama Rak</th>
+                                <th scope="col">Dekskripsi Rak</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -45,17 +43,15 @@
                             @php
                                 $no = 1;
                             @endphp
-                            @foreach ($data_category as $item)
+                            @foreach ($data_rak as $item)
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->description }}</td>
-                                    <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
-                                    </td>
                                     <td>
 
 
-                                        <form method="POST" action="{{ route('category.delete', $item->id) }}">
+                                        <form method="POST" action="{{ route('shelves.delete', $item->id) }}">
                                             <button type="button" data-bs-toggle="modal"
                                                 data-bs-target="#edit{{ $item->id }}"
                                                 class="btn btn-sm btn-warning">Edit</button>
@@ -85,26 +81,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Data Kategori</h5>
+                    <h5 class="modal-title">Add Data Rak</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3" action="{{ route('category.save') }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form class="row g-3" action="{{ route('shelves.save') }}" method="POST">
                         @csrf
                         <div class="col-12">
-                            <label for="name" class="form-label">Nama Kategori</label>
-                            <input type="text" placeholder="Nama Kategori" id="name" name="name"
-                                class="form-control">
+                            <label for="name" class="form-label">Nama Rak</label>
+                            <input type="text" placeholder="Nama Rak" id="name" name="name" class="form-control">
                         </div>
                         <div class="col-12">
                             <label for="description" class="form-label">Deskripsi</label>
                             <input id="description" placeholder="Deskripsi" name="description" type="text"
                                 class="form-control">
-                        </div>
-                        <div class="col-12">
-                            <label for="image" class="form-label">Gambar</label>
-                            <input type="file" class="form-control" id="image" name="image">
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -116,38 +106,27 @@
         </div>
     </div>
 
-    @foreach ($data_category as $item)
+    @foreach ($data_rak as $item)
         <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Data Kategori</h5>
+                        <h5 class="modal-title">Edit Data Rak</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" action="{{ route('category.edit', $item->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form class="row g-3" method="POST" action="{{ route('shelves.edit', $item->id) }}" method="POST">
                             @csrf
                             <div class="col-12">
-                                <label for="name" class="form-label">Nama Kategori</label>
-                                <input type="text" value="{{ $item->name }}" placeholder="Nama Kategori"
-                                    id="name" name="name" class="form-control">
+                                <label for="name" class="form-label">Nama Rak</label>
+                                <input type="text" value="{{ $item->name }}" placeholder="Nama Rak" id="name"
+                                    name="name" class="form-control">
                             </div>
                             <div class="col-12">
                                 <label for="description" class="form-label">Deskripsi</label>
                                 <input id="description" value="{{ $item->description }}" placeholder="Deskripsi"
                                     name="description" type="text" class="form-control">
                             </div>
-                            <div class="col-12">
-                                <label>Gambar Yang Sudah Ada</label>
-                                <br>
-                                <img src="{{ asset('storage/' . $item->image) }}" style="width:200px" alt="image">
-                            </div>
-                            <div class="col-12">
-                                <label for="image" class="form-label">Gambar</label>
-                                <input type="file" class="form-control" id="image" name="image">
-                            </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -158,5 +137,11 @@
             </div>
         </div>
     @endforeach
+
+
+
+
+
+
 
 @endsection

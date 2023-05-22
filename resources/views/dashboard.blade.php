@@ -11,7 +11,7 @@
         <div class="col-lg-12">
           <div class="row">
 
-            
+
             <div class=" col-md-3">
               <div class="card info-card sales-card">
 
@@ -43,7 +43,7 @@
                       <i class="bi bi-archive"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>{{ $raks }}</h6>
+                      <h6>{{ $shelves }}</h6>
 
                     </div>
                   </div>
@@ -93,11 +93,11 @@
             </div>
 
 
-         
+
           </div>
         </div>
       </div>
     </section>
 
- 
+
 @endsection

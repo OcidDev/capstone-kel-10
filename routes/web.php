@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RakController;
+use App\Http\Controllers\ShelvesController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\DashboardController;
 
 
 
@@ -42,11 +42,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete/{id}', 'delete')->name('product.delete');
   });
 
-  Route::controller(RakController::class)->prefix('rak')->group(function () {
-    Route::get('', 'index')->name('rak');
-    Route::post('save', 'save')->name('rak.save');
-    Route::post('edit/{id}', 'edit')->name('rak.edit');
-    Route::delete('delete/{id}', 'delete')->name('rak.delete');
+  Route::controller(ShelvesController::class)->prefix('shelves')->group(function () {
+    Route::get('', 'index')->name('shelves');
+    Route::post('save', 'save')->name('shelves.save');
+    Route::post('edit/{id}', 'edit')->name('shelves.edit');
+    Route::delete('delete/{id}', 'delete')->name('shelves.delete');
   });
 
   Route::controller(SupplierController::class)->prefix('supplier')->group(function () {

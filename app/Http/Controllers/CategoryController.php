@@ -28,22 +28,20 @@ class CategoryController extends Controller
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
             'image' => ':attribute Harus Gambar !!',
-            'mimes' => ':attribute Harus Beformat jpeg,png,jpg !!',
+            'unique' => 'nama kategori sudah terdaftar, gunakan nama lain !!',
+            'image' => ':attribute Harus  !!',
             'max' => 'Ukuran :attribute Max 5mb !!',
         ];
-        
-         $request->validate([
-            'name' => 'required',
+
+        $data =  $request->validate([
+            'name' => 'required|unique:categories,name',
             'description' => 'required',
-            'image' => [File::types(['jpeg', 'jpg', 'png'])->max(2 * 1024),]
+            'image' => 'required|image'
         ],$pesan);
-        
-        Category::create([
-            'name'=>$request->input('name'),
-            'description'=>$request->input('description'),
-            'image' => Storage::putFile('category_img', $request['image'])
-        ]);
-    
+
+        $data['image'] = $request->file('image')->store('assets/image', 'public');
+        Category::create($data);
+
         return back()->with('success','Data Kategori Berhasil Ditambahkan');
     }
 
@@ -51,37 +49,39 @@ class CategoryController extends Controller
     {
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
+            'unique' => 'nama kategori sudah terdaftar, gunakan nama lain !!',
+            'image' => ':attribute Harus  !!',
         ];
-        
+
          $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:categories,name,'.$id,
             'description' => 'required',
-            'image' => [File::types(['jpeg', 'jpg', 'png'])->max(2 * 1024),]
+            'image' => 'image'
         ],$pesan);
 
         $category = Category::find($id);
         $category->name = $validated['name'];
         $category->description = $validated['description'];
-    
+
 
         if($request->file('image')){
             if($category->image && Storage::exists($category->image)){
-                Storage::delete($category->image);
+                Storage::delete('public/'.$category->image);
             }
-            $category->image = Storage::putFile('category_img', $validated['image']);
+            $category->image = $request->file('image')->store('assets/image', 'public');
         }
         $category->save();
 
         return back()->with('success','Data Kategori Berhasil Diubah');    }
 
-   
+
     public function delete($id)
     {
         $category = Category::find($id);
-        Storage::delete($category->image);
+        Storage::delete('public/'.$category->image);
         $category->delete();
 
-        return back()->with('success','Data Kategori Berhasil Dihapus');       
+        return back()->with('success','Data Kategori Berhasil Dihapus');
     }
 
 

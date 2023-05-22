@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\Shelves;
 use App\Models\Category;
 use App\Models\Supplier;
-use App\Models\Rak;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -21,8 +21,7 @@ class ProductController extends Controller
             'menu' => 'master',
             'data_products' => Product::all(),
             'data_category' => Category::all(),
-            'data_supplier' => Supplier::all(),
-            'data_rak' => Rak::all()
+            'data_rak' => Shelves::all()
         );
 
         return view('product.index',$data);
@@ -32,32 +31,26 @@ class ProductController extends Controller
     {
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
+            'unique' => 'code produk sudah terdaftar, gunakan code lain !!',
+            'image' => 'gambar harus berformat .jpg, .jpeg, .png, .gif !!',
+
         ];
-        
-         $request->validate([
+
+         $data = $request->validate([
+            'shelves_id' => 'required',
             'categories_id' => 'required',
-            'suppliers_id' => 'required',
-            'raks_id' => 'required',
-            'product_code' => 'required',
+            'product_code' => 'required|unique:products,name',
             'name' => 'required',
+            'image' => 'required|image',
             'description' => 'required',
             'price' => 'required',
-            'modal' => 'required',
-            'stock' => 'required',
+            'capital_price' => 'required',
         ],$pesan);
-        
-        Product::create([
-            'categories_id'=>$request->input('categories_id'),
-            'suppliers_id'=>$request->input('suppliers_id'),
-            'raks_id'=>$request->input('raks_id'),
-            'product_code'=>$request->input('product_code'),
-            'name'=>$request->input('name'),
-            'description'=>$request->input('description'),
-            'price'=>$request->input('price'),
-            'modal'=>$request->input('modal'),
-            'stock'=>$request->input('stock'),
-        ]);
-    
+
+        $data['image'] = $request->file('image')->store('assets/image', 'public');
+
+        Product::Create($data);
+
         return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan');
     }
 
@@ -66,31 +59,34 @@ class ProductController extends Controller
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
         ];
-        
+
          $validated = $request->validate([
             'categories_id' => 'required',
-            'suppliers_id' => 'required',
-            'raks_id' => 'required',
-            'product_code' => 'required',
+            'shelves_id' => 'required',
+            'product_code' => 'required|unique:products,product_code,'.$id,
             'name' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'modal' => 'required',
-            'stock' => 'required',
+            'capital_price' => 'required',
         ],$pesan);
 
         $produk = Product::find($id);
         $produk->categories_id = $validated['categories_id'];
-        $produk->suppliers_id = $validated['suppliers_id'];
-        $produk->raks_id = $validated['raks_id'];
+        $produk->shelves_id = $validated['shelves_id'];
         $produk->product_code = $validated['product_code'];
         $produk->name = $validated['name'];
+        $produk->image = $validated['image'];
         $produk->description = $validated['description'];
         $produk->price = $validated['price'];
-        $produk->modal = $validated['modal'];
-        $produk->stock = $validated['stock'];
-        $produk->save();
+        $produk->capital_price = $validated['capital_price'];
 
+        if($request->file('image')){
+            if($product->image && Storage::exists($product->image)){
+                Storage::delete('public/'.$product->image);
+            }
+            $product->image = $request->file('image')->store('assets/image', 'public');
+        }
+        $product->save();
         return redirect()->back()->with('success','Data Produk Berhasil Diubah');
     }
 

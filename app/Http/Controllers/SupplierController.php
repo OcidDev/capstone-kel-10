@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Storage;
 class SupplierController extends Controller
 {
 
-    
-    
+
+
     public function index()
     {
         $data = array(
@@ -22,7 +22,7 @@ class SupplierController extends Controller
         );
 
         return view('supplier.index',$data);
-        
+
     }
 
      public function save(Request $request)
@@ -30,10 +30,11 @@ class SupplierController extends Controller
 
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
+            'unique' => 'nama supplier sudah terdaftar, gunakan nama lain !!',
         ];
 
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:suppliers,name',
             'phone' => 'required',
             'address' => 'required'
         ],$pesan);
@@ -54,11 +55,12 @@ class SupplierController extends Controller
 
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
-          
+            'unique' => 'nama supplier sudah terdaftar, gunakan nama lain !!',
+
         ];
 
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:suppliers,name,'.$id,
             'phone' => 'required',
             'address' => 'required'
         ],$pesan);
