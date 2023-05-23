@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\TransactionController;
 
 
 
@@ -56,6 +57,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit/{id}', 'edit')->name('supplier.edit');
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
+
+  Route::controller(TransactionController::class)->prefix('transaksi')->group(function () {
+    Route::get('', 'index')->name('transaksi');
+  });
+
   Route::resource('inventory', InventoryController::class);
 });
 

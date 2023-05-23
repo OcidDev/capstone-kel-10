@@ -1,2 +1,48 @@
 *
 !.gitignore
+
+
+Tabel Transaksi
+cashir_id = 1 = dimas
+invoice= INV1
+date = now
+total = 30k
+cash = 40k
+change = 10k
+status = LUNAS
+buyer_name = reza
+buyer_email = ISI
+buyer_phone = ISI
+
+
+
+Tabel Detail Transaksi
+transaksi_id
+produk_id
+qty
+
+
+
+Tabel Tabel Produk
+fk_id_dri_tabel_lain
+kd_produk
+name
+desc
+price
+modal
+stock
+
+
+
+
+Halaman trasaksi UTANG (KASIR)
+data yang ditampilkan ketika status = utang
+----------------- data tampil ------------------- {bayar}
+
+
+Halaman transaksi UTANG (PELANGGAN)
+data yang ditampilkan ketika status = utang
+----------------- data tampil -------------------
+
+
+INVOICE
