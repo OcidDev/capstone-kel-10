@@ -153,6 +153,11 @@
                             <input type="number" id="modal" placeholder="Modal" name="capital_price"
                                 type="text" class="form-control">
                         </div>
+                          <div class="col-12">
+                            <label for="modal" class="form-label">Stok Produk</label>
+                            <input type="number" id="modal" placeholder="Stok" name="stock"
+                                type="text" class="form-control">
+                        </div>
 
                 </div>
                 <div class="modal-footer">
@@ -230,6 +235,11 @@
                             </div>
                             <div class="col-12">
                                 <label for="modal" class="form-label">Modal Produk</label>
+                                <input type="number" value="{{ $item->capital_price }}" id="modal"
+                                    placeholder="Modal" name="capital_price" type="number" class="form-control">
+                            </div>
+                             <div class="col-12">
+                                <label for="modal" class="form-label">Stok Produk</label>
                                 <input type="number" value="{{ $item->capital_price }}" id="modal"
                                     placeholder="Modal" name="capital_price" type="number" class="form-control">
                             </div>

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cashier_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('invoice_code');
-            $table->date('date')->default(new DateTime());
+            $table->date('date')->nullable()->default(Carbon::now());
             $table->integer('total')->unsigned();
             $table->string('status')->default('BELUM LUNAS');
             $table->string('buyer_name')->nullable();

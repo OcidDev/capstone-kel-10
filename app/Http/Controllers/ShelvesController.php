@@ -14,7 +14,7 @@ class ShelvesController extends Controller
         $data = array(
             'title' => 'Halaman Rak',
             'judul' => 'Rak',
-            'sub_menu' => 'rak',
+            'sub_menu' => 'shelves',
             'menu' => 'master',
             'data_rak' => Shelves::all()
         );

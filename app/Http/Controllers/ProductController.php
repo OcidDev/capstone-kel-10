@@ -45,6 +45,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'capital_price' => 'required',
+            'stock' => 'required',
         ],$pesan);
 
         $data['image'] = $request->file('image')->store('assets/image', 'public');
@@ -68,6 +69,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'capital_price' => 'required',
+            'stock' => 'required',
         ],$pesan);
 
         $produk = Product::find($id);
@@ -79,6 +81,7 @@ class ProductController extends Controller
         $produk->description = $validated['description'];
         $produk->price = $validated['price'];
         $produk->capital_price = $validated['capital_price'];
+        $produk->stock = $validated['stock'];
 
         if($request->file('image')){
             if($product->image && Storage::exists($product->image)){
