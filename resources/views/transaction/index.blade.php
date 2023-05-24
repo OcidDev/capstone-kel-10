@@ -18,13 +18,8 @@
           </div>
 
           <div class="card-body">
-             @if (Session::get('danger'))
-                <div class="swal" data-swal="{{ Session::get('danger') }}">
-                </div>
-              @else
-                <div class="swal2" data-swal2="{{ Session::get('success') }}">
-                </div>
-              @endif
+             <div class="swal2" data-swal2="{{ Session::get('success') }}">
+              </div>
            
               <form class="row g-3">
                 <div class="col-md-3">
@@ -78,7 +73,7 @@
          
 
           <div class="card-body">
-             <label class="display-5 d-flex justify-content-end">Rp.20,000</label>
+             <label class="display-5 d-flex justify-content-end">Rp. {{  $grand_total }}</label>
           </div>
 
           <div class="card">
@@ -106,14 +101,14 @@
           </div>
 
           <div class="card-body">
-            <form  action="">
-              <div class="row">
-                <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-12">
+                <form action="{{ route('transaction.add_cart')}}" method="POST" enctype="multipart/form-data">
+                  @csrf
                   <div class="row">
-                    <div class="col-2 " >
-                      {{-- <input  class="form-control" id="inputText"> --}}
+                    <div class="col-3" >
                       <div class="btn-group" role="group" aria-label="Basic example">
-                          <input id="product_code" name="product_code"  class="form-control" placeholder="Kode Produk" aria-label="Kode Produk" aria-describedby="basic-addon1">
+                          <input required id="product_code" name="product_code"  class="form-control" placeholder="Kode Produk" aria-label="Kode Produk" aria-describedby="basic-addon1">
                           <button data-bs-toggle="modal" data-bs-target="#find-product" type="button" class="btn btn-primary"><i class="bi bi-search"></i></button>
                           <button type="reset" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                       </div>
@@ -127,25 +122,21 @@
 
                     </div>
                     <div class="col-2 " >
-                      <input readonly name="price"  class="form-control" placeholder="Harga" aria-label="Harga" aria-describedby="basic-addon1">                    
+                      <input readonly name="price"   class="form-control" placeholder="Harga" aria-label="Harga" aria-describedby="basic-addon1">                    
 
                     </div>
                     <div class="col-1 " >
                       <input id="qty" name="qty" type="number" class="form-control" placeholder="qty" aria-label="Kategori" aria-describedby="basic-addon1">                    
 
                     </div>
-                    <div class="col-3" >
-                      <button type="button" class="btn btn-primary"><i class="bi bi-cart-plus-fill"></i> Add</button>
-                      <button type="button" class="btn btn-warning"><i class="ri-restart-line"></i> Reset</button>
+                    <div class="col-2" >
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus-fill"></i> Add</button>
                     </div>
                   
                   </div>
-                  
-            
-                  
-                </div>
+                </form>
               </div>
-            </form>
+            </div>
            
            
            
@@ -193,15 +184,24 @@
                       </tr>
                     </thead>
                     <tbody>
+                       @foreach ( $cart as $item )
                       <tr>
                         <th scope="row">1</th>
-                        <td>kdp01</td>
-                        <td>Marimas</td>
-                        <td>Rp. 5,000</td>
-                        <td>4</td>
-                        <td>Rp. 20,000</td>
-                        <td><a href="" class="btn btn-sm btn-danger"> <i class="bi bi-cart-x-fill"></i> </a></td>
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>Rp. {{ number_format($item->price,0) }}</td>
+                        <td>{{ $item->qty }}</td>
+                        <td>Rp. {{ number_format($item->subtotal ,0)}}</td>
+                        <td>
+                          <form method="POST" action="{{ route('transaction.remove_item', $item->rowId) }}">
+                            @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button class="btn btn-danger btn-flat show-alert-delete-box btn-sm"> <i class="bi bi-cart-x-fill"></i> 
+                          </form>
+                          </button>
+                        </td>
                       </tr>
+                      @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -228,16 +228,25 @@
                    <form class="row g-3">
                     <div class="col-md-12">
                       <label for="buyer_name" class="form-label">Nama Pembeli</label>
-                      <input name="buyer_name"  class="form-control" id="buyer_name">
+                      <input placeholder="Nama Pembeli" name="buyer_name"  class="form-control" id="buyer_name">
                     </div>
                     <div class="col-md-12">
                       <label for="buyer_email" class="form-label">Email</label>
-                      <input name="buyer_email" class="form-control" id="buyer_email">
+                      <input placeholder="Email" name="buyer_email" class="form-control" id="buyer_email">
                     </div>
                     <div class="col-md-12">
                       <label  for="buyer_phone" class="form-label">No HP</label>
-                      <input name="buyer_phone"  class="form-control" id="buyer_phone">
+                      <input placeholder="No Hp" name="buyer_phone"  class="form-control" id="buyer_phone">
                     </div>
+                    <div class="col-md-12">
+                      <label  for="status" class="form-label">Status Pembayaran</label>
+                      <select class="form-select" name="status">
+                        <option selected disabled value="">Pilih Status Pembayaran</option>
+                          <option value="">BELUM LUNAS</option>
+                          <option value="">LUNAS</option>
+                      </select>
+                    </div>
+                            
                       
                     </form>
                   </div>
@@ -265,11 +274,11 @@
                    <form class="row g-3">
                     <div class="col-md-12">
                       <label for="total" class="form-label">Grand Total</label>
-                      <input name="total" readonly   class="form-control" id="total">
+                      <input value="{{($grand_total) }}" name="grand_total" readonly   class="form-control" id="grand_total">
                     </div>
                     <div class="col-md-12">
                       <label for="cash" class="form-label">Cash</label>
-                      <input name="cash"  class="form-control" id="cash">
+                      <input placeholder="Cash" name="cash"  class="form-control" id="cash">
                     </div>
                     <div class="col-md-12">
                       <label for="change" class="form-label">Change</label>
@@ -379,6 +388,12 @@
         }
       }
     });
+
+    // Hitung Kembalian
+    $('#cash').keyup(function e() {
+      HitungKembalian();
+    });
+
   });
 
   
@@ -413,6 +428,30 @@
 
     });
   }
+
+  new AutoNumeric('#cash', {
+    digitGroupSeparator : ',',
+    decimalPlaces: 0,
+  });
+
+  
+
+  
+
+  function HitungKembalian() {
+    let grand_total =$('#grand_total').val().replace(/[^.\d]/g,'').toString();
+    let cash = $('#cash').val().replace(/[^.\d]/g,'').toString();
+
+    let change = parseFloat(cash) - parseFloat(grand_total);
+    $('#change').val(change);
+
+
+    new AutoNumeric('#change', {
+      digitGroupSeparator : ',',
+      decimalPlaces: 0,
+    });
+  }
+
 
 
 

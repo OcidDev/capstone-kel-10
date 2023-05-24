@@ -56,7 +56,6 @@
                       <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $item->id }}" class="btn btn-sm btn-warning">Edit</button>
 
                     @csrf
-                      </a>
                       <input name="_method" type="hidden" value="DELETE">
                       <button type="submit" class="btn btn-danger btn-flat show-alert-delete-box btn-sm" data-toggle="tooltip" title='Delete'>Delete</button>
                    </form>

@@ -57,7 +57,6 @@
                                                 class="btn btn-sm btn-warning">Edit</button>
 
                                             @csrf
-                                            </a>
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button type="submit"
                                                 class="btn btn-danger btn-flat show-alert-delete-box btn-sm"

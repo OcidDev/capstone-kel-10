@@ -114,7 +114,10 @@
     </script>
 
 
+
+
     <script>
+        
         const swal2 = $('.swal2').data('swal2');
 
         if (swal2) {

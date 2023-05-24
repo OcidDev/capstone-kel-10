@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Product;
+use Cart;
 
 class TransactionController extends Controller
 {
@@ -17,13 +18,17 @@ class TransactionController extends Controller
 
     public function index()
     {
+
+   
         $invoiceCode = $this->createInvoice();
         $data = array(
             'title' => 'Halaman Transaksi',
             'judul' => 'Transaksi',
             'menu' => 'transaksi',
             'invoiceCode' => $invoiceCode,
-            'data_products' => Product::all(),
+            'data_products' => Product::all(), 
+            'cart' => Cart::content(),
+            'grand_total' => Cart::subtotal(0),
             'sub_menu' => '',
         );
 
@@ -56,6 +61,34 @@ class TransactionController extends Controller
         echo json_encode($data);
         
     }
+
+    public function add_cart(Request $request)
+    {
+
+        $product_code = $request->input('product_code');
+        $qty = $request->input('qty');
+
+       $cart =  Cart::add([
+        'id' => $request->product_code,
+        'name' => $request->product_name, 
+        'price' => $request->price, 
+        'weight' => 0, 
+        'qty' =>  $request->qty, 
+            'options' => [
+                'category_name' => $request->category_name,
+            ]
+        ]);
+
+        return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
+    
+    }
+
+    public function remove_item($rowId){
+        Cart::remove($rowId);
+        return redirect()->back()->with('success','Data Produk pada Keranjang Berhasil Dihapus');
+
+    }
+
 
     public function createInvoice()
     {
