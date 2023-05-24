@@ -48,6 +48,9 @@ class ProductController extends Controller
             'stock' => 'required',
         ],$pesan);
 
+        $data['price'] = str_replace(",","", $request->input('price'));
+        $data['capital_price'] = str_replace(",","", $request->input('capital_price'));
+        $data['stock'] = str_replace(",","", $request->input('stock'));
         $data['image'] = $request->file('image')->store('assets/image', 'public');
 
         Product::Create($data);
@@ -66,22 +69,22 @@ class ProductController extends Controller
             'shelves_id' => 'required',
             'product_code' => 'required|unique:products,product_code,'.$id,
             'name' => 'required',
+            'image' => 'image',
             'description' => 'required',
             'price' => 'required',
             'capital_price' => 'required',
             'stock' => 'required',
         ],$pesan);
 
-        $produk = Product::find($id);
-        $produk->categories_id = $validated['categories_id'];
-        $produk->shelves_id = $validated['shelves_id'];
-        $produk->product_code = $validated['product_code'];
-        $produk->name = $validated['name'];
-        $produk->image = $validated['image'];
-        $produk->description = $validated['description'];
-        $produk->price = $validated['price'];
-        $produk->capital_price = $validated['capital_price'];
-        $produk->stock = $validated['stock'];
+        $product = Product::find($id);
+        $product->categories_id = $validated['categories_id'];
+        $product->shelves_id = $validated['shelves_id'];
+        $product->product_code = $validated['product_code'];
+        $product->name = $validated['name'];
+        $product->description = $validated['description'];
+        $product->price = str_replace(",", "", $validated['price']);
+        $product->capital_price = str_replace(",", "", $validated['capital_price']);
+        $product->stock = str_replace(",", "", $validated['stock']);
 
         if($request->file('image')){
             if($product->image && Storage::exists($product->image)){

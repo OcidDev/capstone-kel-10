@@ -7,21 +7,22 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'categories_id',
-        'shelves_id',
-        'product_code',
-        'name',
-        'image',
-        'description',
-        'price',
-        'capital_price',
-        'stock'
+    'categories_id',
+    'shelves_id',
+    'product_code',
+    'name',
+    'image',
+    'description',
+    'price',
+    'capital_price',
+    'stock'
     ];
 
     public function category()
@@ -33,6 +34,13 @@ class Product extends Model
     {
        return $this->belongsTo(Shelves::class,'shelves_id');
     }
+
+    public function detailTransactions()
+    {
+        return $this->hasMany(DetailTransaction::class, 'products_id');
+    }
+
+    // 
 
 
 }

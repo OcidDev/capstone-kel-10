@@ -58,8 +58,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
 
-  Route::controller(TransactionController::class)->prefix('transaksi')->group(function () {
-    Route::get('', 'index')->name('transaksi');
+  Route::controller(TransactionController::class)->prefix('transaction')->group(function () {
+    Route::get('', 'index')->name('transaction');
+    Route::get('cek_produk', 'CekProduk')->name('cek_produk');
+    Route::post('cek_produk', 'CekProduk')->name('cek_produk');
   });
 
   Route::resource('inventory', InventoryController::class);

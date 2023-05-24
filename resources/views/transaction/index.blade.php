@@ -18,12 +18,19 @@
           </div>
 
           <div class="card-body">
+             @if (Session::get('danger'))
+                <div class="swal" data-swal="{{ Session::get('danger') }}">
+                </div>
+              @else
+                <div class="swal2" data-swal2="{{ Session::get('success') }}">
+                </div>
+              @endif
            
               <form class="row g-3">
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating ">
-                      <input value="INV-01"  class="form-control" id="floatingInvoice" placeholder="Invoice">
+                      <input value="{{ $invoiceCode }}"  class="form-control" id="floatingInvoice" placeholder="Invoice">
                       <label for="floatingInvoice">Invoice</label>
                     </div>
                   </div>
@@ -47,7 +54,7 @@
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating">
-                      <input value="Fahreza"  class="form-control" id="floatingCity" placeholder="City">
+                      <input value="{{ Auth::user()->name }}"  class="form-control" id="floatingCity" placeholder="City">
                       <label for="floatingCity">Kasir</label>
                     </div>
                   </div>
@@ -107,16 +114,16 @@
                       {{-- <input  class="form-control" id="inputText"> --}}
                       <div class="btn-group" role="group" aria-label="Basic example">
                           <input id="product_code" name="product_code"  class="form-control" placeholder="Kode Produk" aria-label="Kode Produk" aria-describedby="basic-addon1">
-                          <button type="button" class="btn btn-primary"><i class="bi bi-search"></i></button>
-                          <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                          <button data-bs-toggle="modal" data-bs-target="#find-product" type="button" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                          <button type="reset" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                       </div>
                     </div>
                     <div class="col-2 " >
-                      <input readonly  name="name"  class="form-control" placeholder="Nama Produk" aria-label="Nama Produk" aria-describedby="basic-addon1">                    
+                      <input readonly  name="product_name"  class="form-control" placeholder="Nama Produk" aria-label="Nama Produk" aria-describedby="basic-addon1">                    
 
                     </div>
                     <div class="col-2 " >
-                      <input readonly  class="form-control" placeholder="Kategori" aria-label="Kategori" aria-describedby="basic-addon1">                    
+                      <input readonly name="category_name"  class="form-control" placeholder="Kategori" aria-label="Kategori" aria-describedby="basic-addon1">                    
 
                     </div>
                     <div class="col-2 " >
@@ -124,7 +131,7 @@
 
                     </div>
                     <div class="col-1 " >
-                      <input name="qty" type="number" class="form-control" placeholder="qty" aria-label="Kategori" aria-describedby="basic-addon1">                    
+                      <input id="qty" name="qty" type="number" class="form-control" placeholder="qty" aria-label="Kategori" aria-describedby="basic-addon1">                    
 
                     </div>
                     <div class="col-3" >
@@ -290,18 +297,130 @@
       </div>
     </div>
   </div>
-  
 
-
-  
-
-    
 </div>
 
+
+<div class="modal fade" id="find-product" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Pencarian Data Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Table with stripped rows -->
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Kategori</th>
+                    <th scope="col">Rak</th>
+                    <th scope="col">Gambar</th>
+                    <th scope="col">Kode Produk</th>
+                    <th scope="col">Nama Produk</th>
+                    <th scope="col">Deskripsi Produk</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Modal</th>
+                    <th scope="col">Stok</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $no = 1;
+                @endphp
+                @foreach ($data_products as $item)
+                    <tr>
+                        <th scope="row">{{ $no++ }}</th>
+                        <td>{{ $item->category->name }}</td>
+                        <td>{{ $item->shelves->name }}</td>
+                        <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
+                        </td>
+                        <td>{{ $item->product_code }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->description }}</td>
+                        <td>Rp. {{ number_format($item->price, 0) }}</td>
+                        <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
+                        <td>{{ $item->stock }}</td>
+                        <td>
+                           <button id="pilih_button_{{ $item->product_code }}" type="button" class="btn btn-success btn-xs">Pilih</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->      
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
+
+  $(document).ready(function() {
+
+    $('#product_code').focus();
+
+  
+    $('#product_code').keydown(function (e) {
+      let product_code = $('#product_code').val();
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        if (product_code == '') {
+          swal({
+            title: "Maaf !!",
+            text: 'Kode Produk Kosong',
+            icon: 'error'
+          })
+        } else {
+          CekProduk();
+        }
+      }
+    });
+  });
+
+  
+  function CekProduk() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    $.ajax({
+      type: "POST",
+      headers: {
+         'X-CSRF-TOKEN': csrfToken
+      },
+      url: "/transaction/cek_produk",
+      data: {
+        product_code: $('#product_code').val(),
+      },
+      dataType: "JSON",
+      success: function(response) {
+        if (response.product_name == '') {
+          swal({
+            title: "Maaf !!",
+            text: 'Kode Produk Tidak Terdaftar',
+            icon: 'error'
+          })
+        }else{
+          $('[name="product_name"]').val(response.product_name);
+          $('[name="category_name"]').val(response.category_name);
+          $('[name="price"]').val(response.price);
+          
+          $('#qty').focus();
+        }
+      }
+
+    });
+  }
+
+
+
+
   window.onload = function() {
     startTime();
   }
+
   function startTime() {
     var today = new Date();
     var h = today.getHours();
@@ -322,6 +441,24 @@
     }
     return i;
   }
+  
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var pilihButtons = document.querySelectorAll('[id^="pilih_button_"]');
+
+        pilihButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var productCode = this.id.replace('pilih_button_', '');
+                document.getElementById('product_code').value = productCode;
+                var modal = document.getElementById('find-product');
+                var bootstrapModal = bootstrap.Modal.getInstance(modal);
+                bootstrapModal.hide();
+                  CekProduk();
+            });
+        });
+    });
   
 </script>
 

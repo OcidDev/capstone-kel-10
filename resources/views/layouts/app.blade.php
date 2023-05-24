@@ -10,8 +10,7 @@
     <meta content="" name="keywords">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/5.0.7/sweetalert2.min.css" rel="stylesheet">
+  
 
     <!-- Favicons -->
     <link href="{{ asset('/template/assets/img/favicon.png') }}" rel="icon">
@@ -31,10 +30,21 @@
     <link href="{{ asset('/template/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('/template/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('/template/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('/template/assets/css/style.css') }}" rel="stylesheet">
+
+     <!-- Auto Numerik -->
+    <script src="{{ asset('vendor/autoNumeric/src/AutoNumeric.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    
+
+
 
 </head>
 
@@ -76,11 +86,10 @@
     <script src="{{ asset('/template/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('/template/assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('/template/assets/vendor/php-email-form/validate.js') }}"></script>
-
     <!-- Template Main JS File -->
     <script src="{{ asset('/template/assets/js/main.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+ 
+
     @stack('script')
     <script type="text/javascript">
         $('.show-alert-delete-box').click(function(event) {

@@ -43,7 +43,7 @@
     </li>
 
      <li class="nav-item">
-      <a class="nav-link  {{ $menu == 'transaksi' ? '' : 'collapsed' }}" href="{{ route('transaksi') }}">
+      <a class="nav-link  {{ $menu == 'transaction' ? '' : 'collapsed' }}" href="{{ route('transaction') }}">
         <i class="bi bi-cash-coin"></i>
         <span>Transaksi</span>
       </a>
