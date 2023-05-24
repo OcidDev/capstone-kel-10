@@ -18,8 +18,13 @@
           </div>
 
           <div class="card-body">
-             <div class="swal2" data-swal2="{{ Session::get('success') }}">
-              </div>
+              @if (Session::get('danger'))
+                <div class="swal3" data-swal3="{{ Session::get('danger') }}">
+                </div>
+              @else
+                <div class="swal2" data-swal2="{{ Session::get('success') }}">
+                </div>
+              @endif
            
               <form class="row g-3">
                 <div class="col-md-3">

@@ -68,19 +68,25 @@ class TransactionController extends Controller
         $product_code = $request->input('product_code');
         $qty = $request->input('qty');
 
-       $cart =  Cart::add([
-        'id' => $request->product_code,
-        'name' => $request->product_name, 
-        'price' => $request->price, 
-        'weight' => 0, 
-        'qty' =>  $request->qty, 
-            'options' => [
-                'category_name' => $request->category_name,
-            ]
-        ]);
-
-        return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
-    
+        $stokProduct = Product::where('product_code', $product_code)
+            ->select('stock')
+            ->first();
+        
+        if ($qty>intval($stokProduct->stock)) {
+            return redirect()->back()->with('danger','Stok Tidak Mencukupi');
+        } else {
+            $cart =  Cart::add([
+            'id' => $request->product_code,
+            'name' => $request->product_name, 
+            'price' => $request->price, 
+            'weight' => 0, 
+            'qty' =>  $request->qty, 
+                'options' => [
+                    'category_name' => $request->category_name,
+                ]
+            ]);
+            return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
+        }
     }
 
     public function remove_item($rowId){

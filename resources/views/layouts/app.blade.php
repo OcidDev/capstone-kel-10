@@ -119,16 +119,23 @@
     <script>
         
         const swal2 = $('.swal2').data('swal2');
+        const swal3 = $('.swal3').data('swal3');
 
         if (swal2) {
             swal({
                 title: "SUKSES !!",
                 text: swal2,
                 icon: 'success',
-                type: "success",
-
             })
-        }
+        }else if (swal3) {
+            swal({
+                title: "MAAF !!",
+                text: swal3,
+                icon: 'error',
+            })
+        } 
+            
+        
     </script>
 
 </body>
