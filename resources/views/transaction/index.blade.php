@@ -126,6 +126,9 @@
                       <input readonly name="category_name"  class="form-control" placeholder="Kategori" aria-label="Kategori" aria-describedby="basic-addon1">                    
 
                     </div>
+                    
+                      <input type="hidden" readonly name="product_id"  class="form-control" placeholder="ID_Produk" aria-label="Kategori" aria-describedby="basic-addon1">                    
+
                     <div class="col-2 " >
                       <input readonly name="price"   class="form-control" placeholder="Harga" aria-label="Harga" aria-describedby="basic-addon1">                    
 
@@ -192,7 +195,7 @@
                        @foreach ( $cart as $item )
                       <tr>
                         <th scope="row">1</th>
-                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->options->product_code }}</td>
                         <td>{{ $item->name }}</td>
                         <td>Rp. {{ number_format($item->price,0) }}</td>
                         <td>{{ $item->qty }}</td>
@@ -230,30 +233,31 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="row">
-                   <form class="row g-3">
+                   <form  action="{{ route('transaction.save_transaction')}}" method="POST" class="row g-3">
+                    @csrf
+
                     <div class="col-md-12">
                       <label for="buyer_name" class="form-label">Nama Pembeli</label>
-                      <input placeholder="Nama Pembeli" name="buyer_name"  class="form-control" id="buyer_name">
+                      <input autocomplete="off" required placeholder="Nama Pembeli" name="buyer_name"  class="form-control" id="buyer_name">
                     </div>
                     <div class="col-md-12">
                       <label for="buyer_email" class="form-label">Email</label>
-                      <input placeholder="Email" name="buyer_email" class="form-control" id="buyer_email">
+                      <input autocomplete="off" required placeholder="Email" name="buyer_email" class="form-control" id="buyer_email">
                     </div>
                     <div class="col-md-12">
                       <label  for="buyer_phone" class="form-label">No HP</label>
-                      <input placeholder="No Hp" name="buyer_phone"  class="form-control" id="buyer_phone">
+                      <input autocomplete="off" required placeholder="No Hp" name="buyer_phone"  class="form-control" id="buyer_phone">
                     </div>
                     <div class="col-md-12">
                       <label  for="status" class="form-label">Status Pembayaran</label>
                       <select class="form-select" name="status">
                         <option selected disabled value="">Pilih Status Pembayaran</option>
-                          <option value="">BELUM LUNAS</option>
-                          <option value="">LUNAS</option>
+                          <option value="BELUM LUNAS">BELUM LUNAS</option>
+                          <option value="LUNAS">LUNAS</option>
                       </select>
                     </div>
                             
                       
-                    </form>
                   </div>
                 </div>
               </div>
@@ -270,36 +274,39 @@
        <div class=" col-md-3">
         <div class="card info-card">
      
-         
+         <br>
 
           <div class="card-body ">
               <div class="row">
                 <div class="col-lg-12">
                   <div class="row">
-                   <form class="row g-3">
-                    <div class="col-md-12">
-                      <label for="total" class="form-label">Grand Total</label>
-                      <input value="{{($grand_total) }}" name="grand_total" readonly   class="form-control" id="grand_total">
-                    </div>
-                    <div class="col-md-12">
-                      <label for="cash" class="form-label">Cash</label>
-                      <input placeholder="Cash" name="cash"  class="form-control" id="cash">
-                    </div>
-                    <div class="col-md-12">
-                      <label for="change" class="form-label">Change</label>
-                      <input name="change" readonly  class="form-control" id="change">
-                    </div>
-                    <div class="col-md-12 d-grid gap-2 mt-3">
-                      <button type="button" class="btn btn-success"><i class="bi bi-cash-stack"></i> Pembayaran</button>
-                    </div>
+                      <div class="col-md-12">
+                        <label for="total" class="form-label">Grand Total</label>
+                        <input value="{{($grand_total) }}" name="grand_total" readonly   class="form-control" id="grand_total">
+                      </div>
+                      <div class="col-md-12">
+                        <br>
+                        <label for="cash" class="form-label">Cash</label>
+                        <input required placeholder="Cash" name="cash"  class="form-control" id="cash">
+                      </div>
+                      <div class="col-md-12">
+                        <br>
+                        <label for="change" class="form-label">Change</label>
+                        <input name="change" readonly  class="form-control" id="change">
+                      </div>
+                      <div class="col-md-12 d-grid gap-2">
+                        <br>
+                        <button type="submit" class="btn btn-success"><i class="bi bi-cash-stack"></i> Pembayaran</button>
+                      </div>
                       
 
                       
-                    </form>
                   </div>
                 </div>
               </div>
           </div>
+          </form>
+
 
           <div class="card">
             
@@ -423,6 +430,7 @@
             icon: 'error'
           })
         }else{
+          $('[name="product_id"]').val(response.product_id);
           $('[name="product_name"]').val(response.product_name);
           $('[name="category_name"]').val(response.category_name);
           $('[name="price"]').val(response.price);

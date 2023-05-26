@@ -58,13 +58,20 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
 
+  Route::get('/debit', [TransactionController::class, 'debit'])->name('debit');
+  Route::get('/paid_off', [TransactionController::class, 'paid_off'])->name('paid_off');
+  Route::get('/list_detail/{id}', [TransactionController::class, 'list_detail'])->name('list_detail');
+
   Route::controller(TransactionController::class)->prefix('transaction')->group(function () {
     Route::get('', 'index')->name('transaction');
     Route::get('cek_produk', 'CekProduk')->name('cek_produk');
     Route::post('cek_produk', 'CekProduk')->name('cek_produk');
     Route::get('add_cart', 'add_cart')->name('transaction.add_cart');
     Route::post('add_cart', 'add_cart')->name('transaction.add_cart');
+    Route::post('save_transaction', 'save_transaction')->name('transaction.save_transaction');
     Route::delete('remove_item/{rowId}', 'remove_item')->name('transaction.remove_item');
+    Route::get('status_lunas/{id}', 'status_lunas')->name('status_lunas');
+
   });
 
   Route::resource('inventory', InventoryController::class);

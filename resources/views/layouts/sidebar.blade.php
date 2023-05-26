@@ -49,6 +49,24 @@
       </a>
     </li>
 
+     <li class="nav-item">
+      <a class="nav-link {{ $menu == 'master2' ? '' : 'collapsed' }}" data-bs-target="#master-data2" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-layout-text-window-reverse"></i><span>Riwayat Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="master-data2" class="nav-content  {{ $menu == 'master2' ? '' : 'collapse' }}" data-bs-parent="#sidebar-nav">
+        <li>
+          <a class="{{ $sub_menu == 'utang' ? 'active' : '' }}" href="{{ route('debit') }}">
+            <i class="bi bi-circle"></i><span>Belum Lunas</span>
+          </a>
+        </li>
+        <li>
+          <a class="{{ $sub_menu == 'lunas' ? 'active' : '' }}" href="{{ route('paid_off') }}">
+            <i class="bi bi-circle"></i><span>Lunas</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
 
   </ul>
 

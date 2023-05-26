@@ -18,7 +18,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cashier_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('invoice_code');
-            $table->date('date')->nullable()->default(Carbon::now());
             $table->integer('total')->unsigned();
             $table->string('status')->default('BELUM LUNAS');
             $table->string('buyer_name')->nullable();
