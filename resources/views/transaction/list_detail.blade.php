@@ -68,7 +68,7 @@
     </div>
     @foreach ($transactions as $transaction)
     <div class="invoice-details">
-      <p><strong>Nomor Invoice:</strong> {{ $transaction->invoice }}</p>
+      <p><strong>Nomor Invoice:</strong> {{ $transaction->invoice_code }}</p>
       <p><strong>Tanggal:</strong> {{ date('d/m/Y') }}</p>
       <p><strong>Status:</strong> {{  $transaction->status }}</p>
     </div>
