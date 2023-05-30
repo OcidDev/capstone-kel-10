@@ -74,7 +74,19 @@ Route::middleware(['auth'])->group(function () {
 
   });
 
-  Route::resource('inventory', InventoryController::class);
+  Route::controller(InventoryController::class)->prefix('inventory')->group(function () {
+    Route::get('', 'index')->name('inventory');
+    Route::get('cek_produk', 'CekProduk')->name('cek_produk');
+    Route::post('cek_produk', 'CekProduk')->name('cek_produk');
+    Route::get('add_cart', 'add_cart')->name('inventory.add_cart');
+    Route::post('add_cart', 'add_cart')->name('inventory.add_cart');
+    Route::post('save_inventory', 'save_inventory')->name('inventory.save_inventory');
+    Route::delete('remove_item/{rowId}', 'remove_item')->name('inventory.remove_item');
+    Route::get('status_lunas/{id}', 'status_lunas')->name('status_lunas');
+
+  });
+
+//   Route::resource('inventory', InventoryController::class);
 });
 
 Auth::routes();

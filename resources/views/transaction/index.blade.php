@@ -4,17 +4,17 @@
 
 @section('contents')
 
- 
+
 <div class="row">
 
   <div class="col-lg-12">
     <div class="row">
 
-      
+
       <div class=" col-md-7">
         <div class="card info-card">
           <div class="card-title">
-            
+
           </div>
 
           <div class="card-body">
@@ -25,12 +25,12 @@
                 <div class="swal2" data-swal2="{{ Session::get('success') }}">
                 </div>
               @endif
-           
+
               <form class="row g-3">
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating ">
-                      <input value="{{ $invoiceCode }}"  class="form-control" id="floatingInvoice" placeholder="Invoice">
+                      <input value="{{ $invoiceCode }}"  class="form-control" disabled id="floatingInvoice" placeholder="Invoice">
                       <label for="floatingInvoice">Invoice</label>
                     </div>
                   </div>
@@ -38,7 +38,7 @@
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating ">
-                      <input value="{{ date('d M Y') }}"  class="form-control" id="floatingDate" placeholder="Date">
+                      <input value="{{ date('d M Y') }}"  class="form-control" disabled id="floatingDate" placeholder="Date">
                       <label for="floatingDate">Date</label>
                     </div>
                   </div>
@@ -46,7 +46,7 @@
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating">
-                      <input value=""    class="form-control" id="floatingJam" placeholder="Jam">
+                      <input value=""    class="form-control" disabled id="floatingJam" placeholder="Jam">
                       <label id="jam"  class="text-center" for="floatingJam">Jam</label>
                     </div>
                   </div>
@@ -54,17 +54,17 @@
                 <div class="col-md-3">
                   <div class="col-md-12">
                     <div class="form-floating">
-                      <input value="{{ Auth::user()->name }}"  class="form-control" id="floatingCity" placeholder="City">
+                      <input value="{{ Auth::user()->name }}" disabled class="form-control" id="floatingCity" placeholder="City">
                       <label for="floatingCity">Kasir</label>
                     </div>
                   </div>
                 </div>
               </form><!-- End floating Labels Form -->
-           
+
           </div>
 
            <div class="card">
-            
+
           </div>
 
         </div>
@@ -73,27 +73,27 @@
       <div class=" col-md-5">
         <div class="card info-card">
            <div class="card-title">
-            
+
           </div>
-         
+
 
           <div class="card-body">
              <label class="display-5 d-flex justify-content-end">Rp. {{  $grand_total }}</label>
           </div>
 
           <div class="card">
-            
+
           </div>
 
-          
+
 
         </div>
       </div>
 
-     
 
 
-    
+
+
     </div>
   </div>
 
@@ -102,7 +102,7 @@
        <div class=" col-md-12">
         <div class="card info-card">
           <div class="card-title">
-            
+
           </div>
 
           <div class="card-body">
@@ -119,52 +119,52 @@
                       </div>
                     </div>
                     <div class="col-2 " >
-                      <input readonly  name="product_name"  class="form-control" placeholder="Nama Produk" aria-label="Nama Produk" aria-describedby="basic-addon1">                    
+                      <input readonly  name="product_name"  class="form-control" placeholder="Nama Produk" aria-label="Nama Produk" aria-describedby="basic-addon1">
 
                     </div>
                     <div class="col-2 " >
-                      <input readonly name="category_name"  class="form-control" placeholder="Kategori" aria-label="Kategori" aria-describedby="basic-addon1">                    
+                      <input readonly name="category_name"  class="form-control" placeholder="Kategori" aria-label="Kategori" aria-describedby="basic-addon1">
 
                     </div>
-                    
-                      <input type="hidden" readonly name="product_id"  class="form-control" placeholder="ID_Produk" aria-label="Kategori" aria-describedby="basic-addon1">                    
+
+                      <input type="hidden" readonly name="product_id"  class="form-control" placeholder="ID_Produk" aria-label="Kategori" aria-describedby="basic-addon1">
 
                     <div class="col-2 " >
-                      <input readonly name="price"   class="form-control" placeholder="Harga" aria-label="Harga" aria-describedby="basic-addon1">                    
+                      <input readonly name="price"   class="form-control" placeholder="Harga" aria-label="Harga" aria-describedby="basic-addon1">
 
                     </div>
                     <div class="col-1 " >
-                      <input id="qty" name="qty" type="number" class="form-control" placeholder="qty" aria-label="Kategori" aria-describedby="basic-addon1">                    
+                      <input id="qty" name="qty" type="number" class="form-control" placeholder="qty" aria-label="Kategori" aria-describedby="basic-addon1">
 
                     </div>
                     <div class="col-2" >
                       <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus-fill"></i> Add</button>
                     </div>
-                  
+
                   </div>
                 </form>
               </div>
             </div>
-           
-           
-           
+
+
+
           </div>
 
            <div class="card">
-            
+
           </div>
 
         </div>
       </div>
 
-      
-
-      
 
 
-    
+
+
+
+
     </div>
-    
+
   </div>
 
   <div class="col-log-12">
@@ -172,9 +172,9 @@
        <div class=" col-md-6">
         <div class="card info-card">
           <div class="card">
-            
+
           </div>
-         
+
 
           <div class="card-body ">
              <div class="row">
@@ -204,7 +204,7 @@
                           <form method="POST" action="{{ route('transaction.remove_item', $item->rowId) }}">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
-                            <button class="btn btn-danger btn-flat show-alert-delete-box btn-sm"> <i class="bi bi-cart-x-fill"></i> 
+                            <button class="btn btn-danger btn-flat show-alert-delete-box btn-sm"> <i class="bi bi-cart-x-fill"></i>
                           </form>
                           </button>
                         </td>
@@ -217,17 +217,17 @@
           </div>
 
           <div class="card">
-            
+
           </div>
 
-          
+
 
         </div>
       </div>
       <div class=" col-md-3">
         <div class="card info-card">
-     
-         
+
+
 
           <div class="card-body ">
               <div class="row">
@@ -256,24 +256,24 @@
                           <option value="LUNAS">LUNAS</option>
                       </select>
                     </div>
-                            
-                      
+
+
                   </div>
                 </div>
               </div>
           </div>
 
           <div class="card">
-            
+
           </div>
 
-          
+
 
         </div>
       </div>
        <div class=" col-md-3">
         <div class="card info-card">
-     
+
          <br>
 
           <div class="card-body ">
@@ -298,9 +298,9 @@
                         <br>
                         <button type="submit" class="btn btn-success"><i class="bi bi-cash-stack"></i> Pembayaran</button>
                       </div>
-                      
 
-                      
+
+
                   </div>
                 </div>
               </div>
@@ -309,10 +309,10 @@
 
 
           <div class="card">
-            
+
           </div>
 
-          
+
 
         </div>
       </div>
@@ -371,7 +371,7 @@
                 @endforeach
             </tbody>
         </table>
-        <!-- End Table with stripped rows -->      
+        <!-- End Table with stripped rows -->
       </div>
     </div>
   </div>
@@ -384,7 +384,7 @@
 
     $('#product_code').focus();
 
-  
+
     $('#product_code').keydown(function (e) {
       let product_code = $('#product_code').val();
       if (e.keyCode == 13) {
@@ -408,7 +408,7 @@
 
   });
 
-  
+
   function CekProduk() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -434,7 +434,7 @@
           $('[name="product_name"]').val(response.product_name);
           $('[name="category_name"]').val(response.category_name);
           $('[name="price"]').val(response.price);
-          
+
           $('#qty').focus();
         }
       }
@@ -447,9 +447,9 @@
     decimalPlaces: 0,
   });
 
-  
 
-  
+
+
 
   function HitungKembalian() {
     let grand_total =$('#grand_total').val().replace(/[^.\d]/g,'').toString();
@@ -484,16 +484,16 @@
     var t = setTimeout(function(){
       startTime();
     },500);
-   
+
   }
-   
+
   function checkTime(i) {
     if (i<10) {
       i = '0' + i;
     }
     return i;
   }
-  
+
 </script>
 
 <script>
@@ -511,8 +511,8 @@
             });
         });
     });
-  
+
 </script>
 
- 
+
 @endsection

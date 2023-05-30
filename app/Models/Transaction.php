@@ -11,7 +11,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Transaction extends Model
 {
     use HasFactory,SoftDeletes;
-    Protected $fillable = ['cashier_id','invoice_code','date','total','cash','change','status','buyer_name','buyer_email','buyer_phone'];
+    Protected $fillable = [
+        'cashier_id',
+        'invoice_code',
+        'date',
+        'total',
+        'cash',
+        'change',
+        'status',
+        'buyer_name',
+        'buyer_email',
+        'buyer_phone',
+        'incoming_items'];
     /**
      * Get the cashier that owns the Transaction
      *
@@ -21,11 +32,11 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'cashier_id', 'id');
     }
-    
+
      public function DetailTransaction()
     {
         return $this->hasMany(DetailTransaction::class, 'transactions_id');
     }
 
-    
+
 }
