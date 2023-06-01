@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShelvesController;
 use App\Http\Controllers\CategoryController;
@@ -49,6 +49,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save', 'save')->name('shelves.save');
     Route::post('edit/{id}', 'edit')->name('shelves.edit');
     Route::delete('delete/{id}', 'delete')->name('shelves.delete');
+  });
+
+  Route::controller(BuyerController::class)->prefix('buyer')->group(function () {
+    Route::get('', 'index')->name('buyer');
+    Route::post('save', 'save')->name('buyer.save');
+    Route::post('edit/{id}', 'edit')->name('buyer.edit');
+    Route::delete('delete/{id}', 'delete')->name('buyer.delete');
   });
 
   Route::controller(SupplierController::class)->prefix('supplier')->group(function () {
