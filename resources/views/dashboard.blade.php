@@ -184,8 +184,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Nama Produk</th>
                                         <th scope="col">Kode Produk</th>
+                                        <th scope="col">Gambar Product</th>
+                                        <th scope="col">Nama Produk</th>
                                         <th scope="col">Stok</th>
                                         <th scope="col">Nama Kategori</th>
                                         <th scope="col">Nama Rak</th>
@@ -198,8 +199,9 @@
                                     @foreach ($product_kritis as $item)
                                         <tr>
                                             <th scope="row">{{ $no++ }}</th>
-                                            <td>{{ $item->name }}</td>
                                             <td>{{ $item->product_code }}</td>
+                                            <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
+                                            <td>{{ $item->name }}</td>
                                             <td>Sisa {{ $item->stock }}</td>
                                             <td>{{ $item->category->name }}</td>
                                             <td>{{ $item->shelves->name }}</td>

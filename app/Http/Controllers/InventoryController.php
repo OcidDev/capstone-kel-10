@@ -26,7 +26,7 @@ class InventoryController extends Controller
         $data = array(
             'title' => 'Halaman Transaksi',
             'judul' => 'Transaksi',
-            'menu' => 'transaksi',
+            'menu' => 'inventory',
             'invoiceCode' => $invoiceCode,
             'data_products' => Product::all(),
             'cart' => $inventoryCart->content(),
@@ -222,7 +222,7 @@ class InventoryController extends Controller
         $data = array(
             'title' => 'Riwayat Transaksi',
             'judul' => 'Belum Lunas',
-            'menu' => 'master2',
+            'menu' => 'inventory',
             'sub_menu' => 'utang',
         );
 
@@ -256,7 +256,7 @@ class InventoryController extends Controller
         $data = array(
             'title' => 'Riwayat Transaksi',
             'judul' => 'Lunas',
-            'menu' => 'master2',
+            'menu' => 'inventory',
             'sub_menu' => 'lunas',
         );
 
