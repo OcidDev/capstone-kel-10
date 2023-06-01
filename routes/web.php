@@ -74,6 +74,11 @@ Route::middleware(['auth'])->group(function () {
 
   });
 
+
+  Route::get('/inventory_debit', [InventoryController::class, 'debit'])->name('inventory_debit');
+  Route::get('/inventory_paid_off', [InventoryController::class, 'paid_off'])->name('inventory_paid_off');
+  Route::get('/inventory_list_detail/{id}', [InventoryController::class, 'list_detail'])->name('inventory_list_detail');
+
   Route::controller(InventoryController::class)->prefix('inventory')->group(function () {
     Route::get('', 'index')->name('inventory');
     Route::get('cek_produk', 'CekProduk')->name('cek_produk');

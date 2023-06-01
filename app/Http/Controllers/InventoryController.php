@@ -9,7 +9,7 @@ use App\Models\Product;
 use Cart;
 use Illuminate\Support\Facades\DB;
 
-class TransactionController extends Controller
+class InventoryController extends Controller
 {
 
     public function __construct()
@@ -21,20 +21,20 @@ class TransactionController extends Controller
     public function index()
     {
 
-
+        $inventoryCart = Cart::instance('inventory');
         $invoiceCode = $this->createInvoice();
         $data = array(
-            'title' => 'Halaman Inventaris',
-            'judul' => 'Inventaris',
-            'menu' => 'inventaris',
+            'title' => 'Halaman Transaksi',
+            'judul' => 'Transaksi',
+            'menu' => 'transaksi',
             'invoiceCode' => $invoiceCode,
             'data_products' => Product::all(),
-            'cart' => Cart::content(),
+            'cart' => $inventoryCart->content(),
             'grand_total' => Cart::subtotal(0),
             'sub_menu' => '',
         );
 
-        return view('transaction.index',$data);
+        return view('inventory.index',$data);
     }
 
 
@@ -80,7 +80,8 @@ class TransactionController extends Controller
         if ($qty>intval($stokProduct->stock)) {
             return redirect()->back()->with('danger','Stok Tidak Mencukupi');
         } else {
-            $cart =  Cart::add([
+            $inventoryCart = Cart::instance('inventory');
+            $cart =  $inventoryCart->add([
             'id' => $request->product_id,
             'name' => $request->product_name,
             'price' => $request->price,
@@ -95,7 +96,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function save_transaction(Request $request)
+    public function save_inventory(Request $request)
     {
         $product = Cart::subtotal(0);
         $invoiceCode = $this->createInvoice();
