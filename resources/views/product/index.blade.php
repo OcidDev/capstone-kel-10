@@ -152,11 +152,6 @@
                             <input type="text" id="capital_price" placeholder="Modal" name="capital_price"
                                 type="text" class="form-control">
                         </div>
-                          <div class="col-12">
-                            <label for="modal" class="form-label">Stok Produk</label>
-                            <input type="text" id="stock" placeholder="Stok" name="stock"
-                                type="text" class="form-control">
-                        </div>
 
                 </div>
                 <div class="modal-footer">
@@ -230,17 +225,12 @@
                             <div class="col-12">
                                 <label for="price" class="form-label">Harga Produk</label>
                                 <input type="text" value="{{ $item->price }}" id="price2"
-                                    placeholder="Harga Produk"  name="price" type="text" class="form-control">
+                                    placeholder="Harga Produk" name="price" type="text" class="form-control">
                             </div>
                             <div class="col-12">
                                 <label for="modal" class="form-label">Modal Produk</label>
                                 <input type="text" value="{{ $item->capital_price }}" id="capital_price2"
                                     placeholder="Modal" name="capital_price" type="text" class="form-control">
-                            </div>
-                             <div class="col-12">
-                                <label for="modal" class="form-label">Stok Produk</label>
-                                <input type="text" value="{{ $item->stock }}" id="stock2"
-                                    placeholder="Modal" name="stock" type="text" class="form-control">
                             </div>
 
                     </div>
@@ -255,44 +245,42 @@
     @endforeach
 
 
-<script>
-  new AutoNumeric('#price', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
-    
-  });
+    <script>
+        new AutoNumeric('#price', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-  new AutoNumeric('#capital_price', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
+        });
 
-  });
+        new AutoNumeric('#capital_price', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-   new AutoNumeric('#stock', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
+        });
 
-  });
+        new AutoNumeric('#stock', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-   new AutoNumeric('#price2', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
-    
-  });
+        });
 
-  new AutoNumeric('#capital_price2', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
+        new AutoNumeric('#price2', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-  });
+        });
 
-   new AutoNumeric('#stock2', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
+        new AutoNumeric('#capital_price2', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-  });
+        });
 
+        new AutoNumeric('#stock2', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
 
-</script>
+        });
+    </script>
 
 @endsection

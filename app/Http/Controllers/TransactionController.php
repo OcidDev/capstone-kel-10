@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Transaction;
-use App\Models\DetailTransaction;
-use App\Models\Product;
 use Cart;
+use App\Models\Buyer;
+use App\Models\Product;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -24,9 +26,10 @@ class TransactionController extends Controller
 
         $invoiceCode = $this->createInvoice();
         $data = array(
-            'title' => 'Halaman Inventaris',
-            'judul' => 'Inventaris',
-            'menu' => 'inventaris',
+            'title' => 'Halaman Transaksi',
+            'judul' => 'Transaksi',
+            'menu' => 'transaksi',
+            'buyers' => Buyer::all(),
             'invoiceCode' => $invoiceCode,
             'data_products' => Product::all(),
             'cart' => Cart::content(),
@@ -99,9 +102,7 @@ class TransactionController extends Controller
     {
         $product = Cart::subtotal(0);
         $invoiceCode = $this->createInvoice();
-        $buyer_name = $request->input('buyer_name');
-        $buyer_phone = $request->input('buyer_phone');
-        $buyer_email = $request->input('buyer_email');
+        $buyer_id = $request->buyer_id;
         $status = $request->input('status');
         $cash =  str_replace(",","",$request->input('cash'));
         $change =  str_replace(",","",$request->input('change'));
@@ -133,9 +134,7 @@ class TransactionController extends Controller
                     $data = [
                         'invoice_code' => $invoiceCode,
                         'cashier_id' => 1,
-                        'buyer_name' => $buyer_name,
-                        'buyer_phone' => $buyer_phone,
-                        'buyer_email' => $buyer_email,
+                        'buyer_id' => $buyer_id,
                         'total' =>  str_replace(",","",Cart::subtotal(0)),
                         'cash' => $cash,
                         'change' => 0,
@@ -159,10 +158,8 @@ class TransactionController extends Controller
 
             $data = [
                 'invoice_code' => $invoiceCode,
-                'cashier_id' => 1,
-                'buyer_name' => $buyer_name,
-                'buyer_phone' => $buyer_phone,
-                'buyer_email' => $buyer_email,
+                'cashier_id' => Auth::user()->id,
+                'buyer_id' => $buyer_id,
                 'total' =>  str_replace(",","",Cart::subtotal(0)),
                 'cash' => $cash,
                 'change' => $change,

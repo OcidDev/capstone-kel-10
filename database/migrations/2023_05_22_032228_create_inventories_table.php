@@ -17,13 +17,9 @@ return new class extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('suppliers_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->foreignId('products_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreignId('users_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('invoice_code');
-            $table->date('date')->nullable()->default(Carbon::now());
-            $table->integer('qty')->unsigned();
-            $table->integer('total')->unsigned();
-            $table->string('status')->default('LUNAS');
+            $table->enum('status', ['LUNAS', 'BELUM LUNAS'])->default('LUNAS');
             $table->softDeletes();
             $table->timestamps();
         });

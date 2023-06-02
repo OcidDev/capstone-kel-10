@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('price')->unsigned();
             $table->integer('capital_price')->unsigned();
-            $table->integer('stock')->unsigned();
+            $table->integer('stock')->unsigned()->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

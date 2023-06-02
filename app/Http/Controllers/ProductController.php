@@ -45,12 +45,11 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'capital_price' => 'required',
-            'stock' => 'required',
         ],$pesan);
 
         $data['price'] = str_replace(",","", $request->input('price'));
         $data['capital_price'] = str_replace(",","", $request->input('capital_price'));
-        $data['stock'] = str_replace(",","", $request->input('stock'));
+        // $data['stock'] = str_replace(",","", $request->input('stock'));
         $data['image'] = $request->file('image')->store('assets/image', 'public');
 
         Product::Create($data);
@@ -73,7 +72,6 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'capital_price' => 'required',
-            'stock' => 'required',
         ],$pesan);
 
         $product = Product::find($id);
@@ -84,7 +82,7 @@ class ProductController extends Controller
         $product->description = $validated['description'];
         $product->price = str_replace(",", "", $validated['price']);
         $product->capital_price = str_replace(",", "", $validated['capital_price']);
-        $product->stock = str_replace(",", "", $validated['stock']);
+        // $product->stock = str_replace(",", "", $validated['stock']);
 
         if($request->file('image')){
             if($product->image && Storage::exists($product->image)){

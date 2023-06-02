@@ -13,16 +13,13 @@ class Transaction extends Model
     use HasFactory,SoftDeletes;
     Protected $fillable = [
         'cashier_id',
+        'buyer_id',
         'invoice_code',
         'date',
         'total',
         'cash',
         'change',
-        'status',
-        'buyer_name',
-        'buyer_email',
-        'buyer_phone',
-        'incoming_items'];
+        'status'];
     /**
      * Get the cashier that owns the Transaction
      *
@@ -31,6 +28,11 @@ class Transaction extends Model
     public function cashier(): BelongsTo
     {
         return $this->belongsTo(User::class, 'cashier_id', 'id');
+    }
+
+    public function buyer(): BelongsTo
+    {
+        return $this->belongsTo(Buyer::class, 'buyer_id', 'id');
     }
 
      public function DetailTransaction()
