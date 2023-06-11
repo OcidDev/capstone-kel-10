@@ -85,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('add_cart', 'add_cart')->name('transaction.add_cart');
     Route::post('save_transaction', 'save_transaction')->name('transaction.save_transaction');
     Route::delete('remove_item/{rowId}', 'remove_item')->name('transaction.remove_item');
-    Route::get('status_lunas/{id}', 'status_lunas')->name('status_lunas');
+    Route::get('status_lunas/{id}', 'status_lunas')->name('transaction.status_lunas');
 
   });
 
@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('add_cart', 'add_cart')->name('inventory.add_cart');
     Route::post('save_inventory', 'save_inventory')->name('inventory.save_inventory');
     Route::delete('remove_item/{rowId}', 'remove_item')->name('inventory.remove_item');
-    Route::get('status_lunas/{id}', 'status_lunas')->name('status_lunas');
+    Route::get('status_lunas/{id}', 'status_lunas')->name('inventory.status_lunas');
 
   });
 

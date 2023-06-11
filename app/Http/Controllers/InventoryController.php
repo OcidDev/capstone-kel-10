@@ -132,7 +132,7 @@ class InventoryController extends Controller
             $data = [
                 'invoice_code' => $invoiceCode,
                 'cashier_id' => $cashier,
-                'supplier_id' => $supplier_id,
+                'suppliers_id' => $supplier_id,
                 'total' =>  str_replace(",","",$inventoryCart->subtotal(0)),
                 'cash' => $cash,
                 'change' => 0,
@@ -181,7 +181,6 @@ class InventoryController extends Controller
             Product::find($value->id)->update(['stock' => $stokminus]);
             }
 
-
         }
         $inventories = Inventory::latest('id')->first();
 
@@ -198,19 +197,20 @@ class InventoryController extends Controller
             ->sum(DB::raw('product_capital_price * qty'));
         if($status == 'Lunas'){
             Report::create([
-                'debit' => $grand_total,
-                'profit' => $grand_total - $totalHargaModal,
-                'kredit' => 0,
-            'saldo' => $saldo + $grand_total,
-                'description' => 'pendapatan dari penjualan yang berinvoice '.$invoiceCode,
+                'debit' => 0,
+                'profit' => 0,
+                'kredit' => $grand_total,
+            'saldo' => $saldo - $grand_total,
+                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$invoiceCode,
             ]);
         }
-        Cart::destroy();
+        $inventoryCart->destroy();
         return redirect('inventory')->with('success','Transaksi Berhasil Disimpan');
     }
 
     public function remove_item($rowId){
-        Cart::remove($rowId);
+        $inventoryCart = Cart::instance('inventory');
+        $inventoryCart->remove($rowId);
         return redirect()->back()->with('success','Data Produk pada Keranjang Berhasil Dihapus');
 
     }
@@ -240,15 +240,15 @@ class InventoryController extends Controller
     {
 
         $data = array(
-            'title' => 'Riwayat Transaksi',
+            'title' => 'Riwayat Inventaris',
             'judul' => 'Belum Lunas',
-            'menu' => 'master2',
-            'sub_menu' => 'utang',
+            'menu' => 'master3',
+            'sub_menu' => 'inventaris_utang',
         );
 
-        $inventories = Inventory::with(['DetailTransaction.product'])->where('status','Belum Lunas')->whereHas('DetailTransaction')->get();
+        $inventories = Inventory::with(['DetailInventory.product'])->where('status','Belum Lunas')->whereHas('DetailInventory')->get();
 
-        return view('transaction.debit',compact('inventories'),$data);
+        return view('inventory.debit',compact('inventories'),$data);
     }
 
     public function status_lunas(Request $request,$id)
@@ -275,11 +275,11 @@ class InventoryController extends Controller
         }else {
             $data->save();
             Report::create([
-                'debit' => $data->total,
-                'profit' => $data->total - $totalHargaModal,
-                'kredit' => 0,
-                'saldo' => $saldo + $data->total,
-                'description' => 'pendapatan dari penjualan bayar hutang yang berinvoice '.$data->invoice_code,
+                'debit' => 0,
+                'profit' => 0,
+                'kredit' => $data->total,
+                'saldo' => $saldo - $data->total,
+                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$data->invoice_code,
             ]);
            return back()->with('success','Transaksi Berhasil Disimpan');
         }
@@ -290,15 +290,15 @@ class InventoryController extends Controller
     {
 
         $data = array(
-            'title' => 'Riwayat Transaksi',
+            'title' => 'Riwayat Inventaris',
             'judul' => 'Lunas',
-            'menu' => 'master2',
-            'sub_menu' => 'lunas',
+            'menu' => 'master3',
+            'sub_menu' => 'inventaris_lunas',
         );
 
-        $inventories = Inventory::with(['DetailTransaction.product'])->where('status','Lunas')->whereHas('DetailTransaction')->get();
+        $inventories = Inventory::with(['DetailInventory.product'])->where('status','Lunas')->whereHas('DetailInventory')->get();
 
-        return view('transaction.paid_off',$data, compact('inventories'));
+        return view('inventory.paid_off',$data, compact('inventories'));
     }
 
     public function list_detail($id){

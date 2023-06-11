@@ -51,11 +51,11 @@
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $item->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $item->debit }}</td>
-                                    <td>{{ $item->kredit }}</td>
-                                    <td>{{ $item->profit }}</td>
+                                    <td>Rp. {{ number_format($item->debit) }}</td>
+                                    <td>Rp.{{ number_format($item->kredit) }}</td>
+                                    <td>Rp.{{ number_format($item->profit) }}</td>
                                     <td>{{ $item->description }}</td>
-                                    <td>{{ $item->saldo }}</td>
+                                    <td>Rp.{{ number_format($item->saldo) }}</td>
                                     <td>
 
 

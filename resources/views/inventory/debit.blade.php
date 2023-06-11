@@ -26,9 +26,8 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Invoice</th>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col">Nama Customer</th>
-                                <th scope="col">Telephone Customer</th>
-                                <th scope="col">Email Customer</th>
+                                <th scope="col">Nama Supplier</th>
+                                <th scope="col">Telephone Supplier</th>
                                 <th scope="col">Daftar Produk</th>
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Status</th>
@@ -39,24 +38,23 @@
                             @php
                                 $no = 1;
                             @endphp
-                            @foreach ($transactions as $transaction)
+                            @foreach ($inventories as $inventory)
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $transaction->invoice_code }}</td>
-                                    <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $transaction->buyer->name }}</td>
-                                    <td>{{ $transaction->buyer->phone }}</td>
-                                    <td>{{ $transaction->buyer->email }}</td>
+                                    <td>{{ $inventory->invoice_code }}</td>
+                                    <td>{{ $inventory->created_at->format('d M Y - H:i:s') }}</td>
+                                    <td>{{ $inventory->supplier->name }}</td>
+                                    <td>{{ $inventory->supplier->phone }}</td>
                                     <td>
-                                        @foreach ($transaction->DetailTransaction as $detail)
+                                        @foreach ($inventory->DetailInventory as $detail)
                                             {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
                                         @endforeach
                                     </td>
-                                    <td>Rp. {{ number_format($transaction->total, 0) }}</td>
-                                    <td> <span class="badge rounded-pill bg-danger">{{ $transaction->status }}</span></td>
+                                    <td>Rp. {{ number_format($inventory->total, 0) }}</td>
+                                    <td> <span class="badge rounded-pill bg-danger">{{ $inventory->status }}</span></td>
                                     <td>
                                         <button data-bs-toggle="modal" id="bayar"
-                                            data-bs-target="#bayar{{ $transaction->id }}" style="color:white"
+                                            data-bs-target="#bayar{{ $inventory->id }}" style="color:white"
                                             href="#" class="btn btn-primary">
                                             Bayar
                                         </button>
@@ -73,8 +71,8 @@
         </div>
     </div>
 
-    @foreach ($transactions as $transaction)
-        <div class="modal fade" id="bayar{{ $transaction->id }}" tabindex="-1">
+    @foreach ($inventories as $inventory)
+        <div class="modal fade" id="bayar{{ $inventory->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -82,7 +80,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" action="{{ route('status_lunas', $transaction->id) }}" method="GET">
+                        <form class="row g-3" action="{{ route('inventory.status_lunas', $inventory->id) }}" method="GET">
                             @csrf
                             <div class="card-body ">
                                 <div class="row">
@@ -90,7 +88,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="total" class="form-label">Grand Total</label>
-                                                <input value="{{ number_format($transaction->total) }}" name="grand_total"
+                                                <input value="{{ number_format($inventory->total) }}" name="grand_total"
                                                     readonly class="form-control" id="grand_total">
                                             </div>
                                             <div class="col-md-12">

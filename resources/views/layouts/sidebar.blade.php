@@ -65,15 +65,15 @@
                 <i class="bi bi-layout-text-window-reverse"></i><span>Riwayat Inventaris</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master-data3" class="nav-content  {{ $menu == 'inventory' ? '' : 'collapse' }}"
+            <ul id="master-data3" class="nav-content  {{ $menu == 'master3' ? '' : 'collapse' }}"
                 data-bs-parent="#sidebar-nav">
                 <li>
-                    <a class="{{ $sub_menu == 'utang' ? 'active' : '' }}" href="{{ route('inventory_debit') }}">
+                    <a class="{{ $sub_menu == 'inventaris_utang' ? 'active' : '' }}" href="{{ route('inventory_debit') }}">
                         <i class="bi bi-circle"></i><span>Belum Lunas</span>
                     </a>
                 </li>
                 <li>
-                    <a class="{{ $sub_menu == 'lunas' ? 'active' : '' }}" href="{{ route('inventory_paid_off') }}">
+                    <a class="{{ $sub_menu == 'inventaris_lunas' ? 'active' : '' }}" href="{{ route('inventory_paid_off') }}">
                         <i class="bi bi-circle"></i><span>Lunas</span>
                     </a>
                 </li>

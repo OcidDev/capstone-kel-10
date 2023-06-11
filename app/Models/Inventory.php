@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\DetailInventory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,6 +44,11 @@ class Inventory extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'products_id', 'id');
+    }
+
+    public function DetailInventory()
+    {
+        return $this->hasMany(DetailInventory::class, 'inventories_id');
     }
 
 }

@@ -27,9 +27,8 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Invoice</th>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col">Nama Customer</th>
-                                <th scope="col">Email Customer</th>
-                                <th scope="col">Phone Customer</th>
+                                <th scope="col">Nama Supplier</th>
+                                <th scope="col">Phone Supplier</th>
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Aksi</th>
@@ -39,17 +38,16 @@
                             @php
                                 $no = 1;
                             @endphp
-                            @foreach ($transactions as $transaction)
+                            @foreach ($inventories as $inventory)
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $transaction->invoice_code }}</td>
-                                    <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $transaction->buyer->name }}</td>
-                                    <td>{{ $transaction->buyer->email }}</td>
-                                    <td>{{ $transaction->buyer->phone }}</td>
-                                    <td>Rp. {{ number_format($transaction->total,0) }}</td>
-                                    <td> <span class="badge rounded-pill bg-success">{{ $transaction->status }}</span></td>
-                                    <td><a href="{{ route('list_detail',$transaction->id)}}">Detail</a></td>
+                                    <td>{{ $inventory->invoice_code }}</td>
+                                    <td>{{ $inventory->created_at->format('d M Y - H:i:s') }}</td>
+                                    <td>{{ $inventory->supplier->name }}</td>
+                                    <td>{{ $inventory->supplier->phone }}</td>
+                                    <td>Rp. {{ number_format($inventory->total,0) }}</td>
+                                    <td> <span class="badge rounded-pill bg-success">{{ $inventory->status }}</span></td>
+                                    <td><a href="{{ route('list_detail',$inventory->id)}}">Detail</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

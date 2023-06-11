@@ -82,7 +82,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" action="{{ route('status_lunas', $transaction->id) }}" method="GET">
+                        <form class="row g-3" action="{{ route('transaction.status_lunas', $transaction->id) }}" method="GET">
                             @csrf
                             <div class="card-body ">
                                 <div class="row">
