@@ -74,26 +74,22 @@ class InventoryController extends Controller
         $qty = $request->input('qty');
 
         $stokProduct = Product::where('product_code', $product_code)
-            ->select('stock')
-            ->first();
+        ->select('stock')
+        ->first();
 
-        if ($qty>intval($stokProduct->stock)) {
-            return redirect()->back()->with('danger','Stok Tidak Mencukupi');
-        } else {
-            $inventoryCart = Cart::instance('inventory');
-            $cart =  $inventoryCart->add([
-            'id' => $request->product_id,
-            'name' => $request->product_name,
-            'price' => $request->price,
-            'weight' => 0,
-            'qty' =>  $request->qty,
-                'options' => [
-                    'category_name' => $request->category_name,
-                    'product_code' => $request->product_code,
-                ]
-            ]);
-            return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
-        }
+        $inventoryCart = Cart::instance('inventory');
+        $cart =  $inventoryCart->add([
+        'id' => $request->product_id,
+        'name' => $request->product_name,
+        'price' => $request->price,
+        'weight' => 0,
+        'qty' =>  $request->qty,
+            'options' => [
+                'category_name' => $request->category_name,
+                'product_code' => $request->product_code,
+            ]
+        ]);
+        return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
     }
 
     public function save_inventory(Request $request)
