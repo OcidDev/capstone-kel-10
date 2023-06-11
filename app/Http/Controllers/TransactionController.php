@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Cart;
 use App\Models\Buyer;
+use App\Models\Report;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -19,10 +20,8 @@ class TransactionController extends Controller
         $this->Product = new Product();
     }
 
-
     public function index()
     {
-
 
         $invoiceCode = $this->createInvoice();
         $data = array(
@@ -45,9 +44,10 @@ class TransactionController extends Controller
     {
 
         $product_code = $request->input('product_code');
+
         $product = Product::join('categories', 'products.categories_id', '=', 'categories.id')
                   ->where('products.product_code', $product_code)
-                  ->select('products.id as product_id','products.name as product_name', 'products.price', 'categories.name as category_name')
+                  ->select('products.id as product_id','products.name as product_name', 'products.price','products.capital_price as capital_price', 'categories.name as category_name')
                   ->first();
 
         if ($product==null) {
@@ -56,6 +56,7 @@ class TransactionController extends Controller
                 'product_id' => '',
                 'category_name' => '',
                 'price' => '',
+                'capital_price' => '',
             ];
         }else {
             $data = [
@@ -63,6 +64,7 @@ class TransactionController extends Controller
                 'product_name' => $product->product_name,
                 'category_name' => $product->category_name,
                 'price' => $product->price,
+                'capital_price' => $product->capital_price,
             ];
         }
 
@@ -72,90 +74,93 @@ class TransactionController extends Controller
 
     public function add_cart(Request $request)
     {
-
+        // dd($request->all());
         $product_code = $request->input('product_code');
+        $capital_price = $request->input('capital_price');
         $qty = $request->input('qty');
+
 
         $stokProduct = Product::where('product_code', $product_code)
             ->select('stock')
             ->first();
 
-        if ($qty>intval($stokProduct->stock)) {
-            return redirect()->back()->with('danger','Stok Tidak Mencukupi');
+        $product_cart = Cart::content()->where('id', $request->product_id)->first();
+        $currentQty = $product_cart ? $product_cart->qty : 0; // Jumlah produk saat ini dalam keranjang
+
+        $totalQty = $qty + $currentQty; // Total jumlah produk setelah ditambahkan ke keranjang
+
+        if ($totalQty > intval($stokProduct->stock)) {
+            return redirect()->back()->with('danger', 'Stok Tidak Mencukupi');
         } else {
-            $cart =  Cart::add([
-            'id' => $request->product_id,
-            'name' => $request->product_name,
-            'price' => $request->price,
-            'weight' => 0,
-            'qty' =>  $request->qty,
+            $cart = Cart::add([
+                'id' => $request->product_id,
+                'name' => $request->product_name,
+                'price' => $request->price,
+                'weight' => 0,
+                'qty' => $qty,
                 'options' => [
                     'category_name' => $request->category_name,
                     'product_code' => $request->product_code,
+                    'capital_price' => $request->capital_price,
                 ]
             ]);
-            return redirect()->back()->with('success','Data Produk Berhasil Ditambahkan ke Keranjang');
+            return redirect()->back()->with('success', 'Data Produk Berhasil Ditambahkan ke Keranjang');
         }
+
     }
 
     public function save_transaction(Request $request)
     {
+
         $product = Cart::subtotal(0);
         $invoiceCode = $this->createInvoice();
         $buyer_id = $request->buyer_id;
-        $status = $request->input('status');
+        $grand_total =  str_replace(",","",Cart::subtotal(0));
         $cash =  str_replace(",","",$request->input('cash'));
         $change =  str_replace(",","",$request->input('change'));
-        $user_id = $request->input('user_id');
+        $user_id = Auth::user()->id;
         $transaksi_id = 1;
         $item = Cart::content();
-        // dd($cash);
+        $status = '';
+        if($grand_total > $cash){
+            $status = 'Belum Lunas';
+            $change = 0;
+        }else{
+            $status = 'Lunas';
+        }
 
         if ( $product==0 ) {
-        return redirect('transaction')->with('danger','Data Keranjang Kosong');
-        } else {
-            $no_urut = 0;
+            return redirect('transaction')->with('danger','Data Keranjang Kosong');
+        }
 
-            $query = DB::table('transactions')
-                ->select('id')
-                ->get();
+        if ($cash<=0) {
+            $data = [
+                'invoice_code' => $invoiceCode,
+                'cashier_id' => $user_id,
+                'buyer_id' => $buyer_id,
+                'total' =>  str_replace(",","",Cart::subtotal(0)),
+                'cash' => $cash,
+                'change' => 0,
+                'status' => $status,
+            ];
 
-            foreach($query as $no){
-                $no_urut = $no->id;
+            $transactions = Transaction::create($data);
+
+            foreach ($item as $key => $value) {
+                $data = [
+                'transactions_id' => $transactions->id,
+                'products_id' => $value->id,
+                'product_name' => $value->name,
+                'product_price' => $value->price,
+                'product_capital_price' => $value->options->capital_price,
+                'qty' =>  $value->qty,
+                ];
+                DetailTransaction::create($data);
+                $product_stock = Product::find($value->id);
+                $stokminus = $product_stock->stock - $value->qty;
+                Product::find($value->id)->update(['stock' => $stokminus]);
             }
-            if($no_urut == null){
-                $no_urut = 1;
-            } else {
-                $no_urut = $no_urut+1;
-            }
-
-                if ($cash<=0) {
-
-                    $data = [
-                        'invoice_code' => $invoiceCode,
-                        'cashier_id' => 1,
-                        'buyer_id' => $buyer_id,
-                        'total' =>  str_replace(",","",Cart::subtotal(0)),
-                        'cash' => $cash,
-                        'change' => 0,
-                        'status' => $status,
-                    ];
-                    Transaction::create($data);
-
-                    foreach ($item as $key => $value) {
-                        $data = [
-                        'transactions_id' => $no_urut,
-                        'products_id' => $value->id,
-                        'qty' =>  $value->qty,
-                        ];
-                    DetailTransaction::create($data);
-                    }
-
-                    Cart::destroy();
-
-                    return redirect('transaction')->with('success','Transaksi Berhasil Disimpan');
-                }
-
+        }else if($cash>0){
             $data = [
                 'invoice_code' => $invoiceCode,
                 'cashier_id' => Auth::user()->id,
@@ -165,22 +170,48 @@ class TransactionController extends Controller
                 'change' => $change,
                 'status' => $status,
             ];
-            Transaction::create($data);
-
+            $transactions = Transaction::create($data);
             foreach ($item as $key => $value) {
                 $data = [
-                'transactions_id' => $no_urut,
+                'transactions_id' => $transactions->id,
                 'products_id' => $value->id,
+                'product_name' => $value->name,
+                'product_price' => $value->price,
+                'product_capital_price' => $value->options->capital_price,
                 'qty' =>  $value->qty,
                 ];
             DetailTransaction::create($data);
+            $product_stock = Product::find($value->id);
+            $stokminus = $product_stock->stock - $value->qty;
+            Product::find($value->id)->update(['stock' => $stokminus]);
             }
 
-            Cart::destroy();
-
-            return redirect('transaction')->with('success','Transaksi Berhasil Disimpan');
 
         }
+        $transactions = Transaction::latest('id')->first();
+
+        $lastBalance = Report::orderByDesc('created_at')
+                    ->select('saldo')
+                    ->first();
+            if ($lastBalance == null) {
+                $saldo = 0;
+            } else {
+                $saldo = $lastBalance->saldo;
+            }
+        $totalHargaModal = DB::table('detail_transactions')
+            ->where('transactions_id', $transactions->id)
+            ->sum(DB::raw('product_capital_price * qty'));
+        if($status == 'Lunas'){
+            Report::create([
+                'debit' => $grand_total,
+                'profit' => $grand_total - $totalHargaModal,
+                'kredit' => 0,
+            'saldo' => $saldo + $grand_total,
+                'description' => 'pendapatan dari penjualan yang berinvoice '.$invoiceCode,
+            ]);
+        }
+        Cart::destroy();
+        return redirect('transaction')->with('success','Transaksi Berhasil Disimpan');
     }
 
     public function remove_item($rowId){
@@ -189,13 +220,12 @@ class TransactionController extends Controller
 
     }
 
-
     public function createInvoice()
     {
         $lastInvoice = Transaction::latest('id')->first();
-
+        $ldate = date('Ym');
         if (!$lastInvoice) {
-            $invoiceCode = 'GITS-001';
+            $invoiceCode = 'GITS- '.$ldate.'001';
         } else {
             $lastInvoiceCode = $lastInvoice->invoice_code;
             $lastInvoiceNumber = intval(substr($lastInvoiceCode, -2));
@@ -206,11 +236,10 @@ class TransactionController extends Controller
                 $invoiceNumber = $lastInvoiceNumber + 1;
             }
 
-            $invoiceCode = 'GITS-' . $invoiceNumber;
+            $invoiceCode = 'GITS-' . $ldate . $invoiceNumber;
         }
         return $invoiceCode;
     }
-
 
     public function debit()
     {
@@ -234,15 +263,34 @@ class TransactionController extends Controller
         $data->cash = str_replace(",","",$request->input('cash'));
         $data->change = str_replace(",","",$request->input('change'));
 
+        $lastBalance = Report::orderByDesc('created_at')
+                    ->select('saldo')
+                    ->first();
+        if ($lastBalance == null) {
+            $saldo = 0;
+        } else {
+            $saldo = $lastBalance->saldo;
+        }
+        $totalHargaModal = DB::table('detail_transactions')
+            ->where('transactions_id', $data->id)
+            ->sum(DB::raw('product_capital_price * qty'));
+
+
+
+
         if ($data->change < 0) {
-           return redirect()->back()->with('danger','Data Tidak Benar');
+           return redirect()->back()->with('danger','Data Tidak Benar (Uang Kurang)');
         }else {
             $data->save();
+            Report::create([
+                'debit' => $data->total,
+                'profit' => $data->total - $totalHargaModal,
+                'kredit' => 0,
+                'saldo' => $saldo + $data->total,
+                'description' => 'pendapatan dari penjualan bayar hutang yang berinvoice '.$data->invoice_code,
+            ]);
            return back()->with('success','Transaksi Berhasil Disimpan');
         }
-
-
-
 
     }
 

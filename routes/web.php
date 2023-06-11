@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BuyerController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShelvesController;
 use App\Http\Controllers\CategoryController;
@@ -49,6 +50,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save', 'save')->name('shelves.save');
     Route::post('edit/{id}', 'edit')->name('shelves.edit');
     Route::delete('delete/{id}', 'delete')->name('shelves.delete');
+  });
+
+  Route::controller(ReportController::class)->prefix('report')->group(function () {
+    Route::get('', 'index')->name('report');
+    Route::post('save', 'save')->name('report.save');
+    Route::post('edit/{id}', 'edit')->name('report.edit');
+    Route::delete('delete/{id}', 'delete')->name('report.delete');
   });
 
   Route::controller(BuyerController::class)->prefix('buyer')->group(function () {

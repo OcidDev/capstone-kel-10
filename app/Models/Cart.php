@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Cart extends Model
 {
     use HasFactory;
-    Protected $fillable = ['products_id','qty'];
+    Protected $fillable = ['products_id','qty','capital_price','price'];
 
     /**
      * Get the products that owns the Cart

@@ -110,15 +110,23 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form action="{{ route('inventory.add_cart') }}" method="POST"
+                                    <form action="{{ route('transaction.add_cart') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <input required id="product_code" name="product_code"
+                                                    <div class="form-floating">
+                                                        <input value="" class="form-control" id="product_code"
+                                                            name="product_code" class="form-control"
+                                                            placeholder="Kode Produk" aria-label="Kode Produk"
+                                                            aria-describedby="basic-addon1">
+                                                        <label for="product_code" class="text-center">Kode
+                                                            Produk</label>
+                                                    </div>
+                                                    {{-- <input required id="product_code" name="product_code"
                                                         class="form-control" placeholder="Kode Produk"
-                                                        aria-label="Kode Produk" aria-describedby="basic-addon1">
+                                                        aria-label="Kode Produk" aria-describedby="basic-addon1"> --}}
                                                     <button data-bs-toggle="modal" data-bs-target="#find-product"
                                                         type="button" class="btn btn-primary"><i
                                                             class="bi bi-search"></i></button>
@@ -127,15 +135,30 @@
                                                 </div>
                                             </div>
                                             <div class="col-2 ">
-                                                <input readonly name="product_name" class="form-control"
+                                                <div class="form-floating">
+                                                    <input value="" readonly name="product_name" class="form-control"
+                                                        id="product_name" class="form-control" placeholder="Nama Produk"
+                                                        aria-label="Nama Produk" aria-describedby="basic-addon1">
+                                                    <label class="text-center" for="product_name">Nama
+                                                        Produk</label>
+                                                </div>
+                                                {{-- <input readonly name="product_name" class="form-control"
                                                     placeholder="Nama Produk" aria-label="Nama Produk"
-                                                    aria-describedby="basic-addon1">
+                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
                                             <div class="col-2 ">
-                                                <input readonly name="category_name" class="form-control"
+                                                <div class="form-floating">
+                                                    <input value="" readonly name="category_name"
+                                                        class="form-control" id="category_name" class="form-control"
+                                                        placeholder="Kategori Produk" aria-label="Kategori Produk"
+                                                        aria-describedby="basic-addon1">
+                                                    <label id="category_name" class="text-center"
+                                                        for="category_name">Kategori Produk</label>
+                                                </div>
+                                                {{-- <input readonly name="category_name" class="form-control"
                                                     placeholder="Kategori" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1">
+                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
 
@@ -144,14 +167,27 @@
                                                 aria-describedby="basic-addon1">
 
                                             <div class="col-2 ">
-                                                <input readonly name="price" class="form-control" placeholder="Harga"
-                                                    aria-label="Harga" aria-describedby="basic-addon1">
+                                                <div class="form-floating">
+                                                    <input value="" readonly name="price" class="form-control"
+                                                        id="price" class="form-control" placeholder="Harga"
+                                                        aria-label="Harga" aria-describedby="basic-addon1">
+                                                    <label id="price" class="text-center"
+                                                        for="price">Harga</label>
+                                                </div>
+                                                {{-- <input readonly name="price" class="form-control" placeholder="Harga"
+                                                    aria-label="Harga" aria-describedby="basic-addon1"> --}}
 
                                             </div>
                                             <div class="col-1 ">
-                                                <input id="qty" name="qty" type="number" class="form-control"
+                                                <div class="form-floating">
+                                                    <input value="" name="qty" class="form-control"
+                                                        id="qty" class="form-control" placeholder="QTY"
+                                                        aria-label="QTY" aria-describedby="basic-addon1">
+                                                    <label id="qty" class="text-center" for="qty">QTY</label>
+                                                </div>
+                                                {{-- <input id="qty" name="qty" type="number" class="form-control"
                                                     placeholder="qty" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1">
+                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
                                             <div class="col-2">
@@ -259,19 +295,9 @@
                                             @csrf
 
                                             <div class="col-md-12">
-                                                <label for="buyer_name" class="form-label">Nama Pembeli</label>
-                                                <input autocomplete="off" required placeholder="Nama Pembeli"
-                                                    name="buyer_name" class="form-control" id="buyer_name">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="buyer_email" class="form-label">Email</label>
-                                                <input autocomplete="off" required placeholder="Email" name="buyer_email"
-                                                    class="form-control" id="buyer_email">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="buyer_phone" class="form-label">No HP</label>
-                                                <input autocomplete="off" required placeholder="No Hp" name="buyer_phone"
-                                                    class="form-control" id="buyer_phone">
+                                                <label for="suppliers_id" class="form-label">Nama supplier</label>
+                                                <input autocomplete="off" required placeholder="Nama supplier"
+                                                    name="suppliers_id" class="form-control" id="suppliers_id">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="status" class="form-label">Status Pembayaran</label>

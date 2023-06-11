@@ -139,12 +139,14 @@
             let cash = $('#cash').val().replace(/[^.\d]/g, '').toString();
 
             let change = parseFloat(cash) - parseFloat(grand_total);
+            if (change < 0) {
+                change = 0;
+            }
             $('#change').val(change);
 
 
             new AutoNumeric('#change', {
                 digitGroupSeparator: ',',
-                decimalPlaces: 0,
             });
         }
     </script>

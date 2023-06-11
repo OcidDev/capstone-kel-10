@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DetailTransaction extends Model
 {
     use HasFactory,SoftDeletes;
-    Protected $fillable = ['transactions_id','products_id','qty'];
+    Protected $fillable = ['transactions_id','products_id','product_name','qty','product_capital_price','product_price'];
 
     public function transaction()
     {

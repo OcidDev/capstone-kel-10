@@ -120,46 +120,39 @@
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     <div class="form-floating">
                                                         <input value="" class="form-control" id="product_code"
-                                                            placeholder="Jam" class="form-control" placeholder="Kode Produk"
-                                                            aria-label="Kode Produk" aria-describedby="basic-addon1">
+                                                            name="product_code" class="form-control"
+                                                            placeholder="Kode Produk" aria-label="Kode Produk"
+                                                            aria-describedby="basic-addon1">
                                                         <label for="product_code" class="text-center">Kode
                                                             Produk</label>
                                                     </div>
-                                                    {{-- <input required id="product_code" name="product_code"
-                                                        class="form-control" placeholder="Kode Produk"
-                                                        aria-label="Kode Produk" aria-describedby="basic-addon1"> --}}
+
                                                     <button data-bs-toggle="modal" data-bs-target="#find-product"
                                                         type="button" class="btn btn-primary"><i
-                                                            class="bi bi-search"></i></button>
+                                                            class="bi bi-search"></i>Cari</button>
                                                     <button type="reset" class="btn btn-danger"><i
                                                             class="bi bi-trash"></i></button>
                                                 </div>
                                             </div>
                                             <div class="col-2 ">
                                                 <div class="form-floating">
-                                                    <input value="" disabled name="product_name" class="form-control"
+                                                    <input value="" readonly name="product_name" class="form-control"
                                                         id="product_name" class="form-control" placeholder="Nama Produk"
                                                         aria-label="Nama Produk" aria-describedby="basic-addon1">
                                                     <label class="text-center" for="product_name">Nama
                                                         Produk</label>
                                                 </div>
-                                                {{-- <input readonly name="product_name" class="form-control"
-                                                    placeholder="Nama Produk" aria-label="Nama Produk"
-                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
                                             <div class="col-2 ">
                                                 <div class="form-floating">
-                                                    <input value="" disabled name="category_name"
+                                                    <input value="" readonly name="category_name"
                                                         class="form-control" id="category_name" class="form-control"
                                                         placeholder="Kategori Produk" aria-label="Kategori Produk"
                                                         aria-describedby="basic-addon1">
                                                     <label id="category_name" class="text-center"
                                                         for="category_name">Kategori Produk</label>
                                                 </div>
-                                                {{-- <input readonly name="category_name" class="form-control"
-                                                    placeholder="Kategori" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
 
@@ -169,14 +162,14 @@
 
                                             <div class="col-2 ">
                                                 <div class="form-floating">
-                                                    <input value="" disabled name="price" class="form-control"
+                                                    <input value="" readonly name="price" class="form-control"
                                                         id="price" class="form-control" placeholder="Harga"
                                                         aria-label="Harga" aria-describedby="basic-addon1">
+                                                        <input type="hidden" id="capital_price" value="" readonly name="capital_price">
                                                     <label id="price" class="text-center"
                                                         for="price">Harga</label>
                                                 </div>
-                                                {{-- <input readonly name="price" class="form-control" placeholder="Harga"
-                                                    aria-label="Harga" aria-describedby="basic-addon1"> --}}
+
 
                                             </div>
                                             <div class="col-1 ">
@@ -184,13 +177,8 @@
                                                     <input value="" name="qty" class="form-control"
                                                         id="qty" class="form-control" placeholder="QTY"
                                                         aria-label="QTY" aria-describedby="basic-addon1">
-                                                    <label id="qty" class="text-center"
-                                                        for="qty">QTY</label>
+                                                    <label id="qty" class="text-center" for="qty">QTY</label>
                                                 </div>
-                                                {{-- <input id="qty" name="qty" type="number" class="form-control"
-                                                    placeholder="qty" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1"> --}}
-
                                             </div>
                                             <div class="col-2">
                                                 <button type="submit" class="btn btn-primary"><i
@@ -202,8 +190,6 @@
                                 </div>
                             </div>
 
-
-
                         </div>
 
                         <div class="card">
@@ -212,12 +198,6 @@
 
                     </div>
                 </div>
-
-
-
-
-
-
 
             </div>
 
@@ -279,14 +259,10 @@
 
                         </div>
 
-
-
                     </div>
                 </div>
                 <div class=" col-md-3">
                     <div class="card info-card">
-
-
 
                         <div class="card-body ">
                             <div class="row">
@@ -298,7 +274,7 @@
 
                                             <div class="col-md-12">
                                                 <label for="buyer_id" class="form-label">Nama Pembeli</label>
-                                                <select class="form-select" name="buyer_id" id="buyer_id"
+                                                <select class="form-select" required name="buyer_id" id="buyer_id"
                                                     aria-label="Default select example">
                                                     <option selected disabled>Cari Buyer</option>
                                                     @foreach ($buyers as $buyer)
@@ -306,16 +282,16 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <label for="status" class="form-label">Status Pembayaran</label>
-                                                <select class="form-select" name="status">
-                                                    <option selected disabled value="">Pilih Status
+                                                <select id="status" class="form-select" name="status">
+                                                    <option selected disabled>Pilih Status
                                                         Pembayaran
                                                     </option>
                                                     <option value="BELUM LUNAS">BELUM LUNAS</option>
                                                     <option value="LUNAS">LUNAS</option>
                                                 </select>
-                                            </div>
+                                            </div> --}}
 
 
                                     </div>
@@ -361,8 +337,6 @@
                                             <button type="submit" class="btn btn-success"><i
                                                     class="bi bi-cash-stack"></i> Pembayaran</button>
                                         </div>
-
-
 
                                     </div>
                                 </div>
@@ -497,6 +471,7 @@
                         $('[name="product_name"]').val(response.product_name);
                         $('[name="category_name"]').val(response.category_name);
                         $('[name="price"]').val(response.price);
+                        $('[name="capital_price"]').val(response.capital_price);
 
                         $('#qty').focus();
                     }
@@ -515,18 +490,20 @@
 
 
         function HitungKembalian() {
-            let grand_total = $('#grand_total').val().replace(/[^.\d]/g, '').toString();
-            let cash = $('#cash').val().replace(/[^.\d]/g, '').toString();
+            let grand_total = parseFloat($('#grand_total').val().replace(/[^.\d]/g, ''));
+            let cash = parseFloat($('#cash').val().replace(/[^.\d]/g, ''));
 
-            let change = parseFloat(cash) - parseFloat(grand_total);
+            let change = cash - grand_total;
+            if (change < 0) {
+                change = 0;
+            }
             $('#change').val(change);
-
 
             new AutoNumeric('#change', {
                 digitGroupSeparator: ',',
-                decimalPlaces: 0,
             });
         }
+
 
 
 
@@ -574,6 +551,5 @@
             });
         });
     </script>
-
 
 @endsection

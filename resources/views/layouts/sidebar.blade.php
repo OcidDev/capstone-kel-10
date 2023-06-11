@@ -108,7 +108,12 @@
             </ul>
         </li>
 
-
+        <li class="nav-item">
+            <a class="nav-link  {{ $menu == 'report' ? '' : 'collapsed' }}" href="{{ route('report') }}">
+                <i class="bi bi-cash-coin"></i>
+                <span>Laporan</span>
+            </a>
+        </li>
     </ul>
 
 </aside><!-- End Sidebar-->
