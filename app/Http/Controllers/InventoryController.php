@@ -89,9 +89,6 @@ class InventoryController extends Controller
 
         $totalQty = $qty + $currentQty; // Total jumlah produk setelah ditambahkan ke keranjang
 
-        if ($totalQty > intval($stokProduct->stock)) {
-            return redirect()->back()->with('danger', 'Stok Tidak Mencukupi');
-        } else {
             $cart = $inventoryCart->add([
                 'id' => $request->product_id,
                 'name' => $request->product_name,
@@ -105,7 +102,6 @@ class InventoryController extends Controller
                 ]
             ]);
             return redirect()->back()->with('success', 'Data Produk Berhasil Ditambahkan ke Keranjang');
-        }
 
     }
 
