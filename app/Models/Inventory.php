@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Inventory extends Model
 {
     use HasFactory, SoftDeletes;
-    Protected $fillable = ['suppliers_id','products_id','users_id','invoice_code','total','status'];
+    Protected $fillable = ['suppliers_id','cashier_id','invoice_code','total','status','cash','change'];
 
     /**
      * Get the supplier that owns the inventory

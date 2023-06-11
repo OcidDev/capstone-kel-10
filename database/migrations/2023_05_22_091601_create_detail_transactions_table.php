@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignid('transactions_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->foreignid('products_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('product_name');
+            $table->integer('product_capital_price')->unsigned();
+            $table->integer('product_price')->unsigned();
             $table->integer('qty')->unsigned();
             $table->softDeletes();
             $table->timestamps();

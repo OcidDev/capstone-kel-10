@@ -27,7 +27,7 @@ class TransactionController extends Controller
         $data = array(
             'title' => 'Halaman Transaksi',
             'judul' => 'Transaksi',
-            'menu' => 'transaksi',
+            'menu' => 'transaction',
             'buyers' => Buyer::all(),
             'invoiceCode' => $invoiceCode,
             'data_products' => Product::all(),
@@ -225,7 +225,7 @@ class TransactionController extends Controller
         $lastInvoice = Transaction::latest('id')->first();
         $ldate = date('Ym');
         if (!$lastInvoice) {
-            $invoiceCode = 'GITS- '.$ldate.'001';
+            $invoiceCode = 'INV- '.$ldate.'001';
         } else {
             $lastInvoiceCode = $lastInvoice->invoice_code;
             $lastInvoiceNumber = intval(substr($lastInvoiceCode, -2));
@@ -236,7 +236,7 @@ class TransactionController extends Controller
                 $invoiceNumber = $lastInvoiceNumber + 1;
             }
 
-            $invoiceCode = 'GITS-' . $ldate . $invoiceNumber;
+            $invoiceCode = 'INV-' . $ldate . $invoiceNumber;
         }
         return $invoiceCode;
     }

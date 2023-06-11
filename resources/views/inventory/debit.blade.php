@@ -2,7 +2,6 @@
 
 
 @section('contents')
-
     <div class="row">
         <div class="col-lg-12">
 
@@ -28,6 +27,8 @@
                                 <th scope="col">Invoice</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Nama Customer</th>
+                                <th scope="col">Telephone Customer</th>
+                                <th scope="col">Email Customer</th>
                                 <th scope="col">Daftar Produk</th>
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Status</th>
@@ -42,19 +43,23 @@
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $transaction->invoice_code }}</td>
-                                    <td>{{ $transaction->created_at->format('d/m/y') }}</td>
-                                    <td>{{ $transaction->buyer_name }}</td>
+                                    <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
+                                    <td>{{ $transaction->buyer->name }}</td>
+                                    <td>{{ $transaction->buyer->phone }}</td>
+                                    <td>{{ $transaction->buyer->email }}</td>
                                     <td>
-                                      @foreach ($transaction->DetailTransaction as $detail )
-                                        {{ $detail->product->name }}    |   {{ $detail->qty }} pcs <br>
-                                      @endforeach
+                                        @foreach ($transaction->DetailTransaction as $detail)
+                                            {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
+                                        @endforeach
                                     </td>
-                                    <td>Rp. {{ number_format($transaction->total,0) }}</td>
+                                    <td>Rp. {{ number_format($transaction->total, 0) }}</td>
                                     <td> <span class="badge rounded-pill bg-danger">{{ $transaction->status }}</span></td>
                                     <td>
-                                      <button  data-bs-toggle="modal" id="bayar" data-bs-target="#bayar{{ $transaction->id }}" style="color:white" href="#" class="btn btn-primary">
-                                        Bayar
-                                      </button>
+                                        <button data-bs-toggle="modal" id="bayar"
+                                            data-bs-target="#bayar{{ $transaction->id }}" style="color:white"
+                                            href="#" class="btn btn-primary">
+                                            Bayar
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -69,85 +74,80 @@
     </div>
 
     @foreach ($transactions as $transaction)
-    <div class="modal fade" id="bayar{{ $transaction->id }}" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Pembayaran</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3" action="{{ route('status_lunas',$transaction->id) }}" method="GET">
-                    @csrf
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label for="total" class="form-label">Grand Total</label>
-                                    <input value="{{number_format($transaction->total) }}" name="grand_total" readonly   class="form-control" id="grand_total">
-                                </div>
-                                <div class="col-md-12">
-                                    <br>
-                                    <label for="cash" class="form-label">Cash</label>
-                                    <input required placeholder="Cash" name="cash"  class="form-control" id="cash">
-                                </div>
-                                <div class="col-md-12">
-                                    <br>
-                                    <label for="change" class="form-label">Change</label>
-                                    <input name="change" readonly  class="form-control" id="change">
-                                </div>
-                            </div>
-                            </div>
-                        </div>
+        <div class="modal fade" id="bayar{{ $transaction->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Pembayaran</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <form class="row g-3" action="{{ route('status_lunas', $transaction->id) }}" method="GET">
+                            @csrf
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="total" class="form-label">Grand Total</label>
+                                                <input value="{{ number_format($transaction->total) }}" name="grand_total"
+                                                    readonly class="form-control" id="grand_total">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <br>
+                                                <label for="cash" class="form-label">Cash</label>
+                                                <input required placeholder="Cash" name="cash" class="form-control"
+                                                    id="cash">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <br>
+                                                <label for="change" class="form-label">Change</label>
+                                                <input name="change" readonly class="form-control" id="change">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Bayar</button>
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Bayar</button>
-                </div>
-                </form>
             </div>
         </div>
-    </div>
     @endforeach
 
-<script>
+    <script>
+        // Hitung change
+        $('#cash').keyup(function e() {
+            HitungKembalian();
+        });
 
 
-    // Hitung change
-    $('#cash').keyup(function e() {
-      HitungKembalian();
-    });
-
-
-   new AutoNumeric('#cash', {
-    digitGroupSeparator : ',',
-    decimalPlaces: 0,
-  });
-
-
-
-
-  function HitungKembalian() {
-    let grand_total =$('#grand_total').val().replace(/[^.\d]/g,'').toString();
-    let cash = $('#cash').val().replace(/[^.\d]/g,'').toString();
-
-    let change = parseFloat(cash) - parseFloat(grand_total);
-    $('#change').val(change);
-
-
-    new AutoNumeric('#change', {
-      digitGroupSeparator : ',',
-      decimalPlaces: 0,
-    });
-  }
+        new AutoNumeric('#cash', {
+            digitGroupSeparator: ',',
+            decimalPlaces: 0,
+        });
 
 
 
 
-</script>
+        function HitungKembalian() {
+            let grand_total = $('#grand_total').val().replace(/[^.\d]/g, '').toString();
+            let cash = $('#cash').val().replace(/[^.\d]/g, '').toString();
+
+            let change = parseFloat(cash) - parseFloat(grand_total);
+            if (change < 0) {
+                change = 0;
+            }
+            $('#change').val(change);
 
 
-
+            new AutoNumeric('#change', {
+                digitGroupSeparator: ',',
+            });
+        }
+    </script>
 @endsection

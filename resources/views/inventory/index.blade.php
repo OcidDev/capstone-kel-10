@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Inventory')
+@section('title', 'Dashboard')
 
 @section('contents')
 
@@ -9,6 +9,8 @@
 
         <div class="col-lg-12">
             <div class="row">
+
+
                 <div class=" col-md-7">
                     <div class="card info-card">
                         <div class="card-title">
@@ -110,7 +112,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form action="{{ route('transaction.add_cart') }}" method="POST"
+                                    <form action="{{ route('inventory.add_cart') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
@@ -124,12 +126,10 @@
                                                         <label for="product_code" class="text-center">Kode
                                                             Produk</label>
                                                     </div>
-                                                    {{-- <input required id="product_code" name="product_code"
-                                                        class="form-control" placeholder="Kode Produk"
-                                                        aria-label="Kode Produk" aria-describedby="basic-addon1"> --}}
+
                                                     <button data-bs-toggle="modal" data-bs-target="#find-product"
                                                         type="button" class="btn btn-primary"><i
-                                                            class="bi bi-search"></i></button>
+                                                            class="bi bi-search"></i>Cari</button>
                                                     <button type="reset" class="btn btn-danger"><i
                                                             class="bi bi-trash"></i></button>
                                                 </div>
@@ -142,9 +142,6 @@
                                                     <label class="text-center" for="product_name">Nama
                                                         Produk</label>
                                                 </div>
-                                                {{-- <input readonly name="product_name" class="form-control"
-                                                    placeholder="Nama Produk" aria-label="Nama Produk"
-                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
                                             <div class="col-2 ">
@@ -156,9 +153,6 @@
                                                     <label id="category_name" class="text-center"
                                                         for="category_name">Kategori Produk</label>
                                                 </div>
-                                                {{-- <input readonly name="category_name" class="form-control"
-                                                    placeholder="Kategori" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1"> --}}
 
                                             </div>
 
@@ -171,11 +165,11 @@
                                                     <input value="" readonly name="price" class="form-control"
                                                         id="price" class="form-control" placeholder="Harga"
                                                         aria-label="Harga" aria-describedby="basic-addon1">
+                                                        <input type="hidden" id="capital_price" value="" readonly name="capital_price">
                                                     <label id="price" class="text-center"
                                                         for="price">Harga</label>
                                                 </div>
-                                                {{-- <input readonly name="price" class="form-control" placeholder="Harga"
-                                                    aria-label="Harga" aria-describedby="basic-addon1"> --}}
+
 
                                             </div>
                                             <div class="col-1 ">
@@ -185,10 +179,6 @@
                                                         aria-label="QTY" aria-describedby="basic-addon1">
                                                     <label id="qty" class="text-center" for="qty">QTY</label>
                                                 </div>
-                                                {{-- <input id="qty" name="qty" type="number" class="form-control"
-                                                    placeholder="qty" aria-label="Kategori"
-                                                    aria-describedby="basic-addon1"> --}}
-
                                             </div>
                                             <div class="col-2">
                                                 <button type="submit" class="btn btn-primary"><i
@@ -200,8 +190,6 @@
                                 </div>
                             </div>
 
-
-
                         </div>
 
                         <div class="card">
@@ -210,12 +198,6 @@
 
                     </div>
                 </div>
-
-
-
-
-
-
 
             </div>
 
@@ -256,7 +238,7 @@
                                                     <td>Rp. {{ number_format($item->subtotal, 0) }}</td>
                                                     <td>
                                                         <form method="POST"
-                                                            action="{{ route('transaction.remove_item', $item->rowId) }}">
+                                                            action="{{ route('inventory.remove_item', $item->rowId) }}">
                                                             @csrf
                                                             <input name="_method" type="hidden" value="DELETE">
                                                             <button
@@ -277,38 +259,29 @@
 
                         </div>
 
-
-
                     </div>
                 </div>
                 <div class=" col-md-3">
                     <div class="card info-card">
 
-
-
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="row">
-                                        <form action="{{ route('transaction.save_transaction') }}" method="POST"
+                                        <form action="{{ route('inventory.save_inventory') }}" method="POST"
                                             class="row g-3">
                                             @csrf
 
                                             <div class="col-md-12">
-                                                <label for="suppliers_id" class="form-label">Nama supplier</label>
-                                                <input autocomplete="off" required placeholder="Nama supplier"
-                                                    name="suppliers_id" class="form-control" id="suppliers_id">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="status" class="form-label">Status Pembayaran</label>
-                                                <select class="form-select" name="status">
-                                                    <option selected disabled value="">Pilih Status Pembayaran
-                                                    </option>
-                                                    <option value="BELUM LUNAS">BELUM LUNAS</option>
-                                                    <option value="LUNAS">LUNAS</option>
+                                                <label for="suppliers_id" class="form-label">Nama Supplier</label>
+                                                <select class="form-select" required name="suppliers_id" id="suppliers_id"
+                                                    aria-label="Default select example">
+                                                    <option selected disabled>Cari Supplier</option>
+                                                    @foreach ($suppliers as $supplier)
+                                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
-
 
                                     </div>
                                 </div>
@@ -353,8 +326,6 @@
                                             <button type="submit" class="btn btn-success"><i
                                                     class="bi bi-cash-stack"></i> Pembayaran</button>
                                         </div>
-
-
 
                                     </div>
                                 </div>
@@ -489,6 +460,7 @@
                         $('[name="product_name"]').val(response.product_name);
                         $('[name="category_name"]').val(response.category_name);
                         $('[name="price"]').val(response.price);
+                        $('[name="capital_price"]').val(response.capital_price);
 
                         $('#qty').focus();
                     }
@@ -507,18 +479,20 @@
 
 
         function HitungKembalian() {
-            let grand_total = $('#grand_total').val().replace(/[^.\d]/g, '').toString();
-            let cash = $('#cash').val().replace(/[^.\d]/g, '').toString();
+            let grand_total = parseFloat($('#grand_total').val().replace(/[^.\d]/g, ''));
+            let cash = parseFloat($('#cash').val().replace(/[^.\d]/g, ''));
 
-            let change = parseFloat(cash) - parseFloat(grand_total);
+            let change = cash - grand_total;
+            if (change < 0) {
+                change = 0;
+            }
             $('#change').val(change);
-
 
             new AutoNumeric('#change', {
                 digitGroupSeparator: ',',
-                decimalPlaces: 0,
             });
         }
+
 
 
 
@@ -566,6 +540,5 @@
             });
         });
     </script>
-
 
 @endsection
