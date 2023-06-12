@@ -191,7 +191,9 @@ class InventoryController extends Controller
 
         }
         $inventories = Inventory::latest('id')->first();
-            if ($lastBalance == null) {
+
+        $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+        if ($lastBalance == null) {
                 $saldo = 0;
             } else {
                 $saldo = $lastBalance->saldo;
