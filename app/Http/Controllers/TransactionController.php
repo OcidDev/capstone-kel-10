@@ -74,7 +74,6 @@ class TransactionController extends Controller
 
     public function add_cart(Request $request)
     {
-        // dd($request->all());
         $product_code = $request->input('product_code');
         $capital_price = $request->input('capital_price');
         $qty = $request->input('qty');
@@ -86,11 +85,14 @@ class TransactionController extends Controller
 
         $product_cart = Cart::content()->where('id', $request->product_id)->first();
         $currentQty = $product_cart ? $product_cart->qty : 0; // Jumlah produk saat ini dalam keranjang
-
+        if($product_code == null){
+            return redirect()->back()->with('danger', 'Produk Tidak Ditemukan');
+        }
         $totalQty = $qty + $currentQty; // Total jumlah produk setelah ditambahkan ke keranjang
-
         if ($totalQty > intval($stokProduct->stock)) {
             return redirect()->back()->with('danger', 'Stok Tidak Mencukupi');
+        }else if( $qty < 1){
+            return redirect()->back()->with('danger', 'Jumlah Produk Tidak Boleh Kurang Dari 1');
         } else {
             $cart = Cart::add([
                 'id' => $request->product_id,

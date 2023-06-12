@@ -25,24 +25,47 @@ class ReportController extends Controller
 
     public function save(Request $request)
     {
-
-        $pesan = [
-            'required' => ':attribute Tidak Boleh Kosong !!',
-        ];
-
-        $validated = $request->validate([
-            'name' => 'required|unique:shelves,name',
-            'description' => 'required'
-        ],$pesan);
-
-
-
-        Shelves::create([
-            'name'=>$validated['name'],
-            'description'=>$validated['description']
+        // dd($request->all());
+        $data = $request->validate([
+            'status' => 'required',
+            'total' => 'required|numeric:min:1',
+            'description' => 'required',
         ]);
+        $data['total'];
+        $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+        if ($lastBalance == null) {
+            $saldo = 0;
+        } else {
+            $saldo = $lastBalance->saldo;
+        }
 
-         return back()->with('success','Data Rak Berhasil Ditambahkan');
+        if($saldo == 0 || $saldo < $data['total']){
+            if($request->status == 'Kredit'){
+                return back()->with('danger', 'Saldo Tidak Mencukupi');
+            }
+        }
+        if($request->status == 'Debit'){
+            $save = Report::create([
+                'kredit'=>0,
+                'profit'=>0,
+                'debit'=> $data['total'],
+                'saldo'=>$saldo + $data['total'],
+                'description'=>$data['description']
+            ]);
+        }else if($request->status == 'Kredit'){
+            $save = Report::create([
+                'kredit'=>$data['total'],
+                'profit'=>0,
+                'debit'=>0,
+                'saldo'=>$saldo - $data['total'],
+                'description'=>$data['description']
+            ]);
+        }
+        if($save){
+            return back()->with('success','Data Laporan Berhasil Ditambahkan');
+        }else{
+            return back()->with('danger','Data Laporan Gagal Ditambahkan');
+        }
     }
 
     public function edit(Request $request, $id)

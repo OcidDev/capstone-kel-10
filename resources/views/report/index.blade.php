@@ -101,7 +101,6 @@
                                 <option value="Debit">Debit</option>
                                 <option value="Kredit">Kredit</option>
                             </select>
-                            {{-- <input type="text" placeholder="Nama Rak" id="name" name="name" class="form-control"> --}}
                         </div>
                         <div class="col-12">
                             <label for="total" class="form-label">Total</label>

@@ -79,6 +79,9 @@ class InventoryController extends Controller
         $capital_price = $request->input('capital_price');
         $qty = $request->input('qty');
 
+        if($product_code == null){
+            return redirect()->back()->with('danger', 'Produk Tidak Ditemukan');
+        }
 
         $stokProduct = Product::where('product_code', $product_code)
             ->select('stock')
@@ -88,7 +91,11 @@ class InventoryController extends Controller
         $currentQty = $product_cart ? $product_cart->qty : 0; // Jumlah produk saat ini dalam keranjang
 
         $totalQty = $qty + $currentQty; // Total jumlah produk setelah ditambahkan ke keranjang
-
+        if ($totalQty > intval($stokProduct->stock)) {
+            return redirect()->back()->with('danger', 'Stok Tidak Mencukupi');
+        }else if( $qty < 1){
+            return redirect()->back()->with('danger', 'Jumlah Produk Tidak Boleh Kurang Dari 1');
+        } else {
             $cart = $inventoryCart->add([
                 'id' => $request->product_id,
                 'name' => $request->product_name,
@@ -102,6 +109,7 @@ class InventoryController extends Controller
                 ]
             ]);
             return redirect()->back()->with('success', 'Data Produk Berhasil Ditambahkan ke Keranjang');
+        }
 
     }
 
@@ -183,10 +191,6 @@ class InventoryController extends Controller
 
         }
         $inventories = Inventory::latest('id')->first();
-
-        $lastBalance = Report::orderByDesc('created_at')
-                    ->select('saldo')
-                    ->first();
             if ($lastBalance == null) {
                 $saldo = 0;
             } else {
@@ -200,7 +204,7 @@ class InventoryController extends Controller
                 'debit' => 0,
                 'profit' => 0,
                 'kredit' => $grand_total,
-            'saldo' => $saldo - $grand_total,
+                'saldo' => $saldo - $grand_total,
                 'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$invoiceCode,
             ]);
         }
