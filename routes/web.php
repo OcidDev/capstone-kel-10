@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
@@ -64,6 +65,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save', 'save')->name('buyer.save');
     Route::post('edit/{id}', 'edit')->name('buyer.edit');
     Route::delete('delete/{id}', 'delete')->name('buyer.delete');
+  });
+
+  Route::controller(UserController::class)->prefix('user')->group(function () {
+    Route::get('', 'index')->name('user');
+    Route::post('save', 'save')->name('user.save');
+    Route::post('edit/{id}', 'edit')->name('user.edit');
+    Route::delete('delete/{id}', 'delete')->name('user.delete');
   });
 
   Route::controller(SupplierController::class)->prefix('supplier')->group(function () {

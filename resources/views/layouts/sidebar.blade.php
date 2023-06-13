@@ -48,6 +48,12 @@
                         <i class="bi bi-circle"></i><span>Pembeli</span>
                     </a>
                 </li>
+
+                <li>
+                    <a class="{{ $sub_menu == 'pengguna' ? 'active' : '' }}" href="{{ route('user') }}">
+                        <i class="bi bi-circle"></i><span>User</span>
+                    </a>
+                </li>
             </ul>
         </li>
 
