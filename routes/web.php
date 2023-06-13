@@ -26,7 +26,8 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', [DashboardController::class, 'index'])->name('index');
+  Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+  Route::post('/profile', [DashboardController::class, 'update'])->name('update.profile');
   Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
         Route::get('', 'index')->name('dashboard');
   });

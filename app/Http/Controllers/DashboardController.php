@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rak;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Shelves;
 use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 Use Alert;
 
@@ -18,6 +21,7 @@ class DashboardController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
     }
 
     public function index()
@@ -38,5 +42,31 @@ class DashboardController extends Controller
             'product_kritis' => Product::all()->where('stock','<=',20),
         );
         return view('dashboard', $data);
+    }
+
+    public function profile()
+    {
+        $data = array(
+            'title' => 'Halaman Profile',
+            'judul' => 'Profile',
+            'menu' => 'profile',
+            'profile' => User::Find(Auth::user()->id),
+            'sub_menu' => '',
+        );
+        return view('profile', $data);
+    }
+    public function update(){
+        $data = array(
+            'name' => request('name'),
+            'email' => request('email'),
+        );
+        if(request('password')){
+            $data['password'] = Hash::make(request('password'));
+        }else{
+            $data['password'] = Auth::user()->password;
+        }
+        User::where('id', Auth::user()->id)->update($data);
+        Alert::success('Berhasil', 'Data Berhasil Diubah');
+        return redirect()->route('profile');
     }
 }

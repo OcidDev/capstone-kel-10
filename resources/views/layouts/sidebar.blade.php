@@ -10,6 +10,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link  {{ $menu == 'profile' ? '' : 'collapsed' }}" href="{{ route('profile') }}">
+                <i class="bi bi-grid"></i>
+                <span>Profile</span>
+            </a>
+        </li>
+
 
 
 
