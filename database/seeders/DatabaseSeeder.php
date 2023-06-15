@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ShelvesSeeder::class);
         $this->call(SupplierSeeder::class);
         $this->call(BuyerrSeeder::class);
+        $this->call(ProductSeeder::class);
 
         // \App\Models\User::factory(10)->create();
     }
