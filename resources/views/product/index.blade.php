@@ -121,11 +121,6 @@
                             </select>
                         </div>
                         <div class="col-12">
-                            <label for="product_code" class="form-label">Kode Produk</label>
-                            <input type="text" placeholder="Kode Produk" id="product_code" name="product_code"
-                                class="form-control">
-                        </div>
-                        <div class="col-12">
                             <label for="name" class="form-label">Nama Produk</label>
                             <input type="text" placeholder="Nama Produk" id="name" name="name"
                                 class="form-control">
@@ -196,11 +191,6 @@
                                 </select>
                             </div>
 
-                            <div class="col-12">
-                                <label for="product_code" class="form-label">Kode Produk</label>
-                                <input type="text" value="{{ $item->product_code }}" placeholder="Kode Produk"
-                                    id="product_code" name="product_code" class="form-control">
-                            </div>
                             <div class="col-12">
                                 <label for="name" class="form-label">Nama Produk</label>
                                 <input type="text" value="{{ $item->name }}" placeholder="Nama Produk"

@@ -39,7 +39,6 @@ class ProductController extends Controller
          $data = $request->validate([
             'shelves_id' => 'required',
             'categories_id' => 'required',
-            'product_code' => 'required|unique:products,name',
             'name' => 'required',
             'image' => 'required|image',
             'description' => 'required',
@@ -48,6 +47,7 @@ class ProductController extends Controller
         ],$pesan);
 
         $data['price'] = str_replace(",","", $request->input('price'));
+        $data['product_code'] = $this->ProductCode();
         $data['capital_price'] = str_replace(",","", $request->input('capital_price'));
         // $data['stock'] = str_replace(",","", $request->input('stock'));
         $data['image'] = $request->file('image')->store('assets/image', 'public');
@@ -66,7 +66,6 @@ class ProductController extends Controller
          $validated = $request->validate([
             'categories_id' => 'required',
             'shelves_id' => 'required',
-            'product_code' => 'required|unique:products,product_code,'.$id,
             'name' => 'required',
             'image' => 'image',
             'description' => 'required',
@@ -77,7 +76,6 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->categories_id = $validated['categories_id'];
         $product->shelves_id = $validated['shelves_id'];
-        $product->product_code = $validated['product_code'];
         $product->name = $validated['name'];
         $product->description = $validated['description'];
         $product->price = str_replace(",", "", $validated['price']);
@@ -101,4 +99,24 @@ class ProductController extends Controller
         return back()->with('success','Data Produk Berhasil Dihapus');
     }
 
+    public function ProductCode()
+    {
+
+        $lastProductCode = Product::latest('id')->first();
+        $ldate = date('Ym');
+        if (!$lastProductCode) {
+            $productCode = 'PR-'.$ldate.'001';
+        } else {
+            $lastProductNumber = intval(substr($lastProductCode->product_code, -3));
+
+            if ($lastProductNumber < 9) {
+                $productNumber = '00' . ($lastProductNumber + 1);
+            } else {
+                $productNumber = $lastProductNumber + 1;
+            }
+
+            $productCode = 'PR-' . $ldate . $productNumber;
+        }
+        return $productCode;
+    }
 }
