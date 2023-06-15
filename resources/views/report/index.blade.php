@@ -40,7 +40,6 @@
                                 <th scope="col">Keuntungan</th>
                                 <th scope="col">Deskripsi</th>
                                 <th scope="col">Saldo</th>
-                                <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,22 +55,6 @@
                                     <td>Rp.{{ number_format($item->profit) }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td>Rp.{{ number_format($item->saldo) }}</td>
-                                    <td>
-
-
-                                        <form method="POST" action="{{ route('report.delete', $item->id) }}">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $item->id }}"
-                                                class="btn btn-sm btn-warning">Edit</button>
-
-                                            @csrf
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit"
-                                                class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
-                                                data-toggle="tooltip" title='Delete'>Delete</button>
-                                        </form>
-
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

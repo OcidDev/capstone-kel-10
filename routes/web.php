@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', 'index')->name('dashboard');
   });
 
-  Route::controller(CategoryController::class)->prefix('category')->group(function () {
+  Route::controller(CategoryController::class)->middleware('isAdmin')->prefix('category')->group(function () {
     Route::get('', 'index')->name('category');
     Route::get('', 'index')->name('category');
     Route::post('save', 'save')->name('category.save');
@@ -41,51 +41,51 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete/{id}', 'delete')->name('category.delete');
   });
 
-  Route::controller(ProductController::class)->prefix('product')->group(function () {
+  Route::controller(ProductController::class)->middleware('isAdmin')->prefix('product')->group(function () {
     Route::get('', 'index')->name('product');
     Route::post('save', 'save')->name('product.save');
     Route::post('edit/{id}', 'edit')->name('product.edit');
     Route::delete('delete/{id}', 'delete')->name('product.delete');
   });
 
-  Route::controller(ShelvesController::class)->prefix('shelves')->group(function () {
+  Route::controller(ShelvesController::class)->middleware('isAdmin')->prefix('shelves')->group(function () {
     Route::get('', 'index')->name('shelves');
     Route::post('save', 'save')->name('shelves.save');
     Route::post('edit/{id}', 'edit')->name('shelves.edit');
     Route::delete('delete/{id}', 'delete')->name('shelves.delete');
   });
 
-  Route::controller(ReportController::class)->prefix('report')->group(function () {
+  Route::controller(ReportController::class)->middleware('isAdmin')->prefix('report')->group(function () {
     Route::get('', 'index')->name('report');
     Route::post('save', 'save')->name('report.save');
     Route::post('edit/{id}', 'edit')->name('report.edit');
     Route::delete('delete/{id}', 'delete')->name('report.delete');
   });
 
-  Route::controller(BuyerController::class)->prefix('buyer')->group(function () {
+  Route::controller(BuyerController::class)->middleware('isAdmin')->prefix('buyer')->group(function () {
     Route::get('', 'index')->name('buyer');
     Route::post('save', 'save')->name('buyer.save');
     Route::post('edit/{id}', 'edit')->name('buyer.edit');
     Route::delete('delete/{id}', 'delete')->name('buyer.delete');
   });
 
-  Route::controller(UserController::class)->prefix('user')->group(function () {
+  Route::controller(UserController::class)->middleware('isAdmin')->prefix('user')->group(function () {
     Route::get('', 'index')->name('user');
     Route::post('save', 'save')->name('user.save');
     Route::post('edit/{id}', 'edit')->name('user.edit');
     Route::delete('delete/{id}', 'delete')->name('user.delete');
   });
 
-  Route::controller(SupplierController::class)->prefix('supplier')->group(function () {
+  Route::controller(SupplierController::class)->middleware('isAdmin')->prefix('supplier')->group(function () {
     Route::get('', 'index')->name('supplier');
     Route::post('save', 'save')->name('supplier.save');
     Route::post('edit/{id}', 'edit')->name('supplier.edit');
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
 
-  Route::get('/debit', [TransactionController::class, 'debit'])->name('debit');
-  Route::get('/paid_off', [TransactionController::class, 'paid_off'])->name('paid_off');
-  Route::get('/list_detail/{id}', [TransactionController::class, 'list_detail'])->name('list_detail');
+  Route::get('/debit', [TransactionController::class, 'debit'])->middleware('isAdmin')->name('debit');
+  Route::get('/paid_off', [TransactionController::class, 'paid_off'])->middleware('isAdmin')->name('paid_off');
+  Route::get('/list_detail/{id}', [TransactionController::class, 'list_detail'])->middleware('isAdmin')->name('list_detail');
 
   Route::controller(TransactionController::class)->prefix('transaction')->group(function () {
     Route::get('', 'index')->name('transaction');
@@ -100,11 +100,11 @@ Route::middleware(['auth'])->group(function () {
   });
 
 
-  Route::get('/inventory_debit', [InventoryController::class, 'debit'])->name('inventory_debit');
-  Route::get('/inventory_paid_off', [InventoryController::class, 'paid_off'])->name('inventory_paid_off');
-  Route::get('/inventory_list_detail/{id}', [InventoryController::class, 'list_detail'])->name('inventory_list_detail');
+  Route::get('/inventory_debit', [InventoryController::class, 'debit'])->middleware('isAdmin')->name('inventory_debit');
+  Route::get('/inventory_paid_off', [InventoryController::class, 'paid_off'])->middleware('isAdmin')->name('inventory_paid_off');
+  Route::get('/inventory_list_detail/{id}', [InventoryController::class, 'list_detail'])->middleware('isAdmin')->name('inventory_list_detail');
 
-  Route::controller(InventoryController::class)->prefix('inventory')->group(function () {
+  Route::controller(InventoryController::class)->middleware('isAdmin')->prefix('inventory')->group(function () {
     Route::get('', 'index')->name('inventory');
     Route::get('cek_produk', 'CekProduk')->name('cek_produk');
     Route::post('cek_produk', 'CekProduk')->name('cek_produk');
