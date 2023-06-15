@@ -83,9 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete/{id}', 'delete')->name('supplier.delete');
   });
 
-  Route::get('/debit', [TransactionController::class, 'debit'])->middleware('isAdmin')->name('debit');
-  Route::get('/paid_off', [TransactionController::class, 'paid_off'])->middleware('isAdmin')->name('paid_off');
-  Route::get('/list_detail/{id}', [TransactionController::class, 'list_detail'])->middleware('isAdmin')->name('list_detail');
+  Route::get('/debit', [TransactionController::class, 'debit'])->name('debit');
+  Route::get('/paid_off', [TransactionController::class, 'paid_off'])->name('paid_off');
+  Route::get('/list_detail/{id}', [TransactionController::class, 'list_detail'])->name('list_detail');
 
   Route::controller(TransactionController::class)->prefix('transaction')->group(function () {
     Route::get('', 'index')->name('transaction');

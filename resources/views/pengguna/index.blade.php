@@ -36,6 +36,7 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Nama Pengguna</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -48,6 +49,7 @@
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
+                                    <td>{{ $item->role }}</td>
                                     <td>
 
 
@@ -95,7 +97,13 @@
                             <label for="email" class="form-label">email</label>
                             <input id="email" placeholder="email" name="email" type="email" class="form-control">
                         </div>
-
+                        <div class="col-12">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" name="role" class="form-select">
+                                <option value="admin">Admin</option>
+                                <option value="cashier">Cashier</option>
+                            </select>
+                        </div>
                         <div class="col-12">
                             <label for="password" class="form-label">Password</label>
                             <input id="password" placeholder="Password" name="password" type="password"
@@ -120,7 +128,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" method="POST" action="{{ route('user.edit', $item->id) }}" method="POST">
+                        <form class="row g-3" method="POST" action="{{ route('user.edit', $item->id) }}"
+                            method="POST">
                             @csrf
                             <div class="col-12">
                                 <label for="name" class="form-label">Nama Ppengguna</label>
@@ -133,11 +142,19 @@
                                 <input id="email" value="{{ $item->email }}" placeholder="email" name="email"
                                     type="email" class="form-control">
                             </div>
+                            <div class="col-12">
+                                <label for="role" class="form-label">Role</label>
+                                <select id="role" name="role" class="form-select">
+                                    <option value="admin" {{ $item->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="cashier" {{ $item->role == 'cashier' ? 'selected' : '' }}>Cashier
+                                    </option>
+                                </select>
+                            </div>
 
                             <div class="col-12">
                                 <label for="password" class="form-label">Password</label>
-                                <input id="password" placeholder="password"
-                                    name="password" type="password" class="form-control">
+                                <input id="password" placeholder="password" name="password" type="password"
+                                    class="form-control">
                                 <small class="text-muted"> *Kosongkan jika tidak ingin mengubah password</small>
                             </div>
 

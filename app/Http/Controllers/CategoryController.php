@@ -34,7 +34,7 @@ class CategoryController extends Controller
         ];
 
         $data =  $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:categories,name,NULL,id,deleted_at,NULL',
             'description' => 'required',
             'image' => 'required|image'
         ],$pesan);
