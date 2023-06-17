@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('kredit')->unsigned()->default(0);
             $table->integer('profit')->unsigned()->default(0);
             $table->longText('description');
-            $table->integer('saldo')->unsigned()->default(0);
+            $table->integer('saldo')->default(0);
             $table->timestamps();
         });
     }

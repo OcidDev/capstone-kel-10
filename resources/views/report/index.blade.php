@@ -34,13 +34,13 @@
                         <table class="table datatable">
                             <thead>
                                 <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Tanggal</th>
-                                    <th scope="col">Debit</th>
-                                    <th scope="col">Kredit</th>
-                                    <th scope="col">Keuntungan</th>
-                                    <th scope="col">Deskripsi</th>
-                                    <th scope="col">Saldo</th>
+                                    <th>No</th>
+                                    <th>Tanggal</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                    <th>Keuntungan</th>
+                                    <th>Deskripsi</th>
+                                    <th>Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>

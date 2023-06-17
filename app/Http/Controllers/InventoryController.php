@@ -79,6 +79,7 @@ class InventoryController extends Controller
         $capital_price = $request->input('capital_price');
         $qty = $request->input('qty');
 
+
         if($product_code == null){
             return redirect()->back()->with('danger', 'Produk Tidak Ditemukan');
         }
@@ -110,107 +111,173 @@ class InventoryController extends Controller
         }
 
     }
-
+// GPT SAVE
     public function save_inventory(Request $request)
     {
         $inventoryCart = Cart::instance('inventory');
-        $product = $inventoryCart->subtotal(0);
+        $subtotal = $inventoryCart->subtotal(0);
         $invoiceCode = $this->createInvoice();
         $supplier_id = $request->suppliers_id;
-        $grand_total =  str_replace(",","",$inventoryCart->subtotal(0));
-        $cash =  str_replace(",","",$request->input('cash'));
-        $change =  str_replace(",","",$request->input('change'));
+        $grand_total = str_replace(",", "", $subtotal);
+        $cash = str_replace(",", "", $request->input('cash'));
         $cashier = Auth::user()->id;
         $item = $inventoryCart->content();
-        $status = '';
-        if($grand_total > $cash){
-            $status = 'Belum Lunas';
-            $change = 0;
-        }else{
-            $status = 'Lunas';
+        $status = ($grand_total > $cash) ? 'Belum Lunas' : 'Lunas';
+        $change = ($status == 'Lunas') ? $cash - $grand_total : 0;
+        $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+        if($inventoryCart->count() <= 0){
+            return redirect()->back()->with('danger', 'Data Keranjang Kosong');
+        }else if($cash < 0){
+            return redirect()->back()->with('danger', 'Uang Pembayaran Tidak Boleh Kurang Dari 0');
         }
+        $data = [
+            'invoice_code' => $invoiceCode,
+            'cashier_id' => $cashier,
+            'suppliers_id' => $supplier_id,
+            'total' => $grand_total,
+            'cash' => $cash,
+            'change' => $change,
+            'status' => $status,
+        ];
 
-        if ( $product==0 ) {
-            return redirect('inventory')->with('danger','Data Keranjang Kosong');
-        }
+        $inventories = Inventory::create($data);
 
-        if ($cash<=0) {
+        foreach ($item as $value) {
             $data = [
-                'invoice_code' => $invoiceCode,
-                'cashier_id' => $cashier,
-                'suppliers_id' => $supplier_id,
-                'total' =>  str_replace(",","",$inventoryCart->subtotal(0)),
-                'cash' => $cash,
-                'change' => 0,
-                'status' => $status,
-            ];
-
-            $inventories = Inventory::create($data);
-
-            foreach ($item as $key => $value) {
-                $data = [
                 'inventories_id' => $inventories->id,
                 'products_id' => $value->id,
                 'product_name' => $value->name,
                 'product_price' => $value->price,
                 'product_capital_price' => $value->options->capital_price,
-                'qty' =>  $value->qty,
-                ];
-                DetailInventory::create($data);
-                $product_stock = Product::find($value->id);
-                $stokminus = $product_stock->stock + $value->qty;
-                Product::find($value->id)->update(['stock' => $stokminus]);
-            }
-        }else if($cash>0){
-            $data = [
-                'invoice_code' => $invoiceCode,
-                'cashier_id' => Auth::user()->id,
-                'suppliers_id' => $supplier_id,
-                'total' =>  str_replace(",","",$inventoryCart->subtotal(0)),
-                'cash' => $cash,
-                'change' => $change,
-                'status' => $status,
+                'qty' => $value->qty,
             ];
-            $inventories = Inventory::create($data);
-            foreach ($item as $key => $value) {
-                $data = [
-                'inventories_id' => $inventories->id,
-                'products_id' => $value->id,
-                'product_name' => $value->name,
-                'product_price' => $value->price,
-                'product_capital_price' => $value->options->capital_price,
-                'qty' =>  $value->qty,
-                ];
             DetailInventory::create($data);
             $product_stock = Product::find($value->id);
             $stokminus = $product_stock->stock + $value->qty;
-            Product::find($value->id)->update(['stock' => $stokminus]);
-            }
-
+            $product_stock->update(['stock' => $stokminus]);
         }
-        $inventories = Inventory::latest('id')->first();
 
-        $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
-        if ($lastBalance == null) {
-                $saldo = 0;
-            } else {
-                $saldo = $lastBalance->saldo;
-            }
+        $saldo = ($lastBalance == null) ? 0 : $lastBalance->saldo;
         $totalHargaModal = DB::table('detail_inventories')
             ->where('inventories_id', $inventories->id)
             ->sum(DB::raw('product_capital_price * qty'));
-        if($status == 'Lunas'){
+
+        if ($status == 'Lunas') {
             Report::create([
                 'debit' => 0,
                 'profit' => 0,
                 'kredit' => $grand_total,
                 'saldo' => $saldo - $grand_total,
-                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$invoiceCode,
+                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice ' . $invoiceCode,
             ]);
         }
+
         $inventoryCart->destroy();
-        return redirect('inventory')->with('success','Transaksi Berhasil Disimpan');
+
+        return redirect('inventory')->with('success', 'Transaksi Berhasil Disimpan');
     }
+
+// And save GPT
+    // public function save_inventory(Request $request)
+    // {
+    //     $inventoryCart = Cart::instance('inventory');
+    //     $product = $inventoryCart->subtotal(0);
+    //     $invoiceCode = $this->createInvoice();
+    //     $supplier_id = $request->suppliers_id;
+    //     $grand_total =  str_replace(",","",$inventoryCart->subtotal(0));
+    //     $cash =  str_replace(",","",$request->input('cash'));
+    //     $change =  str_replace(",","",$request->input('change'));
+    //     $cashier = Auth::user()->id;
+    //     $item = $inventoryCart->content();
+    //     $status = '';
+    //     if($grand_total > $cash){
+    //         $status = 'Belum Lunas';
+    //         $change = 0;
+    //     }else{
+    //         $status = 'Lunas';
+    //     }
+
+    //     if ( $product==0 ) {
+    //         return redirect('inventory')->with('danger','Data Keranjang Kosong');
+    //     }
+
+    //     if ($cash<=0) {
+    //         $data = [
+    //             'invoice_code' => $invoiceCode,
+    //             'cashier_id' => $cashier,
+    //             'suppliers_id' => $supplier_id,
+    //             'total' =>  str_replace(",","",$inventoryCart->subtotal(0)),
+    //             'cash' => $cash,
+    //             'change' => 0,
+    //             'status' => $status,
+    //         ];
+
+    //         $inventories = Inventory::create($data);
+
+    //         foreach ($item as $key => $value) {
+    //             $data = [
+    //             'inventories_id' => $inventories->id,
+    //             'products_id' => $value->id,
+    //             'product_name' => $value->name,
+    //             'product_price' => $value->price,
+    //             'product_capital_price' => $value->options->capital_price,
+    //             'qty' =>  $value->qty,
+    //             ];
+    //             DetailInventory::create($data);
+    //             $product_stock = Product::find($value->id);
+    //             $stokminus = $product_stock->stock + $value->qty;
+    //             Product::find($value->id)->update(['stock' => $stokminus]);
+    //         }
+    //     }else if($cash>0){
+    //         $data = [
+    //             'invoice_code' => $invoiceCode,
+    //             'cashier_id' => Auth::user()->id,
+    //             'suppliers_id' => $supplier_id,
+    //             'total' =>  str_replace(",","",$inventoryCart->subtotal(0)),
+    //             'cash' => $cash,
+    //             'change' => $change,
+    //             'status' => $status,
+    //         ];
+    //         $inventories = Inventory::create($data);
+    //         foreach ($item as $key => $value) {
+    //             $data = [
+    //             'inventories_id' => $inventories->id,
+    //             'products_id' => $value->id,
+    //             'product_name' => $value->name,
+    //             'product_price' => $value->price,
+    //             'product_capital_price' => $value->options->capital_price,
+    //             'qty' =>  $value->qty,
+    //             ];
+    //         DetailInventory::create($data);
+    //         $product_stock = Product::find($value->id);
+    //         $stokminus = $product_stock->stock + $value->qty;
+    //         Product::find($value->id)->update(['stock' => $stokminus]);
+    //         }
+
+    //     }
+    //     $inventories = Inventory::latest('id')->first();
+
+    //     $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+    //     if ($lastBalance == null) {
+    //             $saldo = 0;
+    //         } else {
+    //             $saldo = $lastBalance->saldo;
+    //         }
+    //     $totalHargaModal = DB::table('detail_inventories')
+    //         ->where('inventories_id', $inventories->id)
+    //         ->sum(DB::raw('product_capital_price * qty'));
+    //     if($status == 'Lunas'){
+    //         Report::create([
+    //             'debit' => 0,
+    //             'profit' => 0,
+    //             'kredit' => $grand_total,
+    //             'saldo' => $saldo - $grand_total,
+    //             'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$invoiceCode,
+    //         ]);
+    //     }
+    //     $inventoryCart->destroy();
+    //     return redirect('inventory')->with('success','Transaksi Berhasil Disimpan');
+    // }
 
     public function remove_item($rowId){
         $inventoryCart = Cart::instance('inventory');
