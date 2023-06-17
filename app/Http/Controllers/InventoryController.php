@@ -177,7 +177,7 @@ class InventoryController extends Controller
         return redirect('inventory')->with('success', 'Transaksi Berhasil Disimpan');
     }
 
-// And save GPT
+// End save GPT
     // public function save_inventory(Request $request)
     // {
     //     $inventoryCart = Cart::instance('inventory');
@@ -322,40 +322,73 @@ class InventoryController extends Controller
         return view('inventory.debit',compact('inventories'),$data);
     }
 
-    public function status_lunas(Request $request,$id)
+    public function status_lunas(Request $request, $id)
     {
         $data = Inventory::find($id);
         $data->status = 'LUNAS';
-        $data->cash = str_replace(",","",$request->input('cash'));
-        $data->change = str_replace(",","",$request->input('change'));
+        $data->cash = str_replace(",", "", $request->input('cash'));
+        $data->change = str_replace(",", "", $request->input('change'));
 
         $lastBalance = Report::orderByDesc('created_at')
-                    ->select('saldo')
-                    ->first();
-        if ($lastBalance == null) {
-            $saldo = 0;
-        } else {
-            $saldo = $lastBalance->saldo;
-        }
+            ->select('saldo')
+            ->first();
+        $saldo = ($lastBalance == null) ? 0 : $lastBalance->saldo;
+
         $totalHargaModal = DB::table('detail_inventories')
             ->where('inventories_id', $data->id)
             ->sum(DB::raw('product_capital_price * qty'));
 
         if ($data->change < 0) {
-           return redirect()->back()->with('danger','Data Tidak Benar (Uang Kurang)');
-        }else {
+            return redirect()->back()->with('danger', 'Data Tidak Benar (Uang Kurang)');
+        } else if ($data->cash < $data->total) {
+            return redirect()->back()->with('danger', 'Pembayaran kurang dari total yang harus dibayar');
+        } else {
             $data->save();
             Report::create([
                 'debit' => 0,
                 'profit' => 0,
                 'kredit' => $data->total,
                 'saldo' => $saldo - $data->total,
-                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$data->invoice_code,
+                'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice ' . $data->invoice_code,
             ]);
-           return back()->with('success','Transaksi Berhasil Disimpan');
+            return back()->with('success', 'Transaksi Berhasil Disimpan');
         }
-
     }
+
+    // public function status_lunas(Request $request,$id)
+    // {
+    //     $data = Inventory::find($id);
+    //     $data->status = 'LUNAS';
+    //     $data->cash = str_replace(",","",$request->input('cash'));
+    //     $data->change = str_replace(",","",$request->input('change'));
+
+    //     $lastBalance = Report::orderByDesc('created_at')
+    //                 ->select('saldo')
+    //                 ->first();
+    //     if ($lastBalance == null) {
+    //         $saldo = 0;
+    //     } else {
+    //         $saldo = $lastBalance->saldo;
+    //     }
+    //     $totalHargaModal = DB::table('detail_inventories')
+    //         ->where('inventories_id', $data->id)
+    //         ->sum(DB::raw('product_capital_price * qty'));
+
+    //     if ($data->change < 0) {
+    //        return redirect()->back()->with('danger','Data Tidak Benar (Uang Kurang)');
+    //     }else {
+    //         $data->save();
+    //         Report::create([
+    //             'debit' => 0,
+    //             'profit' => 0,
+    //             'kredit' => $data->total,
+    //             'saldo' => $saldo - $data->total,
+    //             'description' => 'Pengeluaran dari transaksi inventaris yang berinvoice '.$data->invoice_code,
+    //         ]);
+    //        return back()->with('success','Transaksi Berhasil Disimpan');
+    //     }
+
+    // }
 
     public function paid_off()
     {
