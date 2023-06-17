@@ -48,7 +48,7 @@
                                         <td>Rp. {{ number_format($inventory->total, 0) }}</td>
                                         <td> <span class="badge rounded-pill bg-success">{{ $inventory->status }}</span>
                                         </td>
-                                        <td><a href="{{ route('list_detail', $inventory->id) }}">Detail</a></td>
+                                        <td><a href="{{ route('inventory_list_detail', $inventory->id) }}">Detail</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -407,14 +407,14 @@ class InventoryController extends Controller
 
     public function list_detail($id){
     $data = array(
-      'menu' => 'list_transaction',
+      'menu' => 'master3',
       'sub_menu' => '',
-      'title' => 'Halaman Detail Transaksi',
+      'title' => 'Halaman Detail Transaksi Inventaris',
       'judul' => 'Detail Transaksi',
-      'sub_judul' => '',
+      'sub_judul' => 'inventaris_lunas',
 
       );
-    $inventories = Inventory::with(['DetailTransaction.product'])->where('status','Lunas')->whereHas('DetailTransaction')->where('id', $id)->get();
+    $inventories = Inventory::with(['DetailInventory.product'])->where('status','Lunas')->whereHas('DetailInventory')->where('id', $id)->get();
 
     return view('transaction.list_detail', $data, compact('inventories'));
   }
