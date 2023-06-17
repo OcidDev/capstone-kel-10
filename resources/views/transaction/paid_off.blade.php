@@ -2,7 +2,6 @@
 
 
 @section('contents')
-
     <div class="row">
         <div class="col-lg-12">
 
@@ -21,39 +20,42 @@
                     <h5 class="card-title">Riwayat Transaksi</h5>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Invoice</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Nama Customer</th>
-                                <th scope="col">Email Customer</th>
-                                <th scope="col">Phone Customer</th>
-                                <th scope="col">Total Harga</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($transactions as $transaction)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $transaction->invoice_code }}</td>
-                                    <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $transaction->buyer->name }}</td>
-                                    <td>{{ $transaction->buyer->email }}</td>
-                                    <td>{{ $transaction->buyer->phone }}</td>
-                                    <td>Rp. {{ number_format($transaction->total,0) }}</td>
-                                    <td> <span class="badge rounded-pill bg-success">{{ $transaction->status }}</span></td>
-                                    <td><a href="{{ route('list_detail',$transaction->id)}}">Detail</a></td>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Invoice</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th scope="col">Nama Customer</th>
+                                    <th scope="col">Email Customer</th>
+                                    <th scope="col">Phone Customer</th>
+                                    <th scope="col">Total Harga</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($transactions as $transaction)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $transaction->invoice_code }}</td>
+                                        <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
+                                        <td>{{ $transaction->buyer->name }}</td>
+                                        <td>{{ $transaction->buyer->email }}</td>
+                                        <td>{{ $transaction->buyer->phone }}</td>
+                                        <td>Rp. {{ number_format($transaction->total, 0) }}</td>
+                                        <td> <span class="badge rounded-pill bg-success">{{ $transaction->status }}</span>
+                                        </td>
+                                        <td><a href="{{ route('list_detail', $transaction->id) }}">Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>
@@ -61,7 +63,4 @@
 
         </div>
     </div>
-
-
-
 @endsection

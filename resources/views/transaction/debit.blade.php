@@ -20,51 +20,53 @@
                     <h5 class="card-title">Transaksi Belum Lunas</h5>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Invoice</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Nama Customer</th>
-                                <th scope="col">Telephone Customer</th>
-                                <th scope="col">Email Customer</th>
-                                <th scope="col">Daftar Produk</th>
-                                <th scope="col">Total Harga</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($transactions as $transaction)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $transaction->invoice_code }}</td>
-                                    <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $transaction->buyer->name }}</td>
-                                    <td>{{ $transaction->buyer->phone }}</td>
-                                    <td>{{ $transaction->buyer->email }}</td>
-                                    <td>
-                                        @foreach ($transaction->DetailTransaction as $detail)
-                                            {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
-                                        @endforeach
-                                    </td>
-                                    <td>Rp. {{ number_format($transaction->total, 0) }}</td>
-                                    <td> <span class="badge rounded-pill bg-danger">{{ $transaction->status }}</span></td>
-                                    <td>
-                                        <button data-bs-toggle="modal" id="bayar"
-                                            data-bs-target="#bayar{{ $transaction->id }}" style="color:white"
-                                            href="#" class="btn btn-primary">
-                                            Bayar
-                                        </button>
-                                    </td>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Invoice</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th scope="col">Nama Customer</th>
+                                    <th scope="col">Telephone Customer</th>
+                                    <th scope="col">Email Customer</th>
+                                    <th scope="col">Daftar Produk</th>
+                                    <th scope="col">Total Harga</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($transactions as $transaction)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $transaction->invoice_code }}</td>
+                                        <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
+                                        <td>{{ $transaction->buyer->name }}</td>
+                                        <td>{{ $transaction->buyer->phone }}</td>
+                                        <td>{{ $transaction->buyer->email }}</td>
+                                        <td>
+                                            @foreach ($transaction->DetailTransaction as $detail)
+                                                {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
+                                            @endforeach
+                                        </td>
+                                        <td>Rp. {{ number_format($transaction->total, 0) }}</td>
+                                        <td> <span class="badge rounded-pill bg-danger">{{ $transaction->status }}</span></td>
+                                        <td>
+                                            <button data-bs-toggle="modal" id="bayar"
+                                                data-bs-target="#bayar{{ $transaction->id }}" style="color:white"
+                                                href="#" class="btn btn-primary">
+                                                Bayar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>

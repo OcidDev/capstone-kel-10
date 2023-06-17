@@ -30,35 +30,37 @@
                     </nav>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Debit</th>
-                                <th scope="col">Kredit</th>
-                                <th scope="col">Keuntungan</th>
-                                <th scope="col">Deskripsi</th>
-                                <th scope="col">Saldo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($data_laporan as $item)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $item->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>Rp. {{ number_format($item->debit) }}</td>
-                                    <td>Rp.{{ number_format($item->kredit) }}</td>
-                                    <td>Rp.{{ number_format($item->profit) }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>Rp.{{ number_format($item->saldo) }}</td>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th scope="col">Debit</th>
+                                    <th scope="col">Kredit</th>
+                                    <th scope="col">Keuntungan</th>
+                                    <th scope="col">Deskripsi</th>
+                                    <th scope="col">Saldo</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($data_laporan as $item)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $item->created_at->format('d M Y - H:i:s') }}</td>
+                                        <td>Rp. {{ number_format($item->debit) }}</td>
+                                        <td>Rp.{{ number_format($item->kredit) }}</td>
+                                        <td>Rp.{{ number_format($item->profit) }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>Rp.{{ number_format($item->saldo) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>
@@ -113,8 +115,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" method="POST" action="{{ route('report.edit', $item->id) }}"
-                            method="POST">
+                        <form class="row g-3" method="POST" action="{{ route('report.edit', $item->id) }}" method="POST">
                             @csrf
                             <div class="col-12">
                                 <label for="status" class="form-label">Jenis Laporan</label>
