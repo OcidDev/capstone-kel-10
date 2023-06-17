@@ -1,22 +1,13 @@
 @extends('layouts.app')
-
 @section('title', 'Dashboard')
-
 @section('contents')
-
-
     <div class="row">
-
         <div class="col-lg-12">
             <div class="row">
-
-
                 <div class=" col-md-7">
                     <div class="card info-card">
                         <div class="card-title">
-
                         </div>
-
                         <div class="card-body">
                             @if (Session::get('danger'))
                                 <div class="swal3" data-swal3="{{ Session::get('danger') }}">
@@ -25,7 +16,6 @@
                                 <div class="swal2" data-swal2="{{ Session::get('success') }}">
                                 </div>
                             @endif
-
                             <form class="row g-3">
                                 <div class="col-md-3">
                                     <div class="col-md-12">
@@ -64,51 +54,30 @@
                                     </div>
                                 </div>
                             </form><!-- End floating Labels Form -->
-
                         </div>
-
                         <div class="card">
-
                         </div>
-
                     </div>
                 </div>
-
                 <div class=" col-md-5">
                     <div class="card info-card">
                         <div class="card-title">
-
                         </div>
-
-
                         <div class="card-body">
                             <label class="display-5 d-flex justify-content-end">Rp. {{ $grand_total }}</label>
                         </div>
-
                         <div class="card">
-
                         </div>
-
-
-
                     </div>
                 </div>
-
-
-
-
-
             </div>
         </div>
-
         <div class="col-lg-12">
             <div class="row">
                 <div class=" col-md-12">
                     <div class="card info-card">
                         <div class="card-title">
-
                         </div>
-
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -116,7 +85,7 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-3">
+                                            <div class="col-12 col-md-3 ">
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     <div class="form-floating">
                                                         <input value="" class="form-control" id="product_code"
@@ -126,7 +95,6 @@
                                                         <label for="product_code" class="text-center">Kode
                                                             Produk</label>
                                                     </div>
-
                                                     <button data-bs-toggle="modal" data-bs-target="#find-product"
                                                         type="button" class="btn btn-primary"><i
                                                             class="bi bi-search"></i>Cari</button>
@@ -134,7 +102,7 @@
                                                             class="bi bi-trash"></i></button>
                                                 </div>
                                             </div>
-                                            <div class="col-2 ">
+                                            <div class="col-12 col-md-2 ">
                                                 <div class="form-floating">
                                                     <input value="" readonly name="product_name" class="form-control"
                                                         id="product_name" class="form-control" placeholder="Nama Produk"
@@ -144,7 +112,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-2 ">
+                                            <div class="col-12 col-md-2 ">
                                                 <div class="form-floating">
                                                     <input value="" readonly name="category_name"
                                                         class="form-control" id="category_name" class="form-control"
@@ -153,26 +121,22 @@
                                                     <label id="category_name" class="text-center"
                                                         for="category_name">Kategori Produk</label>
                                                 </div>
-
                                             </div>
-
                                             <input type="hidden" readonly name="product_id" class="form-control"
                                                 placeholder="ID_Produk" aria-label="Kategori"
                                                 aria-describedby="basic-addon1">
-
-                                            <div class="col-2 ">
+                                            <div class="col-12 col-md-2 ">
                                                 <div class="form-floating">
                                                     <input value="" readonly name="price" class="form-control"
                                                         id="price" class="form-control" placeholder="Harga"
                                                         aria-label="Harga" aria-describedby="basic-addon1">
-                                                        <input type="hidden" id="capital_price" value="" readonly name="capital_price">
+                                                    <input type="hidden" id="capital_price" value="" readonly
+                                                        name="capital_price">
                                                     <label id="price" class="text-center"
                                                         for="price">Harga</label>
                                                 </div>
-
-
                                             </div>
-                                            <div class="col-1 ">
+                                            <div class="col-12 col-md-1">
                                                 <div class="form-floating">
                                                     <input value="" name="qty" class="form-control"
                                                         id="qty" class="form-control" placeholder="QTY"
@@ -180,51 +144,39 @@
                                                     <label id="qty" class="text-center" for="qty">QTY</label>
                                                 </div>
                                             </div>
-                                            <div class="col-2">
-                                                <button type="submit" class="btn btn-primary"><i
+                                            <div class="col-12 col-md-2 d-flex">
+                                                <button type="submit"
+                                                    class="btn  btn-lg mt-2 form-control btn-primary"><i
                                                         class="bi bi-cart-plus-fill"></i> Add</button>
                                             </div>
-
                                         </div>
                                     </form>
                                 </div>
                             </div>
-
                         </div>
-
-                        <div class="card">
-
-                        </div>
-
                     </div>
                 </div>
-
             </div>
-
         </div>
-
         <div class="col-log-12">
             <div class="row">
                 <div class=" col-md-6">
                     <div class="card info-card">
                         <div class="card">
-
                         </div>
-
-
                         <div class="card-body ">
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Kode Produk</th>
-                                                <th scope="col">Nama Produk</th>
-                                                <th scope="col">Harga</th>
-                                                <th scope="col">Qty</th>
-                                                <th scope="col">Total Harga</th>
-                                                <th scope="col">Aksi</th>
+                                                <th>#</th>
+                                                <th>Kode Produk</th>
+                                                <th>Nama Produk</th>
+                                                <th>Harga</th>
+                                                <th>Qty</th>
+                                                <th>Total Harga</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -254,16 +206,10 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card">
-
-                        </div>
-
                     </div>
                 </div>
                 <div class=" col-md-3">
                     <div class="card info-card">
-
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -274,33 +220,24 @@
 
                                             <div class="col-md-12">
                                                 <label for="suppliers_id" class="form-label">Nama Supplier</label>
-                                                <select class="form-select" required name="suppliers_id" id="suppliers_id"
-                                                    aria-label="Default select example">
+                                                <select class="form-select" required name="suppliers_id"
+                                                    id="suppliers_id" aria-label="Default select example">
                                                     <option selected disabled>Cari Supplier</option>
                                                     @foreach ($suppliers as $supplier)
-                                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card">
-
-                        </div>
-
-
-
                     </div>
                 </div>
                 <div class=" col-md-3">
                     <div class="card info-card">
-
                         <br>
-
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -357,47 +294,50 @@
                 </div>
                 <div class="modal-body">
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Kategori</th>
-                                <th scope="col">Rak</th>
-                                <th scope="col">Gambar</th>
-                                <th scope="col">Kode Produk</th>
-                                <th scope="col">Nama Produk</th>
-                                <th scope="col">Deskripsi Produk</th>
-                                <th scope="col">Harga</th>
-                                <th scope="col">Modal</th>
-                                <th scope="col">Stok</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($data_products as $item)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $item->category->name }}</td>
-                                    <td>{{ $item->shelves->name }}</td>
-                                    <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
-                                    </td>
-                                    <td>{{ $item->product_code }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>Rp. {{ number_format($item->price, 0) }}</td>
-                                    <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
-                                    <td>{{ $item->stock }}</td>
-                                    <td>
-                                        <button id="pilih_button_{{ $item->product_code }}" type="button"
-                                            class="btn btn-success btn-xs">Pilih</button>
-                                    </td>
+                                    <th>No</th>
+                                    <th>Kategori</th>
+                                    <th>Rak</th>
+                                    <th>Gambar</th>
+                                    <th>Kode Produk</th>
+                                    <th>Nama Produk</th>
+                                    <th>Deskripsi Produk</th>
+                                    <th>Harga</th>
+                                    <th>Modal</th>
+                                    <th>Stok</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($data_products as $item)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $item->category->name }}</td>
+                                        <td>{{ $item->shelves->name }}</td>
+                                        <td> <img src="{{ Storage::url($item->image) }}" style="width:100px"
+                                                alt="image">
+                                        </td>
+                                        <td>{{ $item->product_code }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>Rp. {{ number_format($item->price, 0) }}</td>
+                                        <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
+                                        <td>{{ $item->stock }}</td>
+                                        <td>
+                                            <button id="pilih_button_{{ $item->product_code }}" type="button"
+                                                class="btn btn-success btn-xs">Pilih</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
                 </div>
             </div>
@@ -527,7 +467,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var pilihButtons = document.querySelectorAll('[id^="pilih_button_"]');
-
             pilihButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
                     var productCode = this.id.replace('pilih_button_', '');

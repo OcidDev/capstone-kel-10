@@ -31,57 +31,59 @@
                     </nav>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Kategori</th>
-                                <th scope="col">Rak</th>
-                                <th scope="col">Gambar</th>
-                                <th scope="col">Kode Produk</th>
-                                <th scope="col">Nama Produk</th>
-                                <th scope="col">Deskripsi Produk</th>
-                                <th scope="col">Harga</th>
-                                <th scope="col">Modal</th>
-                                <th scope="col">Stok</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($data_products as $item)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $item->category->name }}</td>
-                                    <td>{{ $item->shelves->name }}</td>
-                                    <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
-                                    </td>
-                                    <td>{{ $item->product_code }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>Rp. {{ number_format($item->price, 0) }}</td>
-                                    <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
-                                    <td>{{ $item->stock }}</td>
-                                    <td>
-                                        <form method="POST" action="{{ route('product.delete', $item->id) }}">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $item->id }}"
-                                                class="btn btn-sm btn-warning">Edit</button>
-
-                                            @csrf
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit"
-                                                class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
-                                                data-toggle="tooltip" title='Delete'>Delete</button>
-                                        </form>
-
-                                    </td>
+                                    <th>No</th>
+                                    <th>Kategori</th>
+                                    <th>Rak</th>
+                                    <th>Gambar</th>
+                                    <th>Kode Produk</th>
+                                    <th>Nama Produk</th>
+                                    <th>Deskripsi Produk</th>
+                                    <th>Harga</th>
+                                    <th>Modal</th>
+                                    <th>Stok</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($data_products as $item)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $item->category->name }}</td>
+                                        <td>{{ $item->shelves->name }}</td>
+                                        <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
+                                        </td>
+                                        <td>{{ $item->product_code }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>Rp. {{ number_format($item->price, 0) }}</td>
+                                        <td>Rp. {{ number_format($item->capital_price, 0) }}</td>
+                                        <td>{{ $item->stock }}</td>
+                                        <td>
+                                            <form method="POST" class="d-flex" action="{{ route('product.delete', $item->id) }}">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#edit{{ $item->id }}"
+                                                    class="btn btn-sm btn-warning me-2">Edit</button>
+
+                                                @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
+                                                    data-toggle="tooltip" title='Delete'>Delete</button>
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>

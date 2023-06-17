@@ -8,9 +8,10 @@
     <title>{{ $title }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
 
     <!-- Favicons -->
     <link href="{{ asset('/template/assets/img/favicon.png') }}" rel="icon">
@@ -36,13 +37,13 @@
     <!-- Template Main CSS File -->
     <link href="{{ asset('/template/assets/css/style.css') }}" rel="stylesheet">
 
-     <!-- Auto Numerik -->
+    <!-- Auto Numerik -->
     <script src="{{ asset('vendor/autoNumeric/src/AutoNumeric.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-    
+
 
 
 
@@ -88,7 +89,7 @@
     <script src="{{ asset('/template/assets/vendor/php-email-form/validate.js') }}"></script>
     <!-- Template Main JS File -->
     <script src="{{ asset('/template/assets/js/main.js') }}"></script>
- 
+
 
     @stack('script')
     <script type="text/javascript">
@@ -117,7 +118,6 @@
 
 
     <script>
-        
         const swal2 = $('.swal2').data('swal2');
         const swal3 = $('.swal3').data('swal3');
 
@@ -127,17 +127,14 @@
                 text: swal2,
                 icon: 'success',
             })
-        }else if (swal3) {
+        } else if (swal3) {
             swal({
                 title: "MAAF !!",
                 text: swal3,
                 icon: 'error',
             })
-        } 
-            
-        
+        }
     </script>
-
 </body>
 
 </html>

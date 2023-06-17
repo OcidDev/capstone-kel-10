@@ -31,48 +31,50 @@
                     </nav>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Nama Kategori</th>
-                                <th scope="col">Dekskripsi Kategori</th>
-                                <th scope="col">Gambar Kategori</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($data_category as $item)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
-                                    </td>
-                                    <td>
-
-
-                                        <form method="POST" action="{{ route('category.delete', $item->id) }}">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $item->id }}"
-                                                class="btn btn-sm btn-warning">Edit</button>
-
-                                            @csrf
-                                            </a>
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit"
-                                                class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
-                                                data-toggle="tooltip" title='Delete'>Delete</button>
-                                        </form>
-
-                                    </td>
+                                    <th>No</th>
+                                    <th>Nama Kategori</th>
+                                    <th>Dekskripsi Kategori</th>
+                                    <th>Gambar Kategori</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($data_category as $item)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td> <img src="{{ Storage::url($item->image) }}" style="width:100px" alt="image">
+                                        </td>
+                                        <td>
+
+
+                                            <form method="POST" class="d-flex" action="{{ route('category.delete', $item->id) }}">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#edit{{ $item->id }}"
+                                                    class="btn btn-sm btn-warning me-2">Edit</button>
+
+                                                @csrf
+                                                </a>
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
+                                                    data-toggle="tooltip" title='Delete'>Delete</button>
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>

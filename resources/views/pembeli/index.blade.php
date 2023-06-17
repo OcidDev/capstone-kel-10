@@ -30,48 +30,50 @@
                     </nav>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Nama Pembeli</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Telephone/HP</th>
-                                <th scope="col">Alamat</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($data_pembeli as $item)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->address }}</td>
-                                    <td>
-
-
-                                        <form method="POST" action="{{ route('buyer.delete', $item->id) }}">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $item->id }}"
-                                                class="btn btn-sm btn-warning">Edit</button>
-
-                                            @csrf
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit"
-                                                class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
-                                                data-toggle="tooltip" title='Delete'>Delete</button>
-                                        </form>
-
-                                    </td>
+                                    <th>No</th>
+                                    <th>Nama Pembeli</th>
+                                    <th>Email</th>
+                                    <th>Telephone/HP</th>
+                                    <th>Alamat</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($data_pembeli as $item)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->phone }}</td>
+                                        <td>{{ $item->address }}</td>
+                                        <td>
+
+
+                                            <form method="POST" class="d-flex" action="{{ route('buyer.delete', $item->id) }}">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#edit{{ $item->id }}"
+                                                    class="btn btn-sm btn-warning me-2">Edit</button>
+
+                                                @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-flat show-alert-delete-box btn-sm"
+                                                    data-toggle="tooltip" title='Delete'>Delete</button>
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>

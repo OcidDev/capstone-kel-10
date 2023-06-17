@@ -20,49 +20,52 @@
                     <h5 class="card-title">Transaksi Belum Lunas</h5>
 
                     <!-- Table with stripped rows -->
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Invoice</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Nama Supplier</th>
-                                <th scope="col">Telephone Supplier</th>
-                                <th scope="col">Daftar Produk</th>
-                                <th scope="col">Total Harga</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $no = 1;
-                            @endphp
-                            @foreach ($inventories as $inventory)
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $inventory->invoice_code }}</td>
-                                    <td>{{ $inventory->created_at->format('d M Y - H:i:s') }}</td>
-                                    <td>{{ $inventory->supplier->name }}</td>
-                                    <td>{{ $inventory->supplier->phone }}</td>
-                                    <td>
-                                        @foreach ($inventory->DetailInventory as $detail)
-                                            {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
-                                        @endforeach
-                                    </td>
-                                    <td>Rp. {{ number_format($inventory->total, 0) }}</td>
-                                    <td> <span class="badge rounded-pill bg-danger">{{ $inventory->status }}</span></td>
-                                    <td>
-                                        <button data-bs-toggle="modal" id="bayar"
-                                            data-bs-target="#bayar{{ $inventory->id }}" style="color:white"
-                                            href="#" class="btn btn-primary">
-                                            Bayar
-                                        </button>
-                                    </td>
+                                    <th>No</th>
+                                    <th>Invoice</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Supplier</th>
+                                    <th>Telephone Supplier</th>
+                                    <th>Daftar Produk</th>
+                                    <th>Total Harga</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($inventories as $inventory)
+                                    <tr>
+                                        <th scope="row">{{ $no++ }}</th>
+                                        <td>{{ $inventory->invoice_code }}</td>
+                                        <td>{{ $inventory->created_at->format('d M Y - H:i:s') }}</td>
+                                        <td>{{ $inventory->supplier->name }}</td>
+                                        <td>{{ $inventory->supplier->phone }}</td>
+                                        <td>
+                                            @foreach ($inventory->DetailInventory as $detail)
+                                                {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>
+                                            @endforeach
+                                        </td>
+                                        <td>Rp. {{ number_format($inventory->total, 0) }}</td>
+                                        <td> <span class="badge rounded-pill bg-danger">{{ $inventory->status }}</span>
+                                        </td>
+                                        <td>
+                                            <button data-bs-toggle="modal" id="bayar"
+                                                data-bs-target="#bayar{{ $inventory->id }}" style="color:white"
+                                                href="#" class="btn btn-primary">
+                                                Bayar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- End Table with stripped rows -->
 
                 </div>
@@ -80,7 +83,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" action="{{ route('inventory.status_lunas', $inventory->id) }}" method="GET">
+                        <form class="row g-3" action="{{ route('inventory.status_lunas', $inventory->id) }}"
+                            method="GET">
                             @csrf
                             <div class="card-body ">
                                 <div class="row">
