@@ -1,112 +1,125 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nota Transaksi</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: bdone-box;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Transaksi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: bdone-box;
+        }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #ffffff;
-    }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
 
-    .header {
-      text-align: center;
-      padding-bottom: 20px;
-    }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
 
-    .invoice-details {
-      margin-bottom: 20px;
-    }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
 
-    .invoice-details p {
-      margin: 5px 0;
-    }
+        .invoice-details p {
+            margin: 5px 0;
+        }
 
-    .invoice-table {
-      width: 100%;
-      bdone-collapse: collapse;
-      margin-bottom: 20px;
-    }
+        .invoice-table {
+            width: 100%;
+            bdone-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    .invoice-table th,
-    .invoice-table td {
-      bdone: 1px solid #dddddd;
-      padding: 8px;
-      text-align: left;
-    }
+        .invoice-table th,
+        .invoice-table td {
+            bdone: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-    .total {
-      text-align: right;
-    }
+        .total {
+            text-align: right;
+        }
 
-    @media screen and (max-width: 600px) {
-      .container {
-        width: 100%;
-        padding: 10px;
-      }
-    }
-  </style>
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Nota Transaksi</h1>
-    </div>
-    @foreach ($inventories as $inventory)
-    <div class="invoice-details">
-      <p><strong>Nomor Invoice:</strong> {{ $inventory->invoice_code }}</p>
-      <p><strong>Tanggal:</strong> {{ date('d/m/Y') }}</p>
-      <p><strong>Status:</strong> {{  $inventory->status }}</p>
-    </div>
-    <table class="invoice-table">
-      <thead>
-        <tr>
-          <th>Menu</th>
-          <th>Jumlah</th>
-          <th>Harga</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($inventory->Detailinventory as $detail )
-        <tr>
-          <td>{{ $detail->product->name }}</td>
-          <td>{{ $detail->qty }}</td>
-          <td>Rp. {{number_format($detail->product->price,0)}}</td>
-          <td>Rp. {{number_format($detail->product->price*$detail->qty,0)}}</td>
-        </tr>
+    <center><button onclick="printDiv()">Cetak</button></center>
+    <div class="container" id="cetak-area">
+        <div class="header">
+            <h1>Nota Transaksi Inventaris</h1>
+        </div>
+        @foreach ($inventories as $inventory)
+            <div class="invoice-details">
+                <p><strong>Nomor Invoice:</strong> {{ $inventory->invoice_code }}</p>
+                <p><strong>Tanggal:</strong> {{ date('d/m/Y') }}</p>
+                <p><strong>Status:</strong> {{ $inventory->status }}</p>
+            </div>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Menu</th>
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($inventory->Detailinventory as $detail)
+                        <tr>
+                            <td>{{ $detail->product->name }}</td>
+                            <td>{{ $detail->qty }}</td>
+                            <td>Rp. {{ number_format($detail->product->price, 0) }}</td>
+                            <td>Rp. {{ number_format($detail->product->price * $detail->qty, 0) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="total"><strong>Total:</strong></td>
+                        <td>Rp. {{ number_format($inventory->total, 0) }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="total"><strong>Pembayaran:</strong></td>
+                        <td>Rp. {{ number_format($inventory->cash, 0) }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="total"><strong>Kembalian:</strong></td>
+                        <td>Rp. {{ number_format($inventory->change, 0) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
         @endforeach
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="3" class="total"><strong>Total:</strong></td>
-          <td>Rp. {{number_format($inventory->total,0)}}</td>
-        </tr>
-        <tr>
-          <td colspan="3" class="total"><strong>Pembayaran:</strong></td>
-          <td>Rp. {{number_format($inventory->cash,0)}}</td>
-        </tr>
-        <tr>
-          <td colspan="3" class="total"><strong>Kembalian:</strong></td>
-          <td>Rp. {{number_format($inventory->change,0)}}</td>
-        </tr>
-      </tfoot>
-    </table>
-    @endforeach
-  </div>
+    </div>
+
+    <script>
+        function printDiv() {
+            var printContents = document.querySelector('#cetak-area').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 </body>
+
 </html>
