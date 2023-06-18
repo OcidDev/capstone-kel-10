@@ -113,108 +113,179 @@ class TransactionController extends Controller
 
     public function save_transaction(Request $request)
     {
-
-        $product = Cart::subtotal(0);
+        $subtotal = Cart::subtotal(0);
         $invoiceCode = $this->createInvoice();
         $buyer_id = $request->buyer_id;
-        $grand_total =  str_replace(",","",Cart::subtotal(0));
-        $cash =  str_replace(",","",$request->input('cash'));
-        $change =  str_replace(",","",$request->input('change'));
+        $grand_total = str_replace(",", "", $subtotal);
+        $cash = ($request->cash !== null) ?  str_replace(",", "", $request->input('cash')) : 0;
+        $change = str_replace(",", "", $request->input('change'));
         $user_id = Auth::user()->id;
         $transaksi_id = 1;
         $item = Cart::content();
-        $status = '';
-        if($grand_total > $cash){
-            $status = 'Belum Lunas';
-            $change = 0;
-        }else{
-            $status = 'Lunas';
+
+        $status = ($grand_total > $cash) ? 'Belum Lunas' : 'Lunas';
+        $change = ($status === 'Belum Lunas') ? 0 : $change;
+
+        if(Cart::count() <= 0){
+            return redirect()->back()->with('danger', 'Data Keranjang Kosong');
+        }else if($request->cash < $grand_total && $request->cash !== null && $request->cash >= 1){
+            return redirect()->back()->with('danger', 'lu kalo ngutang harus langsung klik bayar tanpa cash');
+        }else if($request->buyer_id == null && $request->cash == null || $request->buyer_id == null && $request->cash == 0 ){
+            return redirect()->back()->with('danger', 'Gak kenall gak boleh utamg !!');
         }
 
-        if ( $product==0 ) {
-            return redirect('transaction')->with('danger','Data Keranjang Kosong');
-        }
+        $data = [
+            'invoice_code' => $invoiceCode,
+            'cashier_id' => $user_id,
+            'buyer_id' => $buyer_id,
+            'total' => $grand_total,
+            'cash' => $cash,
+            'change' => $change,
+            'status' => $status,
+        ];
 
-        if ($cash<=0) {
+        $transactions = Transaction::create($data);
+
+        foreach ($item as $key => $value) {
             $data = [
-                'invoice_code' => $invoiceCode,
-                'cashier_id' => $user_id,
-                'buyer_id' => $buyer_id,
-                'total' =>  str_replace(",","",Cart::subtotal(0)),
-                'cash' => $cash,
-                'change' => 0,
-                'status' => $status,
-            ];
-
-            $transactions = Transaction::create($data);
-
-            foreach ($item as $key => $value) {
-                $data = [
                 'transactions_id' => $transactions->id,
                 'products_id' => $value->id,
                 'product_name' => $value->name,
                 'product_price' => $value->price,
                 'product_capital_price' => $value->options->capital_price,
-                'qty' =>  $value->qty,
-                ];
-                DetailTransaction::create($data);
-                $product_stock = Product::find($value->id);
-                $stokminus = $product_stock->stock - $value->qty;
-                Product::find($value->id)->update(['stock' => $stokminus]);
-            }
-        }else if($cash>0){
-            $data = [
-                'invoice_code' => $invoiceCode,
-                'cashier_id' => Auth::user()->id,
-                'buyer_id' => $buyer_id,
-                'total' =>  str_replace(",","",Cart::subtotal(0)),
-                'cash' => $cash,
-                'change' => $change,
-                'status' => $status,
+                'qty' => $value->qty,
             ];
-            $transactions = Transaction::create($data);
-            foreach ($item as $key => $value) {
-                $data = [
-                'transactions_id' => $transactions->id,
-                'products_id' => $value->id,
-                'product_name' => $value->name,
-                'product_price' => $value->price,
-                'product_capital_price' => $value->options->capital_price,
-                'qty' =>  $value->qty,
-                ];
             DetailTransaction::create($data);
             $product_stock = Product::find($value->id);
             $stokminus = $product_stock->stock - $value->qty;
-            Product::find($value->id)->update(['stock' => $stokminus]);
-            }
-
-
+            $product_stock->update(['stock' => $stokminus]);
         }
-        $transactions = Transaction::latest('id')->first();
 
-        $lastBalance = Report::orderByDesc('created_at')
-                    ->select('saldo')
-                    ->first();
-            if ($lastBalance == null) {
-                $saldo = 0;
-            } else {
-                $saldo = $lastBalance->saldo;
-            }
-        $totalHargaModal = DB::table('detail_transactions')
-            ->where('transactions_id', $transactions->id)
+        $latestTransaction = Transaction::latest('id')->first();
+        $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+        $saldo = ($lastBalance == null) ? 0 : $lastBalance->saldo;
+
+        $totalHargaModal = DetailTransaction::where('transactions_id', $latestTransaction->id)
             ->sum(DB::raw('product_capital_price * qty'));
-        if($status == 'Lunas'){
+
+        if ($status == 'Lunas') {
             Report::create([
                 'debit' => $grand_total,
                 'profit' => $grand_total - $totalHargaModal,
                 'kredit' => 0,
-            'saldo' => $saldo + $grand_total,
+                'saldo' => $saldo + $grand_total,
                 'description' => 'pendapatan dari penjualan yang berinvoice '.$invoiceCode,
             ]);
         }
+
         Cart::destroy();
-        return redirect('transaction')->with('success','Transaksi Berhasil Disimpan');
+        return redirect('transaction')->with('success', 'Transaksi Berhasil Disimpan');
     }
+
+    // public function save_transaction(Request $request)
+    // {
+
+    //     $product = Cart::subtotal(0);
+    //     $invoiceCode = $this->createInvoice();
+    //     $buyer_id = $request->buyer_id;
+    //     $grand_total =  str_replace(",","",Cart::subtotal(0));
+    //     $cash =  str_replace(",","",$request->input('cash'));
+    //     $change =  str_replace(",","",$request->input('change'));
+    //     $user_id = Auth::user()->id;
+    //     $transaksi_id = 1;
+    //     $item = Cart::content();
+    //     $status = '';
+    //     if($grand_total > $cash){
+    //         $status = 'Belum Lunas';
+    //         $change = 0;
+    //     }else{
+    //         $status = 'Lunas';
+    //     }
+
+    //     if ( $product==0 ) {
+    //         return redirect('transaction')->with('danger','Data Keranjang Kosong');
+    //     }
+
+    //     if ($cash<=0) {
+    //         $data = [
+    //             'invoice_code' => $invoiceCode,
+    //             'cashier_id' => $user_id,
+    //             'buyer_id' => $buyer_id,
+    //             'total' =>  str_replace(",","",Cart::subtotal(0)),
+    //             'cash' => $cash,
+    //             'change' => 0,
+    //             'status' => $status,
+    //         ];
+
+    //         $transactions = Transaction::create($data);
+
+    //         foreach ($item as $key => $value) {
+    //             $data = [
+    //             'transactions_id' => $transactions->id,
+    //             'products_id' => $value->id,
+    //             'product_name' => $value->name,
+    //             'product_price' => $value->price,
+    //             'product_capital_price' => $value->options->capital_price,
+    //             'qty' =>  $value->qty,
+    //             ];
+    //             DetailTransaction::create($data);
+    //             $product_stock = Product::find($value->id);
+    //             $stokminus = $product_stock->stock - $value->qty;
+    //             Product::find($value->id)->update(['stock' => $stokminus]);
+    //         }
+    //     }else if($cash>0){
+    //         $data = [
+    //             'invoice_code' => $invoiceCode,
+    //             'cashier_id' => Auth::user()->id,
+    //             'buyer_id' => $buyer_id,
+    //             'total' =>  str_replace(",","",Cart::subtotal(0)),
+    //             'cash' => $cash,
+    //             'change' => $change,
+    //             'status' => $status,
+    //         ];
+    //         $transactions = Transaction::create($data);
+    //         foreach ($item as $key => $value) {
+    //             $data = [
+    //             'transactions_id' => $transactions->id,
+    //             'products_id' => $value->id,
+    //             'product_name' => $value->name,
+    //             'product_price' => $value->price,
+    //             'product_capital_price' => $value->options->capital_price,
+    //             'qty' =>  $value->qty,
+    //             ];
+    //         DetailTransaction::create($data);
+    //         $product_stock = Product::find($value->id);
+    //         $stokminus = $product_stock->stock - $value->qty;
+    //         Product::find($value->id)->update(['stock' => $stokminus]);
+    //         }
+
+
+    //     }
+    //     $transactions = Transaction::latest('id')->first();
+
+    //     $lastBalance = Report::orderByDesc('created_at')
+    //                 ->select('saldo')
+    //                 ->first();
+    //         if ($lastBalance == null) {
+    //             $saldo = 0;
+    //         } else {
+    //             $saldo = $lastBalance->saldo;
+    //         }
+    //     $totalHargaModal = DB::table('detail_transactions')
+    //         ->where('transactions_id', $transactions->id)
+    //         ->sum(DB::raw('product_capital_price * qty'));
+    //     if($status == 'Lunas'){
+    //         Report::create([
+    //             'debit' => $grand_total,
+    //             'profit' => $grand_total - $totalHargaModal,
+    //             'kredit' => 0,
+    //         'saldo' => $saldo + $grand_total,
+    //             'description' => 'pendapatan dari penjualan yang berinvoice '.$invoiceCode,
+    //         ]);
+    //     }
+    //     Cart::destroy();
+    //     return redirect('transaction')->with('success','Transaksi Berhasil Disimpan');
+    // }
 
     public function remove_item($rowId){
         Cart::remove($rowId);

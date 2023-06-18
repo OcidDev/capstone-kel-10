@@ -319,7 +319,7 @@
                                         <div class="col-md-12">
                                             <br>
                                             <label for="cash" class="form-label">Cash</label>
-                                            <input required placeholder="Cash" name="cash" class="form-control"
+                                            <input placeholder="Cash" name="cash" class="form-control"
                                                 id="cash">
                                         </div>
                                         <div class="col-md-12">
