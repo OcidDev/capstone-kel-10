@@ -45,9 +45,9 @@
                                         <th scope="row">{{ $no++ }}</th>
                                         <td>{{ $transaction->invoice_code }}</td>
                                         <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                        <td>{{ $transaction->buyer->name }}</td>
-                                        <td>{{ $transaction->buyer->phone }}</td>
-                                        <td>{{ $transaction->buyer->email }}</td>
+                                        <td>{{ ($transaction->buyer == null) ? 'Cash' : $transaction->buyer->name; }}</td>
+                                        <td>{{ ($transaction->buyer == null) ? '-' : $transaction->buyer->phone; }}</td>
+                                        <td>{{ ($transaction->buyer == null) ? '-' : $transaction->buyer->email; }}</td>
                                         <td>
                                             @foreach ($transaction->DetailTransaction as $detail)
                                                 {{ $detail->product->name }} | {{ $detail->qty }} pcs <br>

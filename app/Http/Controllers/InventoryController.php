@@ -76,7 +76,6 @@ class InventoryController extends Controller
     {
         $inventoryCart = Cart::instance('inventory');
         $product_code = $request->input('product_code');
-        $capital_price = $request->input('capital_price');
         $qty = $request->input('qty');
 
 
@@ -98,7 +97,7 @@ class InventoryController extends Controller
             $cart = $inventoryCart->add([
                 'id' => $request->product_id,
                 'name' => $request->product_name,
-                'price' => $request->price,
+                'price' => $request->capital_price,
                 'weight' => 0,
                 'qty' => $qty,
                 'options' => [
@@ -119,17 +118,14 @@ class InventoryController extends Controller
         $invoiceCode = $this->createInvoice();
         $supplier_id = $request->suppliers_id;
         $grand_total = str_replace(",", "", $subtotal);
-        $cash = str_replace(",", "", $request->input('cash'));
+        $cash = ($request->cash !== null) ?  str_replace(",", "", $request->input('cash')) : 0;
         $cashier = Auth::user()->id;
         $item = $inventoryCart->content();
         $status = ($grand_total > $cash) ? 'Belum Lunas' : 'Lunas';
         $change = ($status == 'Lunas') ? $cash - $grand_total : 0;
+
         $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
-        if($inventoryCart->count() <= 0){
-            return redirect()->back()->with('danger', 'Data Keranjang Kosong');
-        }else if($cash < 0){
-            return redirect()->back()->with('danger', 'Uang Pembayaran Tidak Boleh Kurang Dari 0');
-        }
+
         $data = [
             'invoice_code' => $invoiceCode,
             'cashier_id' => $cashier,
@@ -139,6 +135,16 @@ class InventoryController extends Controller
             'change' => $change,
             'status' => $status,
         ];
+
+
+        if($inventoryCart->count() <= 0){
+            return redirect()->back()->with('danger', 'Data Keranjang Kosong');
+        }else if($request->cash < $grand_total && $request->cash !== null && $request->cash >= 1){
+            return redirect()->back()->with('danger', 'lu kalo ngutang harus langsung klik bayar tanpa cash');
+        }else if($request->suppliers_id == null){
+            return redirect()->back()->with('danger', 'Supplier Tidak Boleh Kosong');
+        }
+
 
         $inventories = Inventory::create($data);
 

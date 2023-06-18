@@ -250,7 +250,7 @@
                                         <div class="col-md-12">
                                             <br>
                                             <label for="cash" class="form-label">Cash</label>
-                                            <input required placeholder="Cash" name="cash" class="form-control"
+                                            <input placeholder="Cash" name="cash" class="form-control"
                                                 id="cash">
                                         </div>
                                         <div class="col-md-12">
@@ -260,7 +260,7 @@
                                         </div>
                                         <div class="col-md-12 d-grid gap-2">
                                             <br>
-                                            <button type="submit" class="btn btn-success"><i
+                                            <button type="submit" id="pembayaran" class="btn btn-success"><i
                                                     class="bi bi-cash-stack"></i> Pembayaran</button>
                                         </div>
 
@@ -399,7 +399,7 @@
                         $('[name="product_id"]').val(response.product_id);
                         $('[name="product_name"]').val(response.product_name);
                         $('[name="category_name"]').val(response.category_name);
-                        $('[name="price"]').val(response.price);
+                        $('[name="price"]').val(response.capital_price);
                         $('[name="capital_price"]').val(response.capital_price);
 
                         $('#qty').focus();
