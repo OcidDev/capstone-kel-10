@@ -25,7 +25,7 @@
                         <form class="row g-3" method="POST" action="{{ route('user.edit', $profile->id) }}" method="POST">
                             @csrf
                             <div class="col-12">
-                                <label for="name" class="form-label">Nama Ppengguna</label>
+                                <label for="name" class="form-label">Nama Pengguna</label>
                                 <input type="text" value="{{ $profile->name }}" placeholder="Nama Rak" id="name"
                                     name="name" class="form-control">
                             </div>
