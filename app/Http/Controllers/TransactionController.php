@@ -128,10 +128,10 @@ class TransactionController extends Controller
 
         if(Cart::count() <= 0){
             return redirect()->back()->with('danger', 'Data Keranjang Kosong');
-        }else if($request->cash < $grand_total && $request->cash !== null && $request->cash >= 1){
-            return redirect()->back()->with('danger', 'lu kalo ngutang harus langsung klik bayar tanpa cash');
+        }else if($request->cash < $request->grand_total && $request->cash !== null && $request->cash >= 1){
+            return redirect()->back()->with('danger', 'Jika ingin hutang silahkan kosongkan isian cash atau isi 0');
         }else if($request->buyer_id == null && $request->cash == null || $request->buyer_id == null && $request->cash == 0 ){
-            return redirect()->back()->with('danger', 'Gak kenall gak boleh utamg !!');
+            return redirect()->back()->with('danger', 'Siapa yang ingin hutang?');
         }
 
         $data = [

@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cashier_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('buyer_id')->references('id')->on('buyers')->onDelete('cascade')->nullable();
+            $table->foreignId('buyer_id')->nullable()->references('id')->on('buyers')->onDelete('cascade');
             $table->string('invoice_code');
             $table->integer('total')->unsigned();
             $table->enum('status', ['LUNAS', 'BELUM LUNAS'])->default('LUNAS');

@@ -44,9 +44,9 @@
                                         <th scope="row">{{ $no++ }}</th>
                                         <td>{{ $transaction->invoice_code }}</td>
                                         <td>{{ $transaction->created_at->format('d M Y - H:i:s') }}</td>
-                                        <td>{{ $transaction->buyer->name }}</td>
-                                        <td>{{ $transaction->buyer->email }}</td>
-                                        <td>{{ $transaction->buyer->phone }}</td>
+                                        <td>{{ ($transaction->buyer == NULL) ? 'Cash' : $transaction->buyer->name }}</td>
+                                        <td>{{ ($transaction->buyer == NULL) ? '-' : $transaction->buyer->email }}</td>
+                                        <td>{{ ($transaction->buyer == NULL) ? '-   ' : $transaction->buyer->phone }}</td>
                                         <td>Rp. {{ number_format($transaction->total, 0) }}</td>
                                         <td> <span class="badge rounded-pill bg-success">{{ $transaction->status }}</span>
                                         </td>
