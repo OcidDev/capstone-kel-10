@@ -64,15 +64,16 @@
 
 <body>
     <center><button onclick="printDiv()">Cetak</button></center>
+
     <div class="container" id="cetak-area">
         <div class="header">
-            <h1>Nota Transaksi Inventaris</h1>
+            <h1>Nota Transaksi</h1>
         </div>
-        @foreach ($inventories as $inventory)
+        @foreach ($transactions as $transaction)
             <div class="invoice-details">
-                <p><strong>Nomor Invoice:</strong> {{ $inventory->invoice_code }}</p>
+                <p><strong>Nomor Invoice:</strong> {{ $transaction->invoice_code }}</p>
                 <p><strong>Tanggal:</strong> {{ date('d/m/Y') }}</p>
-                <p><strong>Status:</strong> {{ $inventory->status }}</p>
+                <p><strong>Status:</strong> {{ $transaction->status }}</p>
             </div>
             <table class="invoice-table">
                 <thead>
@@ -84,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($inventory->Detailinventory as $detail)
+                    @foreach ($transaction->DetailTransaction as $detail)
                         <tr>
                             <td>{{ $detail->product->name }}</td>
                             <td>{{ $detail->qty }}</td>
@@ -96,21 +97,20 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="total"><strong>Total:</strong></td>
-                        <td>Rp. {{ number_format($inventory->total, 0) }}</td>
+                        <td>Rp. {{ number_format($transaction->total, 0) }}</td>
                     </tr>
                     <tr>
                         <td colspan="3" class="total"><strong>Pembayaran:</strong></td>
-                        <td>Rp. {{ number_format($inventory->cash, 0) }}</td>
+                        <td>Rp. {{ number_format($transaction->cash, 0) }}</td>
                     </tr>
                     <tr>
                         <td colspan="3" class="total"><strong>Kembalian:</strong></td>
-                        <td>Rp. {{ number_format($inventory->change, 0) }}</td>
+                        <td>Rp. {{ number_format($transaction->change, 0) }}</td>
                     </tr>
                 </tfoot>
             </table>
         @endforeach
     </div>
-
     <script>
         function printDiv() {
             var printContents = document.querySelector('#cetak-area').innerHTML;

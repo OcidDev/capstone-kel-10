@@ -139,7 +139,7 @@ class InventoryController extends Controller
 
         if($inventoryCart->count() <= 0){
             return redirect()->back()->with('danger', 'Data Keranjang Kosong');
-        }else if($request->cash < $grand_total && $request->cash !== null && $request->cash >= 1){
+        }else if($request->cash < $request->grand_total && $request->cash !== null && $request->cash >= 1){
             return redirect()->back()->with('danger', 'Jika ingin hutang silahkan kosongkan isian cash atau isi 0');
         }else if($request->suppliers_id == null){
             return redirect()->back()->with('danger', 'Supplier Tidak Boleh Kosong');
@@ -422,7 +422,7 @@ class InventoryController extends Controller
       );
     $inventories = Inventory::with(['DetailInventory.product'])->where('status','Lunas')->whereHas('DetailInventory')->where('id', $id)->get();
 
-    return view('transaction.list_detail', $data, compact('inventories'));
+    return view('inventory.list_detail', $data, compact('inventories'));
   }
 
 }
