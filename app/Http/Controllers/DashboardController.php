@@ -56,16 +56,21 @@ class DashboardController extends Controller
         return view('profile', $data);
     }
     public function update(){
-        $data = array(
-            'name' => request('name'),
-            'email' => request('email'),
-        );
-        if(request('password')){
-            $data['password'] = Hash::make(request('password'));
+        $pesan = [
+            'required' => ':attribute Tidak Boleh Kosong !!',
+
+        ];
+        $user = User::find($id);
+        $data = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+        ],$pesan);
+        if($request->password != null){
+            $data['password'] = Hash::make($request->password);
         }else{
-            $data['password'] = Auth::user()->password;
+            $data['password'] = $user->password;
         }
-        User::where('id', Auth::user()->id)->update($data);
+        User::find($id)->update($data);
         Alert::success('Berhasil', 'Data Berhasil Diubah');
         return redirect()->route('profile');
     }
