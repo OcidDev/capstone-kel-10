@@ -16,7 +16,9 @@ class ReportController extends Controller
             'judul' => 'Laporan',
             'sub_menu' => '',
             'menu' => 'report',
-            'data_laporan' => Report::all()
+            'data_laporan' => Report::all(),
+            'curent_saldo' => Report::orderByDesc('created_at')->select('saldo')->first(),
+            'profit_month' => Report::whereMonth('created_at', date('m'))->sum('profit'),
         );
 
         return view('report.index',$data);

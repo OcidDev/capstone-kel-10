@@ -63,7 +63,6 @@
 </head>
 
 <body>
-    <center><button onclick="printDiv()">Cetak</button></center>
     <div class="container" id="cetak-area">
         <div class="header">
             <h1>Nota Transaksi Inventaris</h1>
@@ -88,8 +87,8 @@
                         <tr>
                             <td>{{ $detail->product->name }}</td>
                             <td>{{ $detail->qty }}</td>
-                            <td>Rp. {{ number_format($detail->product->price, 0) }}</td>
-                            <td>Rp. {{ number_format($detail->product->price * $detail->qty, 0) }}</td>
+                            <td>Rp. {{ number_format($detail->product->capital_price, 0) }}</td>
+                            <td>Rp. {{ number_format($detail->product->capital_price * $detail->qty, 0) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -111,6 +110,7 @@
         @endforeach
     </div>
 
+    <center><button onclick="printDiv()" style="margin-top: 50px">Cetak</button></center>
     <script>
         function printDiv() {
             var printContents = document.querySelector('#cetak-area').innerHTML;

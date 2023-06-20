@@ -63,8 +63,6 @@
 </head>
 
 <body>
-    <center><button onclick="printDiv()">Cetak</button></center>
-
     <div class="container" id="cetak-area">
         <div class="header">
             <h1>Nota Transaksi</h1>
@@ -111,6 +109,8 @@
             </table>
         @endforeach
     </div>
+
+    <center><button onclick="printDiv()" style="margin-top: 50px">Cetak</button></center>
     <script>
         function printDiv() {
             var printContents = document.querySelector('#cetak-area').innerHTML;

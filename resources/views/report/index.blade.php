@@ -5,6 +5,42 @@
 @section('contents')
 
     <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Saldo Sekarang</h5>
+
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-cash-coin" style="font-size: 40px "></i>
+                        </div>
+                        <div class="ps-3">
+                            <h4>{{ $curent_saldo->saldo }}</h4>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Keuntungan Bulan ini</h5>
+
+                    <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-cash-coin" style="font-size: 40px "></i>
+                        </div>
+                        <div class="ps-3">
+                            <h4>{{ $profit_month }}</h4>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
 
             <div class="card">
