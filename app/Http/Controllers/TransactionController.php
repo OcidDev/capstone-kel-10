@@ -262,8 +262,6 @@ class TransactionController extends Controller
            return back()->with('success','Transaksi Berhasil Disimpan');
         }
 
-    }
-
     public function paid_off()
     {
 
