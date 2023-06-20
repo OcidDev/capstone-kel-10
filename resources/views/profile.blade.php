@@ -22,7 +22,7 @@
                         </div>
                     @endif
                     <div class="card-body pt-3">
-                        <form class="row g-3" method="POST" action="{{ route('update.profile', $profile->id) }}" method="POST">
+                        <form class="row g-3" method="POST" action="{{ route('update.profile',$profile->id) }}" method="POST">
                             @csrf
                             <div class="col-12">
                                 <label for="name" class="form-label">Nama Pengguna</label>

@@ -55,7 +55,7 @@ class DashboardController extends Controller
         );
         return view('profile', $data);
     }
-    public function update(){
+    public function update(Request $request , $id){
         $pesan = [
             'required' => ':attribute Tidak Boleh Kosong !!',
 
@@ -71,7 +71,6 @@ class DashboardController extends Controller
             $data['password'] = $user->password;
         }
         User::find($id)->update($data);
-        Alert::success('Berhasil', 'Data Berhasil Diubah');
-        return redirect()->route('profile');
+        return redirect()->route('profile')->with('success','Data Berhasil Di Update');
     }
 }
