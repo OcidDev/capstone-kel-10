@@ -246,7 +246,7 @@ class TransactionController extends Controller
 
 
 
-        if ($data->change < 0) {
+        if ($data->cash < $data->total) {
            return redirect()->back()->with('danger','Data Tidak Benar (Uang Kurang)');
         }else {
             $data->save();
