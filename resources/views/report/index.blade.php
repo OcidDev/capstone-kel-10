@@ -15,7 +15,7 @@
                             <i class="bi bi-cash-coin" style="font-size: 40px "></i>
                         </div>
                         <div class="ps-3">
-                            <h4>{{ $curent_saldo->saldo }}</h4>
+                            <h4>Rp. {{ ($curent_saldo == NULL) ? 0 : number_format($curent_saldo->saldo, 0, ',', '.') }}</h4>
 
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             <i class="bi bi-cash-coin" style="font-size: 40px "></i>
                         </div>
                         <div class="ps-3">
-                            <h4>{{ $profit_month }}</h4>
+                            <h4>Rp. {{ number_format($profit_month, 0, ',', '.') }}</h4>
 
                         </div>
                     </div>
@@ -177,11 +177,4 @@
             </div>
         </div>
     @endforeach
-
-
-
-
-
-
-
 @endsection

@@ -125,6 +125,7 @@ class InventoryController extends Controller
         $change = ($status == 'Lunas') ? $cash - $grand_total : 0;
 
         $lastBalance = Report::orderByDesc('created_at')->select('saldo')->first();
+        $saldoNow = ($lastBalance == null) ? 0 : $lastBalance->saldo;
 
         $data = [
             'invoice_code' => $invoiceCode,
@@ -143,6 +144,8 @@ class InventoryController extends Controller
             return redirect()->back()->with('danger', 'Jika ingin hutang silahkan kosongkan isian cash atau isi 0');
         }else if($request->suppliers_id == null){
             return redirect()->back()->with('danger', 'Supplier Tidak Boleh Kosong');
+        }else if($cash > $saldoNow && $status == 'Lunas'){
+            return redirect()->back()->with('danger', 'Saldo tidak cukup, silahkan isi saldo terlebih dahulu melalui menu laporan');
         }
 
 
@@ -348,6 +351,8 @@ class InventoryController extends Controller
             return redirect()->back()->with('danger', 'Data Tidak Benar (Uang Kurang)');
         } else if ($data->cash < $data->total) {
             return redirect()->back()->with('danger', 'Pembayaran kurang dari total yang harus dibayar');
+        }else if($saldo < $data->cash){
+            return redirect()->back()->with('danger', 'Saldo tidak cukup, silahkan isi saldo terlebih dahulu melalui menu laporan');
         } else {
             $data->save();
             Report::create([
